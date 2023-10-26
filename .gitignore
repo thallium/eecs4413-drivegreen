@@ -25,7 +25,8 @@ yarn-debug.log*
 yarn-error.log*
 
 # local env files
-.env*.local
+# this is a private Repo, we need to share with TA
+# .env*.local
 
 # vercel
 .vercel
