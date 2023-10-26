@@ -1,0 +1,46 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+enum Brand {
+  Audi
+  BMW
+  Benz
+  Ford
+  GeneralMotors
+  Honda
+  Jeep
+  Toyota
+  Tesla
+}
+
+enum Shape {
+  S
+  M
+  L
+}
+
+model Vehicle {
+  vid           Int      @id @default(autoincrement())
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  name          String  
+  description   String?
+  brand         Brand    @default(Ford)
+  shape         Shape    @default(S)
+  modelYear     Int      @default(2000)
+  damaged       Boolean  @default(false)
+  Mileage       Float    @default(0)
+  quantity      Int      @default(0)
+  price         Float    
+  hotDealed     Boolean  @default(false)
+}
