@@ -10,13 +10,19 @@
     "migrate:dev": "npx dotenv -e .env.local -- prisma migrate dev",
     "db:push": "npx dotenv -e .env.local -- prisma db push",
     "migrate:reset": "npx dotenv -e .env.local -- prisma migrate reset",
-    "db:seed": "npx dotenv -e .env.local -- prisma db seed",
+    "db:seed": "npx dotenv -e .env.local -- prisma db seed -- --environment production",
+    "db:seeddev": "npx dotenv -e .env.local -- prisma db seed -- --environment development",
     "prisma:generate": "npx dotenv -e .env.local -- prisma generate",
     "prisma:studio": "npx dotenv -e .env.local -- prisma studio",
     "production:build": "npx prisma generate && npx prisma migrate deploy && next build"
   },
+  "prisma": {
+    "seed": "node prisma/seed.js"
+  },
+  "type":"module",
   "dependencies": {
     "@prisma/client": "^5.5.2",
+    "axios": "^1.6.0",
     "next": "13.5.6",
     "react": "^18",
     "react-dom": "^18"

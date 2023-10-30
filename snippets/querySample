@@ -1,0 +1,16 @@
+// https://stackoverflow.com/questions/72762497/query-enum-type-on-prisma
+// import { Role } from '@prisma/client'
+
+// app.get('users', async (req, res) => {
+//   const users = await prisma.user.findMany({
+//     name: 'Rich',
+//     role: Role.ADMIN
+//   });
+// });
+
+// const { role } = req.query;
+
+// const users = await prisma.user.findMany({
+//   name: 'Rich',
+//   role: Role[role as keyof typeof Role]
+// });
