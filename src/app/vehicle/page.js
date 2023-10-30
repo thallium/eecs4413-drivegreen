@@ -1,13 +1,11 @@
 import Link from 'next/link';
-import { useRouter } from 'next/router'
 
 export default function AddVehicle() {
-  const router = useRouter()
 
   const handleSubmit = async () => {
     
   }
-  
+
   return (
     <>
       <h1>First Route</h1>
