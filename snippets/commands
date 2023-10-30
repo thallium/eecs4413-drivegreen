@@ -1,0 +1,6 @@
+// npm run dev
+
+// npm run prisma:studio
+
+// npm run db:seed
+// npm run db:seed -e -dev

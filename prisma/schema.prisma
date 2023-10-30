@@ -11,6 +11,7 @@ datasource db {
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
+// ==================== Ray models ================================
 enum Brand {
   Audi
   BMW
@@ -33,14 +34,16 @@ model Vehicle {
   vid           Int      @id @default(autoincrement())
   createdAt     DateTime @default(now())
   updatedAt     DateTime @updatedAt
-  name          String  
+  name          String   @unique
   description   String?
-  brand         Brand    @default(Ford)
+  brand         Brand    
   shape         Shape    @default(S)
   modelYear     Int      @default(2000)
   damaged       Boolean  @default(false)
   Mileage       Float    @default(0)
-  quantity      Int      @default(0)
+  quantity      Int      @default(1)
   price         Float    
   hotDealed     Boolean  @default(false)
 }
+
+// ==================== END of Ray models ================================
