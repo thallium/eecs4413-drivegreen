@@ -2,6 +2,21 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
+### Try Deployed Instance In Cloud
+
+[vercel](https://eecs4413-drivegreen.vercel.app/)
+
+### Set Up Environment
+
+1. node
+2. npm
+3. next.js
+    `npm install next@latest react@latest react-dom@latest`
+4. install dependencies
+    
+
+### Run Locally
+
 First, run the development server:
 
 ```bash
