@@ -1,6 +1,6 @@
 import Link from 'next/link';
 
-let vehicles = await fetch(
+let vehicles = await fetch("https://" +
   process.env.VERCEL_URL + '/api/vehicles',
   { cache: 'no-store' }
 ).then((res) =>
