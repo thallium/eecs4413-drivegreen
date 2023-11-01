@@ -13,7 +13,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 3. next.js
     `npm install next@latest react@latest react-dom@latest`
 4. install dependencies
-    
+    `npm install next-auth`
 
 ### Run Locally
 
