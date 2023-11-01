@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { prisma } from "../../db/dbClient.js";
+import { prisma } from "../../backend/db/dbClient.js";
 
 // To handle a GET request to /api
 export async function GET(request, {params}) {

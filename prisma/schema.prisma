@@ -47,3 +47,11 @@ model Vehicle {
 }
 
 // ==================== END of Ray models ================================
+
+
+// ==================== Admin models ================================
+model LoginHistory {
+  uid           Int      @id @default(autoincrement())
+  loginAt       DateTime @default(now())
+  ip            String
+}
