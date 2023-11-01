@@ -1,9 +1,13 @@
 import Link from 'next/link';
 
 let vehicles = await fetch(
-    (process.env.NODE_ENV !== 'production'? process.env.LOCAL_URL : process.env.VERCEL_URL) + "/api/vehicles"
-      ,{ cache: 'no-store' })
-    .then(res=>res.json().then(data =>{ return data; }) );
+  process.env.VERCEL_URL + '/api/vehicles',
+  { cache: 'no-store' }
+).then((res) =>
+  res.json().then((data) => {
+    return data;
+  })
+);
 
 export default async function ListVehicles() {
   return (

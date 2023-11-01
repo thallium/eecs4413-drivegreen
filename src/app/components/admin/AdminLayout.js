@@ -6,7 +6,7 @@ import HotDealManage from './HotDealManage';
 
 export default async function AdminLayout() {
 
-  const res = await fetch(process.env.APIpath + '/api/admin', {
+  const res = await fetch(process.env.VERCEL_URL + '/api/admin', {
     method: 'GET',
   });
 
