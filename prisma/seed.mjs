@@ -1,6 +1,6 @@
 // https://www.prisma.io/docs/guides/migrate/seed-database
 import { PrismaClient } from '@prisma/client'
-import seedVehicle from './seedVehicle.js'  // must include .js extension
+import seedVehicle from './seedVehicle.mjs'  // must include extension
 import { parseArgs } from 'node:util'
 
 const prisma = new PrismaClient()

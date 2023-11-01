@@ -1,5 +1,4 @@
 import { Brand, Shape } from '@prisma/client'
-// const prisma = new PrismaClient()
 
 export default async function seedVehicle(prisma) {
   const veh1 = await prisma.vehicle.upsert({
