@@ -1,10 +1,23 @@
 import Link from 'next/link';
 
+// async function postVehicles({ params }) {
+//   const patchAPI = (process.env.NODE_ENV !== 'production'? process.env.LOCAL_URL : "https://" + process.env.VERCEL_URL) + `/api/vehicles/${params.vid}`;
 
-export default async function ListVehicles() {
-  const getAPI = (process.env.NODE_ENV !== 'production'? process.env.LOCAL_URL : "https://" + process.env.VERCEL_URL) + "/api/vehicles";
-  let vehicles = await fetch(getAPI, { cache: 'force-cache' })
-      .then(res=>res.json().then(data =>{ return data; }))
+//   const res = await fetch('https://data.mongodb-api.com/...', {
+//     method: 'POST',
+//     headers: {
+//       'Content-Type': 'application/json',
+//       'API-Key': process.env.DATA_API_KEY,
+//     },
+//     body: JSON.stringify({ time: new Date().toISOString() }),
+//   })
+// }
+
+export default async function VehicleDetails({ params }) {
+  const getAPI = (process.env.NODE_ENV !== 'production'? process.env.LOCAL_URL : "https://" + process.env.VERCEL_URL) + `/api/vehicles/${params.vid}`;
+
+  let vehicle = await fetch(getAPI, { cache: 'force-cache' })
+      .then(res=>{ return res.json(); })
       .catch(err => console.log(err));
 
   return (
@@ -17,7 +30,7 @@ export default async function ListVehicles() {
           gap: 20,
         }}
       >
-        {vehicles && vehicles.map((vehicle) => (
+        {vehicle &&
           <div
             key={vehicle.vid}
             style={{ border: "1px solid #ccc", textAlign: "center" }}
@@ -34,7 +47,7 @@ export default async function ListVehicles() {
             <h3>{vehicle.modelYear}</h3>
             <h3>{JSON.stringify(vehicle.hotDealed)}</h3>
           </div>
-        ))}
+        }
       </div>
 
       <h2>
