@@ -14,7 +14,8 @@ export default async function AdminLayout() {
     method: 'GET',
   }).catch((err) => console.log("booooom", err));
 
-  const data = () => {if (res) {return res.json().then(data =>{ return data; })} else {return null;}};
+  const data = () => {
+    if (res) {return res.json().then(data =>{ return data; })} else {return console.log("cant connect local host");}};
   return (
     <>
       <Sales props={data} /> 
