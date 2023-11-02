@@ -13,10 +13,10 @@ export default async function AdminLayout() {
   const res = await fetch(url + '/api/admin', {
     method: 'GET',
   })
-    .then((res) => {
-      return res.json();
-    })
-    .catch((err) => console.log(err));
+  .then((res) => res.json()
+        .then((data) => {return data;})
+  )
+  .catch((err) => console.log(err));
 
   return (
     <>
