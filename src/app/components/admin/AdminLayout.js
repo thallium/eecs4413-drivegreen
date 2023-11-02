@@ -12,13 +12,16 @@ export default async function AdminLayout() {
 
   const res = await fetch(process.env.LOCAL_URL + '/api/admin', {
     method: 'GET',
-  }).catch((err) => console.log("booooom", err));
+  }).catch((err) => console.log(err));
 
   const data = () => {
-    if (res) {return res.json()} else {console.log("cant connect local host"); return null}};
+    if (res) {return res.json()} else {console.log("cant connect local host"); return null}
+  };
+
   return (
     <>
-      <Sales props={data} /> 
+      <>{data}</>
+      <Sales props={data} />
 
       <LoginHistory />
 
