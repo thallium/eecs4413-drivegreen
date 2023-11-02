@@ -18,7 +18,8 @@ export default async function AdminLayout() {
   return (
     <>
       {res && <h1>{res.message + res.success}</h1>}
-      {/* {process.env.VERCEL_URL && <h1>VERCEL_URL: {process.env.VERCEL_URL}</h1>} */}
+      {!res && <h1>why no response</h1>}
+      {process.env.VERCEL_URL && <h1>VERCEL_URL: {process.env.VERCEL_URL}</h1>}
       <Sales res={res} />
 
       <LoginHistory />
