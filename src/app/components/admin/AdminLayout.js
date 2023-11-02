@@ -10,17 +10,17 @@ export default async function AdminLayout() {
   //   method: 'GET',
   // }).catch((err) => console.log(err));
 
-  const res = await fetch(process.env.LOCAL_URL + '/api/admin', {
+  const res = await fetch(process.env.VERCEL_URL + '/api/admin', {
     method: 'GET',
   }).catch((err) => console.log(err));
 
   const data = () => {
-    if (res) {return res.json()} else {console.log("cant connect local host"); return null}
+    if (res) {return res.json()} else {return null}
   };
 
   return (
     <>
-      <>{data}</>
+
       <Sales props={data} />
 
       <LoginHistory />
