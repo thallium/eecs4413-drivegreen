@@ -5,9 +5,9 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  directUrl         = env("DIRECT_URL")
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
@@ -31,37 +31,37 @@ enum Shape {
 }
 
 model Vehicle {
-  vid           Int      @id @default(autoincrement())
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  name          String   @unique
+  vid           Int                     @id @default(autoincrement())
+  createdAt     DateTime                @default(now())
+  updatedAt     DateTime                @updatedAt
+  name          String                  @unique
   description   String?
-  brand         Brand    
-  shape         Shape    @default(S)
-  modelYear     Int      @default(2000)
-  damaged       Boolean  @default(false)
-  Mileage       Float    @default(0)
-  quantity      Int      @default(1)
-  price         Float    
-  hotDealed     Boolean  @default(false)
+  brand         Brand
+  shape         Shape                   @default(S)
+  modelYear     Int                     @default(2000)
+  damaged       Boolean                 @default(false)
+  Mileage       Float                   @default(0)
+  quantity      Int                     @default(1)
+  price         Float
+  hotDealed     Boolean                 @default(false)
   shoppingCarts ShoppingCartOnVehicle[]
-  orders OrderOnVehicle[]
-  reviews Review[]
+  orders        OrderOnVehicle[]
+  reviews       Review[]
 }
 
 // ==================== END of Ray models ================================
 
 // ==================== User models ======================================
 
-model User{
-  uid           String      @id 
-  name          String    
-  ddress String?
-  email   String   @unique
-  isAdmin Boolean @default(false)
-  reviews Review[]
-  shoppingCart  ShoppingCart?
-  orders Order[]
+model User {
+  uid            String         @id
+  name           String?
+  address        String?
+  email          String         @unique
+  isAdmin        Boolean        @default(false)
+  reviews        Review[]
+  shoppingCart   ShoppingCart?
+  orders         Order[]
   loginHistories LoginHistory[]
 }
 
@@ -72,16 +72,16 @@ model Review {
   rating    Int
   body      String?
   author    User     @relation(fields: [authorId], references: [uid])
-  authorId  String 
+  authorId  String
   vehicle   Vehicle  @relation(fields: [vehicleId], references: [vid])
   vehicleId Int
 }
 
 model LoginHistory {
-  user          User @relation(fields: [userId], references: [uid])
-  userId        String @unique
-  loginAt       DateTime @default(now())
-  ip            String
+  user    User     @relation(fields: [userId], references: [uid])
+  userId  String   @unique
+  loginAt DateTime @default(now())
+  ip      String
 
   @@id([userId, loginAt])
 }
@@ -90,50 +90,47 @@ model LoginHistory {
 
 // ==================== ShoppingCart models ===============================
 model ShoppingCart {
-  scid Int @id @default(autoincrement())
-  user User @relation(fields: [userId], references: [uid])
-  userId String @unique
+  scid         Int                     @id @default(autoincrement())
+  user         User                    @relation(fields: [userId], references: [uid])
+  userId       String                  @unique
   vehicleItems ShoppingCartOnVehicle[]
   //quantity for each vehicle included in relation table ShoppingCartOnVehicle
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  totalPrice    Float
+  createdAt    DateTime                @default(now())
+  updatedAt    DateTime                @updatedAt
+  totalPrice   Float
 }
 
 //relation table
 model ShoppingCartOnVehicle {
-  shoppingCart ShoppingCart @relation(fields: [shoppingCartId], references: [scid])
+  shoppingCart   ShoppingCart @relation(fields: [shoppingCartId], references: [scid])
   shoppingCartId Int
-  vehicle Vehicle @relation(fields: [vehicleId], references: [vid])
-  vehicleId Int
-  quantity Int @default(1)
-  subTotal Float 
-  
+  vehicle        Vehicle      @relation(fields: [vehicleId], references: [vid])
+  vehicleId      Int
+  quantity       Int          @default(1)
+  subTotal       Float
+
   @@id([shoppingCartId, vehicleId])
 }
 
 model Order {
-  oid Int @id @default(autoincrement())
-  user User @relation(fields: [userId], references: [uid])
-  userId String @unique
+  oid        Int              @id @default(autoincrement())
+  user       User             @relation(fields: [userId], references: [uid])
+  userId     String           @unique
   orderItems OrderOnVehicle[]
   //quantity for each vehicle included in relation table OrderOnVehicle
-  createdAt     DateTime @default(now())
-  updatedAt     DateTime @updatedAt
-  totalPrice    Float 
-  isPaid        Boolean @default(false)
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  totalPrice Float
+  isPaid     Boolean          @default(false)
 }
 
 model OrderOnVehicle {
-  order Order @relation(fields: [orderId], references: [oid])
-  orderId Int
-  vehicle Vehicle @relation(fields: [vehicleId], references: [vid])
+  order     Order   @relation(fields: [orderId], references: [oid])
+  orderId   Int
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [vid])
   vehicleId Int
-  quantity Int @default(1)
-  subTotal  Float 
-  
+  quantity  Int     @default(1)
+  subTotal  Float
+
   @@id([orderId, vehicleId])
 }
-
-
-
