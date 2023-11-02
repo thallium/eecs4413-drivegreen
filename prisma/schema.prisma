@@ -44,6 +44,96 @@ model Vehicle {
   quantity      Int      @default(1)
   price         Float    
   hotDealed     Boolean  @default(false)
+  shoppingCarts ShoppingCartOnVehicle[]
+  orders OrderOnVehicle[]
+  reviews Review[]
 }
 
 // ==================== END of Ray models ================================
+
+// ==================== User models ======================================
+
+model User{
+  uid           String      @id 
+  name          String    
+  ddress String?
+  email   String   @unique
+  isAdmin Boolean @default(false)
+  reviews Review[]
+  shoppingCart  ShoppingCart?
+  orders Order[]
+  loginHistories LoginHistory[]
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  title     String
+  rating    Int
+  body      String?
+  author    User     @relation(fields: [authorId], references: [uid])
+  authorId  String 
+  vehicle   Vehicle  @relation(fields: [vehicleId], references: [vid])
+  vehicleId Int
+}
+
+model LoginHistory {
+  user          User @relation(fields: [userId], references: [uid])
+  userId        String @unique
+  loginAt       DateTime @default(now())
+  ip            String
+
+  @@id([userId, loginAt])
+}
+
+// ==================== End of User models ======================================
+
+// ==================== ShoppingCart models ===============================
+model ShoppingCart {
+  scid Int @id @default(autoincrement())
+  user User @relation(fields: [userId], references: [uid])
+  userId String @unique
+  vehicleItems ShoppingCartOnVehicle[]
+  //quantity for each vehicle included in relation table ShoppingCartOnVehicle
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  totalPrice    Float
+}
+
+//relation table
+model ShoppingCartOnVehicle {
+  shoppingCart ShoppingCart @relation(fields: [shoppingCartId], references: [scid])
+  shoppingCartId Int
+  vehicle Vehicle @relation(fields: [vehicleId], references: [vid])
+  vehicleId Int
+  quantity Int @default(1)
+  subTotal Float 
+  
+  @@id([shoppingCartId, vehicleId])
+}
+
+model Order {
+  oid Int @id @default(autoincrement())
+  user User @relation(fields: [userId], references: [uid])
+  userId String @unique
+  orderItems OrderOnVehicle[]
+  //quantity for each vehicle included in relation table OrderOnVehicle
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+  totalPrice    Float 
+  isPaid        Boolean @default(false)
+}
+
+model OrderOnVehicle {
+  order Order @relation(fields: [orderId], references: [oid])
+  orderId Int
+  vehicle Vehicle @relation(fields: [vehicleId], references: [vid])
+  vehicleId Int
+  quantity Int @default(1)
+  subTotal  Float 
+  
+  @@id([orderId, vehicleId])
+}
+
+
+
