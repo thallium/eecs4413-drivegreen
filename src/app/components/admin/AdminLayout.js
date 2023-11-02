@@ -15,7 +15,8 @@ export default async function AdminLayout() {
   }).catch((err) => console.log(err));
 
   const data = () => {
-    if (res) {return res.json()} else {return null}
+    if (res) {res.json().then(data =>{ return data; })} 
+    else {return null;}
   };
 
   return (
