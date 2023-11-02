@@ -15,11 +15,10 @@ export default async function AdminLayout() {
     })
     .catch((err) => console.log(err));
 
-  console.log(res);
-
   return (
     <>
-      {process.env.VERCEL_URL && <h1>VERCEL_URL: {process.env.VERCEL_URL}</h1>}
+      {res && <h1>{res}</h1>}
+      {/* {process.env.VERCEL_URL && <h1>VERCEL_URL: {process.env.VERCEL_URL}</h1>} */}
       <Sales res={res} />
 
       <LoginHistory />
