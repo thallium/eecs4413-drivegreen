@@ -1,15 +1,12 @@
 import Link from 'next/link';
 
-let vehicles = await fetch("https://" +
-  process.env.VERCEL_URL + '/api/vehicles',
-  { cache: 'no-store' }
-).then((res) =>
-  res.json().then((data) => {
-    return data;
-  })
-);
 
 export default async function ListVehicles() {
+  let vehicles = await fetch(
+      (process.env.NODE_ENV !== 'production'? process.env.LOCAL_URL : "https://" + process.env.VERCEL_URL) + "/api/vehicles"
+        ,{ cache: 'no-store' })
+      .then(res=>res.json().then(data =>{ return data; }))
+      .catch(err => console.log(err));
   return (
     <>
       <h1>First Route</h1>
@@ -20,7 +17,7 @@ export default async function ListVehicles() {
           gap: 20,
         }}
       >
-        {vehicles.map((vehicle) => (
+        {vehicles && vehicles.map((vehicle) => (
           <div
             key={vehicle.vid}
             style={{ border: "1px solid #ccc", textAlign: "center" }}
