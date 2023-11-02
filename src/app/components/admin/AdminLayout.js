@@ -9,17 +9,21 @@ export default async function AdminLayout() {
   // const res = await fetch(process.env.LOCAL_URL + '/api/admin', {
   //   method: 'GET',
   // }).catch((err) => console.log(err));
+  console.log(process.env.VERCEL_URL);
+  // const res = await fetch(process.env.VERCEL_URL + '/api/admin', {
+  //   method: 'GET',
+  // })
+  //   .then((res) => {
+  //     return res.json();
+  //   })
+  //   .catch((err) => console.log(err));
 
-  const res = await fetch(process.env.VERCEL_URL + '/api/admin', {
-    method: 'GET',
-  }).then(res => {return res.json();}).catch((err) => console.log(err));
-
-  console.log(res);
+  // console.log(res);
 
   return (
     <>
 
-      <Sales res={res} />
+      {/* <Sales res={res} /> */}
 
       <LoginHistory />
 
