@@ -5,9 +5,12 @@ import HotDealManage from './HotDealManage';
 
 
 export default async function AdminLayout() {
+  const url =
+    process.env.NODE_ENV !== 'production'
+      ? process.env.LOCAL_URL
+      : 'https://' + process.env.VERCEL_URL;
 
-
-  const res = await fetch("https://" + process.env.VERCEL_URL + '/api/admin', {
+  const res = await fetch(url + '/api/admin', {
     method: 'GET',
   })
     .then((res) => {
