@@ -5,7 +5,7 @@ export default function Sales(props) {
 
     return (
         <div>
-            <h1>Sales</h1>
+            {props && <h1>Sales</h1>}
         </div>
     );
 }
