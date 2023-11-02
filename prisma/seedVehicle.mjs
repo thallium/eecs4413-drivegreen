@@ -24,4 +24,5 @@ export default async function seedVehicle(prisma) {
   })
 
   console.log({ veh1, veh2 })
+  return [veh1,veh2]
 }

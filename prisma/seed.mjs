@@ -2,6 +2,9 @@
 import { PrismaClient } from '@prisma/client'
 import seedVehicle from './seedVehicle.mjs'  // must include extension
 import { parseArgs } from 'node:util'
+import seedUser from './seedUser.mjs'
+import seedShoppingCart from './seedShoppingCart.mjs'
+import seedOrder from './seedOrder.mjs'
 
 const prisma = new PrismaClient()
 const options = {
@@ -17,13 +20,23 @@ async function main() {
     case 'development':
       /** data for your development */
       // seedVehicle(prisma)
+      //seedUser(prisma)
+      //seedShoppingCart(prisma)
+      //seedOrder(prisma)
       break
     case 'test':
       /** data for your test environment */
       // seedVehicle(prisma)
+      //seedUser(prisma)
+      //seedShoppingCart(prisma)
+      //seedOrder(prisma)
       break
     case 'production':
       seedVehicle(prisma)
+      seedUser(prisma)
+      seedShoppingCart(prisma)
+      seedOrder(prisma)
+      break
     default:
       break
   }
