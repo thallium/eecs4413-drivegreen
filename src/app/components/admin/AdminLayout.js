@@ -10,7 +10,7 @@ export default async function AdminLayout() {
   //   method: 'GET',
   // }).catch((err) => console.log(err));
 
-  const res = await fetch(process.env.LOCAL_URL + '/api/admin', {
+  const res = await fetch(process.env.VERCEL_URL + '/api/admin', {
     method: 'GET',
   }).then(res => {return res.json();}).catch((err) => console.log(err));
 
