@@ -2,6 +2,7 @@
 import { PrismaClient } from '@prisma/client'
 import seedVehicle from './seedVehicle.mjs'  // must include extension
 import { parseArgs } from 'node:util'
+import seedLoginHistory from './seedLoginHistory.mjs'
 
 const prisma = new PrismaClient()
 const options = {
@@ -24,6 +25,7 @@ async function main() {
       break
     case 'production':
       seedVehicle(prisma)
+      seedLoginHistory(prisma)
     default:
       break
   }

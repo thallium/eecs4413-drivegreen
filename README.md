@@ -14,6 +14,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
     `npm install next@latest react@latest react-dom@latest`
 4. install dependencies
     `npm install next-auth`
+    `npm install @prisma/client`
 
 ### Run Locally
 
