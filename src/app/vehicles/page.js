@@ -1,12 +1,13 @@
+// "use client"; // This is a client component
+
 import Link from 'next/link';
 
-
 export default async function ListVehicles() {
-  let vehicles = await fetch(
-      (process.env.NODE_ENV !== 'production'? process.env.LOCAL_URL : "https://" + process.env.VERCEL_URL) + "/api/vehicles"
-        ,{ cache: 'no-store' })
+  const getAPI = (process.env.NODE_ENV !== 'production'? process.env.LOCAL_URL : "https://" + process.env.VERCEL_URL) + "/api/vehicles";
+  let vehicles = await fetch(getAPI, { cache: 'no-store' })
       .then(res=>res.json().then(data =>{ return data; }))
       .catch(err => console.log(err));
+
   return (
     <>
       <h1>{process.env.VERCEL_URL}</h1>
@@ -17,13 +18,12 @@ export default async function ListVehicles() {
           gap: 20,
         }}
       >
-        {vehicles &&
-          vehicles.map((vehicle) => (
-            <div
-              key={vehicle.vid}
-              style={{ border: '1px solid #ccc', textAlign: 'center' }}
-            >
-              {/* <img
+        {vehicles && vehicles.map((vehicle) => (
+          <div
+            key={vehicle.vid}
+            style={{ border: "1px solid #ccc", textAlign: "center" }}
+          >
+            {/* <Image
               src={`https://robohash.org/${vehicle.vid}?set=set2&size=180x180`}
               alt={vehicle.name}
               style={{ height: 180, width: 180 }}
