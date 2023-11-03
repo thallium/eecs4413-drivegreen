@@ -2,6 +2,7 @@
 import { PrismaClient } from '@prisma/client'
 import seedVehicle from './seedVehicle.mjs'  // must include extension
 import { parseArgs } from 'node:util'
+import seedLoginHistory from './seedLoginHistory.mjs'
 import seedUser from './seedUser.mjs'
 import seedShoppingCart from './seedShoppingCart.mjs'
 import seedOrder from './seedOrder.mjs'
@@ -36,6 +37,7 @@ async function main() {
       seedUser(prisma)
       seedShoppingCart(prisma)
       seedOrder(prisma)
+      seedLoginHistory(prisma);
       break
     default:
       break
