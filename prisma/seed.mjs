@@ -34,10 +34,10 @@ async function main() {
       break
     case 'production':
       seedVehicle(prisma)
-      seedLoginHistory(prisma)
       seedUser(prisma)
       seedShoppingCart(prisma)
       seedOrder(prisma)
+      seedLoginHistory(prisma);
       break
     default:
       break
