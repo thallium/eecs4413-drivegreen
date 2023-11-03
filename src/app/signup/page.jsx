@@ -1,21 +1,30 @@
 'use client';
-import { createUserWithEmailAndPassword } from 'firebase/auth';
 import { useState } from 'react';
-import { auth } from '../firebase';
 import { useRouter } from 'next/navigation';
+import { baseURL } from '@/util';
 
 export default function Example() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordAgain, setPasswordAgain] = useState('');
     const router = useRouter();
-    const signup = () => {
-        createUserWithEmailAndPassword(auth, email, password).then((userCredential) => {
+    const signup = async () => {
+        try {
+            const res = await fetch(baseURL() + '/api/signup', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ email, password }),
+            });
+            console.log(res);
+            if (!res.ok) {
+                alert('Sign up failed!\nError: ' + await res.text());
+                return;
+            }
             alert('Sign up successful');
             router.push('/signin');
-        }).catch((error) => {
+        } catch (error) {
             alert(error.message);
-        })
+        }
     };
     return (
         <>
@@ -86,7 +95,7 @@ export default function Example() {
                             <button
                                 type='button'
                                 disabled={(!email || !password || !passwordAgain) || (password !== passwordAgain)}
-                                onClick={() => signup()}
+                                onClick={signup}
                                 className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
                             >
                                 Sign up
