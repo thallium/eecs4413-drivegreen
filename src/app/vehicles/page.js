@@ -1,12 +1,12 @@
 // "use client"; // This is a client component
 
 import Link from 'next/link';
+import { baseURL } from '@/util';
 
 export default async function ListVehicles() {
-  const getAPI = (process.env.NODE_ENV !== 'production'? process.env.LOCAL_URL : "https://" + process.env.VERCEL_URL) + "/api/vehicles";
-  let vehicles = await fetch(getAPI, { cache: 'no-store' })
-      .then(res=>res.json().then(data =>{ return data; }))
-      .catch(err => console.log(err));
+  let vehicles = await fetch(baseURL() + "/api/vehicles", { cache: 'no-store' })
+    .then(res => res.json().then(data => { return data; }))
+    .catch(err => console.log(err));
 
   return (
     <>
