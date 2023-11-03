@@ -1,3 +1,4 @@
+import { baseURL } from '@/util';
 import Link from 'next/link';
 
 // async function postVehicles({ params }) {
@@ -14,11 +15,11 @@ import Link from 'next/link';
 // }
 
 export default async function VehicleDetails({ params }) {
-  const getAPI = (process.env.NODE_ENV !== 'production'? process.env.LOCAL_URL : "https://" + process.env.VERCEL_URL) + `/api/vehicles/${params.vid}`;
+  const getAPI = baseURL() + `/api/vehicles/${params.vid}`;
 
-  let vehicle = await fetch(getAPI, { cache: 'force-cache' })
-      .then(res=>{ return res.json(); })
-      .catch(err => console.log(err));
+  let vehicle = await fetch(getAPI, { cache: 'no-store' })
+    .then(res => { return res.json(); })
+    .catch(err => console.log(err));
 
   return (
     <>
