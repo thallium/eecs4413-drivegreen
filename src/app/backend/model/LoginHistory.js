@@ -14,5 +14,18 @@ export const getHistoryByDate = async (start, end) => {
     return data;
 }
 
+export const addHistory = async (uid, ip) => {
+    const login = {
+        userId: uid,
+        ip: ip
+    }
 
+    const data = await prisma.loginHistory.create({
+        data: {
+            login
+        }
+    });
+
+    return data;
+}
 

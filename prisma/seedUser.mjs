@@ -15,7 +15,8 @@ export default async function seedUser(prisma) {
     create: { // minimum: only required fields
       uid: 'b1234',
       name: 'bbb',
-      email: 'bbb@gmail.com'
+      email: 'bbb@gmail.com',
+      isAdmin: true
     },
   })
 
