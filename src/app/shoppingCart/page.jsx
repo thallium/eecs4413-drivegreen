@@ -1,5 +1,5 @@
 'use client';
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { baseURL } from '@/util';
 import { useSession } from "next-auth/react"
 import { redirect } from "next/navigation"
@@ -29,7 +29,9 @@ export default function ShoppingCart() {
           }
     }
 
-    fetchData();
+    useEffect(() => {
+      fetchData();
+    },[]);
 
       return (
         <>
