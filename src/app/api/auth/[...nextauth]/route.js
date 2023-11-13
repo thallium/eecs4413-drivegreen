@@ -10,6 +10,7 @@ const handler = NextAuth({
   providers: [
     CredentialsProvider({
       name: "Credentials",
+      
       async authorize(credentials) {
         return await signInWithEmailAndPassword(auth, credentials.email || '', credentials.password || '')
           .then(userCredential => {

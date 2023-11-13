@@ -1,6 +1,2 @@
-// import { getDeals} from '../model/Ve'
+// import { getDeals} from '../model/Vehicle';
 
-
-// export default function getDeals() {
-//     const
-// }

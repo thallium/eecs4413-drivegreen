@@ -1,6 +1,7 @@
-import { isAdmin } from '@firebase/util';
-import {getHistoryByDate} from '../models/loginHistory';
-// import Order from '../models/order';
+
+import {getHistoryByDate} from '../../model/LoginHistory';
+import {getOrdersByDate} from '../../model/Order';
+import {getVehicleByID } from '../../model/Vehicle';
 
 
 const getDates = () => {
@@ -9,7 +10,8 @@ const getDates = () => {
     return {start, today};
 }
 
-export default function app_reports() {
+
+export async function app_reports() {
     const {start, today} = getDates();
     const logins = getHistoryByDate(start, today);
 
@@ -17,11 +19,24 @@ export default function app_reports() {
 }
 
 
-// export default function sale_reports() {
-    // const {start, today} = getDates();
-    // const orders = Order.getOrdersByDate(start, today);
-    // return {order: orders};
-// }
+export async function sale_reports() {
+    const {start, today} = getDates();
+    const orders = getOrdersByDate(start, today);
+    let sale = {};
+    for(o of orders) {
+        const items = o.items;
+        for(i of items) {
+            const vid = i.vehicleId;
+            const vehicle = getVehicleByID(vid);
+            if (sale[vehicle.name]) {
+                sale[vehicle.name] += 1;
+            }
+            else {
+                sale[vehicle.name] = 1;
+            }
+        };
+    };
+    return {order: orders};
+}
 
 
-//export isAdmin()// better add under user model
