@@ -11,6 +11,8 @@ export default async function Home() {
         Read <Link href="/viewRoute2/">this Route2 page!</Link>
         <br></br>
         <Link href="/vehicles/">Vehicles page</Link>
+        <br></br>
+        <Link href="/shoppingCart/">shoppingCart page</Link>
       </div>
       
     </main>
