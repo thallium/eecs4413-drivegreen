@@ -1,11 +1,11 @@
 export default async function seedUser(prisma) {
   const user1 = await prisma.user.upsert({
-    where: { email: 'aaa@gmail.com', },
+    where: { email: 'user1@gmail.com', },
     update: {},
     create: { // minimum: only required fields
-      uid: 'a1234',
-      name: 'aaa',
-      email: 'aaa@gmail.com'
+      uid: 'd2ikbaUUmZRi9d7KKhNT6cQZ4EY2',
+      name: 'Tony',
+      email: 'user1@gmail.com'
     },
   })
 
@@ -23,3 +23,4 @@ export default async function seedUser(prisma) {
   console.log({ user1, user2 })
   return [user1, user2]
 }
+
