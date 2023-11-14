@@ -28,18 +28,18 @@ export default async function ListVehicles() {
               alt={vehicle.name}
               style={{ height: 180, width: 180 }}
             /> */}
-              <h3>{JSON.stringify(vehicle.createdAt)}</h3>
-              <h3>{vehicle.name}</h3>
-              <h3>{vehicle.brand}</h3>
-              <h3>{vehicle.shape}</h3>
-              <h3>{vehicle.modelYear}</h3>
-              <h3>{JSON.stringify(vehicle.hotDealed)}</h3>
+              <h3>Name: {vehicle.name}</h3>
+              <h3>Brand: {vehicle.brand}</h3>
+              <h3>Shape: {vehicle.shape}</h3>
+              <h3>ModelYear: {vehicle.modelYear}</h3>
+              <h3>Hot deal? {JSON.stringify(vehicle.hotDealed)}</h3>
+              <h3>Datetime: {JSON.stringify(vehicle.createdAt).split('.')[0]}</h3>
             </div>
           ))}
       </div>
 
       <h2>
-        <Link href="/">Back to home</Link>
+        <Link href="/" style={{ border: "1px solid #ccc", textAlign: "center", color: "red"}}>Back to home</Link>
       </h2>
     </>
   );
