@@ -19,7 +19,7 @@ export const getShoppingCart = async (email) => {
     },
     
   });
-  console.log("shoppingCart:" + shoppingCart);
+  console.log("shoppingCart:" + JSON.stringify(shoppingCart));
   return shoppingCart;
   
 }
@@ -147,11 +147,43 @@ const updateCartTotal = async (scId, total) => {
     
 }
 
-export const deleteCartItem = async (scId, vehicleId, total) => {
+export const removeOneFromItem = async (email, vehicleId) => {
+  const shoppingCart = await getShoppingCart(email);
+  const item = shoppingCart.vehicleItems.find(item => item.vehicleId == vehicleId);
+  const newQuantity = item.quantity - 1;
+  if (newQuantity){
+    //if updated quantity is not 0, updated the quantity and related subtaol,total only
+    const unitPrice = item.subTotal/item.quantity;
+    const newSubTotal = unitPrice * newQuantity;
+    const newTotalPrice = shoppingCart.totalPrice - unitPrice;
+    const [updatedItemInShoppingCart, updatedShoppingCart] = await updateCartItemQuatity(shoppingCart.scid, vehicleId, newQuantity, newSubTotal, newTotalPrice);
+    return updatedShoppingCart;
+  }
+  else{
+    // if updated quantity is 0, then remove the whole item from shopping cart.
+    const newTotalPrice = shoppingCart.totalPrice - item.subTotal;
+    const [deletedItem, updatedShoppingCart] = await deleteCartItem(shoppingCart.scid, vehicleId, newTotalPrice);
+    return updatedShoppingCart;
+  }
+  
+  
+}
+
+export const removeWholeItem = async (email, vehicleId) => {
+  const shoppingCart = await getShoppingCart(email);
+  const item = shoppingCart.vehicleItems.find(item => item.vehicleId == vehicleId);
+  const newTotalPrice = shoppingCart.totalPrice - item.subTotal;
+  const [deletedItem, updatedShoppingCart] = await deleteCartItem(shoppingCart.scid, vehicleId, newTotalPrice);
+  return updatedShoppingCart;
+}
+
+const deleteCartItem = async (scId, vehicleId, total) => {
     const deletedItem = await prisma.shoppingCartOnVehicle.delete({
         where: {
-          shoppingCartId: scId,
-          vehicleId: vehicleId,
+          shoppingCartId_vehicleId:{
+            shoppingCartId: scId,
+            vehicleId: vehicleId,
+          },
         },
       });
     

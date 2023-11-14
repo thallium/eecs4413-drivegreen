@@ -1,5 +1,5 @@
 import { prisma } from "@/app/backend/db/dbClient.js";
-import { addToShoppingCart } from "@/app/backend/service/shoppingCart/shoppingCartService.js";
+import { addToShoppingCart, removeWholeItem, removeOneFromItem } from "@/app/backend/service/shoppingCart/shoppingCartService.js";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 
@@ -15,6 +15,15 @@ export async function PUT(request, { params }) {
             const option = req.option;
             if(option === "add"){
                 shoppingCart = await addToShoppingCart(email, parseInt(vid));
+            }
+            else if(option === "removeAll"){
+                shoppingCart = await removeWholeItem(email, parseInt(vid));
+            }
+            else if(option === "removeOne"){
+                shoppingCart = await removeOneFromItem(email, parseInt(vid));
+            }
+            else{
+                throw new Error("Invalid option")
             }
             
             return NextResponse.json(shoppingCart, { status: 200 });
