@@ -1,12 +1,37 @@
-// "use client"; // This is a client component
+"use client"; // This is a client component
 
 import Link from 'next/link';
 import { baseURL } from '@/util';
+import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
+import axios from 'axios';
 
-export default async function ListVehicles() {
-  let vehicles = await fetch(baseURL() + "/api/vehicles", { cache: 'no-store' })
-    .then(res => res.json().then(data => { return data; }))
-    .catch(err => console.log(err));
+const queryClient = new QueryClient();
+
+export default function ListVehicles() {
+  return (
+    <QueryClientProvider client={queryClient}>
+      <Vehicles/>
+    </QueryClientProvider>
+  )
+}
+
+function Vehicles() {
+  const { isPending, error, data } = useQuery({
+    // queryKey: ['vehicles'],
+    queryFn: () =>
+      axios.get(baseURL() + '/api/vehicles').then(res => res.data)
+  })
+  // let vehicles = await fetch(baseURL() + "/api/vehicles", { cache: 'no-store' })
+  //   .then(res => res.json().then(data => { return data; }))
+  //   .catch(err => console.log(err));
+
+  if (isPending) return 'Loading...';
+
+  if (error) return 'An error has occurred: ' + error.message;
+
+  console.log('================')
+  console.log(baseURL() + "/api/vehicles")
+  console.log(data)
 
   return (
     <>
@@ -18,7 +43,7 @@ export default async function ListVehicles() {
           gap: 20,
         }}
       >
-        {vehicles && vehicles.map((vehicle) => (
+        {data && data.map((vehicle) => (
           <div
             key={vehicle.vid}
             style={{ border: "1px solid #ccc", textAlign: "center" }}
@@ -28,6 +53,7 @@ export default async function ListVehicles() {
               alt={vehicle.name}
               style={{ height: 180, width: 180 }}
             /> */}
+              <h3 style={{color: 'blue'}}>Vehicle</h3>
               <h3>Name: {vehicle.name}</h3>
               <h3>Brand: {vehicle.brand}</h3>
               <h3>Shape: {vehicle.shape}</h3>
