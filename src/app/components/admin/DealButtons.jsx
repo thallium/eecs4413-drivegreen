@@ -64,17 +64,17 @@ export function AddDeal() {
     }
     
     return (
-      <div className="">
+      <div className="grid grid-cols-2 gap-4">
         <input
           type="text"
           placeholder="Vehicle ID"
-          className="border-2 border-gray-300 p-2 rounded-lg"
+          className="input input-bordered"
           onChange={(e) => setVid(e.target.value)}
         />
         <button 
           className="btn btn-square btn-outline"
           onClick={add}
-        >
+        >add
         </button>
       </div>
     );

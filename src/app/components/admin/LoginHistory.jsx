@@ -6,7 +6,7 @@ export default async function LoginHistory() {
   const admin_history = await app_reports();
   // console.log(admin_history);
   return (
-    <div className="overflow-x-auto max-h-48 overflow-y-scroll">
+    <div className="overflow-x-auto max-h-48 overflow-y-scroll border-solid border-2 rounded border-grey-400">
       <table className="table">
         <caption>Admin Access History</caption>
         <thead>

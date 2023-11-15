@@ -5,8 +5,9 @@ export default async function HotDealManage() {
     const deals = await getDeals();
 
     return (
-      <div className="">
-        <table className="table overflow-x-auto max-h-48 overflow-y-scroll">
+      <div className="overflow-x-auto max-h-48 overflow-y-scroll border-solid border-2 rounded border-grey-400">
+        <table className="table">
+          <caption>Hot Deals</caption>
           <thead>
             <tr>
               <th>Brand</th>

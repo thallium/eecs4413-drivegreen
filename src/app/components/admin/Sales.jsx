@@ -16,7 +16,7 @@ export const getServerSideProps = async () => {
 export default function Sales({sales}) {
   
   return (
-    <div className="overflow-x-auto max-h-48 overflow-y-scroll">
+    <div className="overflow-x-auto max-h-48 overflow-y-scroll border-solid border-2 rounded border-grey-400">
       <table className="table">
         <caption>Sales (last week)</caption>
         <thead>
