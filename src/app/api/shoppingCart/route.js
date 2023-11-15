@@ -5,13 +5,12 @@ import { getServerSession } from "next-auth";
 
 export async function GET(request) {
     const session = await getServerSession({ req: request });
-    console.log("session:"+session);
     if (session) {
         try {
             const email = session.user.email;
             console.log("email:"+email);
             const shoppingCart = await getShoppingCart(email);
-            console.log("shopping Cart:" + shoppingCart);
+            console.log("shopping Cart:" + JSON.stringify(shoppingCart));
             return NextResponse.json(shoppingCart, { status: 200 });
         } catch (error) {
             return new NextResponse(error.message, { status: 500 });
