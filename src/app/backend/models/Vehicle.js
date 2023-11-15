@@ -6,6 +6,7 @@ export const getDeals = async () => {
             hotDealed: true
         },
         select: {
+            vid: true,
             name: true,
             price: true,
             brand: true,

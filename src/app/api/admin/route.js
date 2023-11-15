@@ -21,15 +21,15 @@ export async function GET(request) {
   const login = await app_reports();
   const sales = await sale_reports();
   const deals = await getDeals();
-  let ip = request.headers['x-real-ip'];
-  const method = request.method;
+  let ip =
+     request.headers.get('x-real-ip') ||
+     request.headers.get('x-forwarded-host') ||
+     '';
+  // const method = request.method;
 
-  if (!ip) {
-    ip = "localhost";
-  }
 
   // add login history
-  const data = await addHistory(session.user.id, ip, session.user.email, method + " /api/admin");
+  const data = await addHistory(session.user.id, ip, session.user.email, "GET /api/admin");
 
   return NextResponse.json({login_histories: login, sales: sales, deals: deals}, {status:200});
 }

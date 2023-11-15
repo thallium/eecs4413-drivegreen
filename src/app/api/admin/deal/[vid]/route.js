@@ -15,13 +15,17 @@ export async function POST(request, {params}){
             { status: 401 }
         );
     }
-
-    // const req = await request.json();
-    const {hotDealed} = request.body["hotDealed"];
+    
+    const req = await request.json();
+    console.log(req);
+    const hotDealed = req["hotDealed"];
     const vid = parseInt(params.vid);
     const data = await setHotDeal(vid, hotDealed);
-    let ip = request.headers['x-real-ip'];
-
+    let ip =
+      request.headers.get('x-real-ip') ||
+      request.headers.get('x-forwarded-host') ||
+      '';
+    console.log("ip", ip);
     if (!ip) {
         ip = 'localhost';
     }
@@ -31,7 +35,7 @@ export async function POST(request, {params}){
     session.user.id,
     ip,
     session.user.email,
-    method + ' /api/admin/deal/' + vid
+    'POST /api/admin/deal/' + vid
     );
     // console.log(data);
     return NextResponse.json({message: "updated hotDealed state of slected vehicle (id:" + vid + ")", hotDealed: data.hotDealed}, {status:200});

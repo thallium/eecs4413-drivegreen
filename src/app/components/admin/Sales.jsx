@@ -16,24 +16,25 @@ export const getServerSideProps = async () => {
 export default function Sales({sales}) {
   
   return (
-      <div className="overflow-x-auto">
-        <table className="table">
-          <thead>
-            <tr>
-              <th>Vehicle</th>
-              <th>Sold In Last Week</th>
-            </tr>
-          </thead>
-          <tbody>
-            {sales && Object.entries(sales).forEach(([key, value]) => (
-                <tr>
-                  <td>{key}</td>
-                  <td>{value}</td>
-                </tr>
-            ))
-            }
-          </tbody>
-        </table>
-      </div>
+    <div className="overflow-x-auto max-h-48 overflow-y-scroll">
+      <table className="table">
+        <caption>Sales (last week)</caption>
+        <thead>
+          <tr>
+            <th>Vehicle</th>
+            <th>Sold</th>
+          </tr>
+        </thead>
+        <tbody>
+          {sales &&
+            Object.entries(sales).forEach(([key, value]) => (
+              <tr>
+                <td>{key}</td>
+                <td>{value}</td>
+              </tr>
+            ))}
+        </tbody>
+      </table>
+    </div>
   );
 }

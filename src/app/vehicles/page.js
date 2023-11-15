@@ -10,7 +10,6 @@ export default async function ListVehicles() {
 
   return (
     <>
-      <h1>{process.env.VERCEL_URL}</h1>
       <div
         style={{
           display: 'grid',

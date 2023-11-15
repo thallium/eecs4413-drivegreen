@@ -7,23 +7,24 @@ import { getServerSession } from 'next-auth';
 import { addHistory } from '@/app/backend/models/LoginHistory';
 
 
-export const dynamic = 'force-dynamic';// force dynamic
+// export const dynamic = 'force-dynamic';// force dynamic
 
-export async function auth() {
+async function auth() {
     const header = headers();
     const session = await getServerSession();
     let authorized = true;
-    console.log('session', session);
+    // console.log('session', session);
+    
     if (!session || !session.user || !(await isAdmin(session.user.email))) {
         authorized = false;
     } else {
-        const ip = header.get('x-real-ip') || 'localhost';
-
+        const ip = header.get('x-real-ip') || '';
+        // console.log("headers", header);
         await addHistory(
             session.user.id,
             ip,
             session.user.email,
-            header.method + ' /admin'
+            'GET /admin'
         );
     }
 
