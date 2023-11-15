@@ -191,3 +191,13 @@ const deleteCartItem = async (scId, vehicleId, total) => {
 
     return [deletedItem, updatedShoppingCart];
 }
+
+export const clearShoppingCart = async (scid) => {
+  await prisma.shoppingCartOnVehicle.deleteMany({
+    where: {
+      shoppingCartId: scid,
+    },
+  });
+  await updateCartTotal(scid, 0);
+  console.log(`shoppingCart with id ${scid} cleared successfully!`);
+}
