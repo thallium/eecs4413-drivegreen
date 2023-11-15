@@ -2,32 +2,37 @@ import AdminLayout from "../components/admin/AdminLayout";
 import { NextRequest } from 'next/server';
 import { headers } from 'next/headers';
 
-export async function getServerSideProps({ request }) {
-    const session = await getServerSession({ req: request });
+import { isAdmin } from '@/app/backend/models/User';
+import { getServerSession } from 'next-auth';
+import { addHistory } from '@/app/backend/models/LoginHistory';
+
+
+export const dynamic = 'force-dynamic';// force dynamic
+
+export async function auth() {
+    const header = headers();
+    const session = await getServerSession();
     let authorized = true;
     console.log('session', session);
     if (!session || !session.user || !(await isAdmin(session.user.email))) {
         authorized = false;
     } else {
-        const ip = request.headers['x-real-ip'] || request.connection.remoteAddress;
+        const ip = header.get('x-real-ip') || 'localhost';
 
         await addHistory(
             session.user.id,
             ip,
             session.user.email,
-            request.method + ' /admin'
+            header.method + ' /admin'
         );
     }
 
-    return {
-        props: {
-            authorized: authorized,
-        },
-    };
+    return authorized;
 }
 
 
-export default function Admin({authorized}) {
+export default async function Admin() {
+    const authorized = await auth();
     return <>
         {!authorized && <>
             <h1>You are not authorized to access this page. Please try sign in.</h1><br />

@@ -25,7 +25,7 @@ export default function Sales({sales}) {
             </tr>
           </thead>
           <tbody>
-            {Object.entries(sales).forEach(([key, value]) => (
+            {sales && Object.entries(sales).forEach(([key, value]) => (
                 <tr>
                   <td>{key}</td>
                   <td>{value}</td>
