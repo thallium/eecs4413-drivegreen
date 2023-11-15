@@ -1,22 +1,35 @@
 import { NextResponse } from 'next/server';
 import { getServerSession } from 'next-auth';
-import {app_reports, sale_reports} from '@/app/backend/service/admin/reports';
-import {isAdmin} from '@/app/backend/models/user';
+import { app_reports, sale_reports } from '@/app/backend/service/admin/reports';
+import { isAdmin } from '@/app/backend/models/User';
+import { getDeals } from '@/app/backend/models/Vehicle';
+import { addHistory } from '@/app/backend/models/LoginHistory';
+
 
 export async function GET(request) {
   // auth first
   const session = await getServerSession({ req: request });
-  console.log(session);
-
-  if (!session || !session.user || !isAdmin(session.user.email)) {
+  // console.log(session);
+  console.log('admin api user', session.user);
+  if (!session || !session.user || !(await isAdmin(session.user.email))) {
     return NextResponse.json(
       { message: 'You are not authorized to access this endpoint.' },
       { status: 401 }
     );
   }
   // get sales, hotdeal, login history
-  const {login} = app_reports();
-  const {sales} = sale_reports();
-  
-  return NextResponse.json({status:200}, {login_histories: login});
+  const login = await app_reports();
+  const sales = await sale_reports();
+  const deals = await getDeals();
+  let ip = request.headers['x-real-ip'];
+  const method = request.method;
+
+  if (!ip) {
+    ip = "localhost";
+  }
+
+  // add login history
+  const data = await addHistory(session.user.id, ip, session.user.email, method + " /api/admin");
+
+  return NextResponse.json({login_histories: login, sales: sales, deals: deals}, {status:200});
 }

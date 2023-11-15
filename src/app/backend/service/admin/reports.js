@@ -1,7 +1,7 @@
 
-import {getHistoryByDate} from '../../model/LoginHistory';
-import {getOrdersByDate} from '../../model/Order';
-import {getVehicleByID } from '../../model/Vehicle';
+import {getHistoryByDate} from '../../models/LoginHistory';
+import {getOrdersByDate} from '../../models/Order';
+import {getVehicleByID } from '../../models/Vehicle';
 
 
 const getDates = () => {
@@ -13,21 +13,25 @@ const getDates = () => {
 
 export async function app_reports() {
     const {start, today} = getDates();
-    const logins = getHistoryByDate(start, today);
-
-    return {login: logins};
+    // console.log(start, today);
+    const logins = await getHistoryByDate(start, today);
+    // console.log(logins);
+    return logins;
 }
 
 
 export async function sale_reports() {
     const {start, today} = getDates();
-    const orders = getOrdersByDate(start, today);
+    const orders = await getOrdersByDate(start, today);
     let sale = {};
-    for(o of orders) {
-        const items = o.items;
-        for(i of items) {
+    // console.log(orders);
+    for(let o of orders) {
+        const items = o.orderItems;
+        // console.log(typeof items);
+        for(let i of items) {
             const vid = i.vehicleId;
-            const vehicle = getVehicleByID(vid);
+            const vehicle = await getVehicleByID(vid);
+            // console.log(vehicle);
             if (sale[vehicle.name]) {
                 sale[vehicle.name] += 1;
             }
@@ -36,7 +40,7 @@ export async function sale_reports() {
             }
         };
     };
-    return {order: orders};
+    return sale;
 }
 
 

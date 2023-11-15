@@ -1,21 +1,23 @@
-import seedVehicle from './seedVehicle.mjs'
-import seedUser from './seedUser.mjs'
+import seedVehicle from './seedVehicle.mjs';
+import seedUser from './seedUser.mjs';
 import { PrismaClient } from '@prisma/client';
 
 /**
- * @param {PrismaClient} prisma 
+ * @param {PrismaClient} prisma
  */
-export default async function seedShoppingCart(prisma) {
-  const [veh1, veh2] = await seedVehicle(prisma)
-  const [user1] = await seedUser(prisma)
+export default async function seedOrder(prisma) {
+  const [veh1, veh2] = await seedVehicle(prisma);
+  const [user1, user2] = await seedUser(prisma);
 
   const o1 = await prisma.order.upsert({
-    where: { userId: user1.uid },
-    update: {},
+    where: { oid: 1 },
+    update: {
+      shippingAddr: '100 abc Rd',
+    },
     create: {
       user: {
         connect: {
-          uid: user1.uid
+          uid: user1.uid,
         },
       },
       orderItems: {
