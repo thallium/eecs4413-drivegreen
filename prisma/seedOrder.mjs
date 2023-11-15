@@ -11,7 +11,9 @@ export default async function seedOrder(prisma) {
 
   const o1 = await prisma.order.upsert({
     where: { oid:1 },
-    update: {},
+    update: {
+      shippingAddr: '100 abc Rd',
+    },
     create: {
       user: {
         connect: {

@@ -1,5 +1,5 @@
 import { prisma } from "@/app/backend/db/dbClient.js";
-import { getShoppingCart, updateCartItemQuatity, deleteCartItem } from "@/app/backend/service/shoppingCart/shoppingCartService.js";
+import { getShoppingCart } from "@/app/backend/service/shoppingCart/shoppingCartService.js";
 import { NextResponse } from "next/server";
 import { getServerSession } from "next-auth";
 
