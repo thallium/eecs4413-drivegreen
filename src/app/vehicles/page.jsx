@@ -3,6 +3,7 @@
 import Link from 'next/link';
 import { baseURL } from '@/util';
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import axios from 'axios';
 
 const queryClient = new QueryClient();
@@ -11,27 +12,21 @@ export default function ListVehicles() {
   return (
     <QueryClientProvider client={queryClient}>
       <Vehicles/>
+      <ReactQueryDevtools />
     </QueryClientProvider>
   )
 }
 
 function Vehicles() {
-  const { isPending, error, data } = useQuery({
-    // queryKey: ['vehicles'],
+  const { isPending, error, data: vehicles } = useQuery({
+    queryKey: ['/api/vehicles'],
     queryFn: () =>
       axios.get(baseURL() + '/api/vehicles').then(res => res.data)
   })
-  // let vehicles = await fetch(baseURL() + "/api/vehicles", { cache: 'no-store' })
-  //   .then(res => res.json().then(data => { return data; }))
-  //   .catch(err => console.log(err));
 
   if (isPending) return 'Loading...';
 
   if (error) return 'An error has occurred: ' + error.message;
-
-  console.log('================')
-  console.log(baseURL() + "/api/vehicles")
-  console.log(data)
 
   return (
     <>
@@ -43,7 +38,7 @@ function Vehicles() {
           gap: 20,
         }}
       >
-        {data && data.map((vehicle) => (
+        {vehicles && vehicles.map((vehicle) => (
           <div
             key={vehicle.vid}
             style={{ border: "1px solid #ccc", textAlign: "center" }}
