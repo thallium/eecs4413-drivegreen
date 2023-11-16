@@ -1,5 +1,5 @@
 import AdminLayout from "../components/admin/AdminLayout";
-import { NextRequest } from 'next/server';
+// import { NextRequest } from 'next/server';
 import { headers } from 'next/headers';
 
 import { isAdmin } from '@/app/backend/models/User';
@@ -7,7 +7,7 @@ import { getServerSession } from 'next-auth';
 import { addHistory } from '@/app/backend/models/LoginHistory';
 
 
-// export const dynamic = 'force-dynamic';// force dynamic
+export const dynamic = 'force-dynamic';// force dynamic
 
 async function auth() {
     const header = headers();
@@ -21,7 +21,6 @@ async function auth() {
         const ip = header.get('x-forwarded-host') || '';
         // console.log("headers", header);
         await addHistory(
-            session.user.id,
             ip,
             session.user.email,
             'GET /admin'

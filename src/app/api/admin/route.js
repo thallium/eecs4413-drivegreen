@@ -29,7 +29,7 @@ export async function GET(request) {
 
 
   // add login history
-  const data = await addHistory(session.user.id, ip, session.user.email, "GET /api/admin");
+  const data = await addHistory(ip, session.user.email, "GET /api/admin");
 
   return NextResponse.json({login_histories: login, sales: sales, deals: deals}, {status:200});
 }

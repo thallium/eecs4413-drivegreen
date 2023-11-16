@@ -7,5 +7,5 @@ export async function isAdmin(email){
         where: { email: email }
         })
     // console.log(user);
-    return user.isAdmin;
+    return user?.isAdmin;
 }

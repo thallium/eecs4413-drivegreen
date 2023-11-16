@@ -79,13 +79,13 @@ model Review {
 
 // ==================== Admin models ======================================
 model LoginHistory {
-  user    User     @relation(fields: [userId], references: [uid])
-  userId  String   
+  user    User     @relation(fields: [email], references: [email])
+  email  String    
   loginAt DateTime @default(now())
   ip      String?
   action  String?
 
-  @@id([userId, loginAt])
+  @@id([email, loginAt])
 }
 
 // ==================== End of Admin models ======================================

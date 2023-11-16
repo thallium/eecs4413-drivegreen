@@ -32,7 +32,6 @@ export async function POST(request, {params}){
 
 
     const history = await addHistory(
-    session.user.id,
     ip,
     session.user.email,
     'POST /api/admin/deal/' + vid

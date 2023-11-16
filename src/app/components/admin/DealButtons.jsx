@@ -1,11 +1,14 @@
 'use client';
 import { baseURL } from '@/util';
 import { useState } from 'react';
+import { useRouter } from 'next/navigation'; // APP router
 
 export function DeleteButton({vid}) {
+    const router = useRouter();
+
     const del = async() => {
       try {
-        alert('Are you sure you want to delete this vehicle from hot deals?')
+        alert('Are you sure you want to delete this vehicle from hot deals?');
         fetch(baseURL() + '/api/admin/deal/' + vid, {
           method: 'POST',
           headers: {
@@ -13,9 +16,11 @@ export function DeleteButton({vid}) {
           },
           body: JSON.stringify({ "hotDealed": false }),
         });
+        router.refresh();
       } catch (err) {
         alert(err.message);
-      }
+      };
+      
     }
       
     
@@ -44,6 +49,7 @@ export function DeleteButton({vid}) {
 
 
 export function AddDeal() {
+    const router = useRouter();
     const [vid, setVid] = useState('');
     const add = async() => {
       if(vid == '') 
@@ -57,11 +63,14 @@ export function AddDeal() {
           },
           body: JSON.stringify({"hotDealed": true}),
         });
+        setVid('');
+        router.refresh();
       }
       catch(err) {
         alert(err.message);
-      }
-    }
+      };
+    };
+
     
     return (
       <div className="grid grid-cols-2 gap-4">
@@ -69,6 +78,7 @@ export function AddDeal() {
           type="text"
           placeholder="Vehicle ID"
           className="input input-bordered"
+          value={vid}
           onChange={(e) => setVid(e.target.value)}
         />
         <button 

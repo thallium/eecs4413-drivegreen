@@ -13,11 +13,7 @@ export const getHistoryByDate = async (start, end) => {
             ip: true,
             action: true,
             loginAt: true,
-            user: {
-                select: {
-                    email: true,
-                }
-            }
+            email: true,
         }
     });
 
@@ -26,20 +22,18 @@ export const getHistoryByDate = async (start, end) => {
 
 
 
-export const addHistory = async (u_id, ip, email, action) => {
-
-
-  const data = await prisma.loginHistory.create({
-    data: {
-      userId: u_id,
+export const addHistory = async (ip, eml, action) => {
+  const now = new Date();
+  const data = await prisma.loginHistory.upsert({
+    where: { email_loginAt: { email: eml, loginAt: now} },
+    update: {
       ip: ip,
       action: action,
-      user: {
-        connect: {
-          uid: u_id,
-          email: email,
-        },
-      },
+    },
+    create: {
+      ip: ip,
+      action: action,
+      user: { connect: { email: eml } },
     },
   });
 
