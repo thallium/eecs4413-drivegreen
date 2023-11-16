@@ -4,7 +4,7 @@ import {DeleteButton, AddDeal} from "./DealButtons";
 
 export default async function HotDealManage() {
     const deals = await getDeals();
-    console.log(deals);
+    // console.log(deals);
     return (
       <div className="overflow-x-auto max-h-56 border-solid border-2 rounded border-grey-400">
         <table className="table">

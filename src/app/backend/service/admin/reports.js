@@ -23,7 +23,7 @@ export async function app_reports() {
 export async function sale_reports() {
     const {start, today} = getDates();
     const orders = await getOrdersByDate(start, today);
-    let sale = {};
+    let sale = new Map();
     // console.log(orders);
     for(let o of orders) {
         const items = o.orderItems;
@@ -32,11 +32,11 @@ export async function sale_reports() {
             const vid = i.vehicleId;
             const vehicle = await getVehicleByID(vid);
             // console.log(vehicle);
-            if (sale[vehicle.name]) {
-                sale[vehicle.name] += 1;
-            }
-            else {
-                sale[vehicle.name] = 1;
+            let cnt = sale.get(vehicle.name)
+            if (cnt) {
+              sale.set(vehicle.name, cnt + 1);
+            } else {
+              sale.set(vehicle.name, 1);
             }
         };
     };

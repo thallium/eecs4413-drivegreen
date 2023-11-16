@@ -9,7 +9,7 @@ const getSales = async () => {
 
 export default async function Sales() {
   const sales = await getSales();
-
+  // console.log("sales", sales.entries());
   return (
     <div className="overflow-x-auto max-h-56 border-solid border-2 rounded border-grey-400">
       <table className="table">
@@ -22,8 +22,9 @@ export default async function Sales() {
         </thead>
         <tbody className="overflow-y-scroll">
           {sales &&
-            Object.entries(sales).forEach(([key, value]) => (
-              <tr>
+            Array.from(sales.entries()).map(([key, value]) => (
+              // console.log(key, value),
+              <tr key={key}>
                 <td>{key}</td>
                 <td>{value}</td>
               </tr>
