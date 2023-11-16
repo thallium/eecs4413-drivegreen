@@ -23,13 +23,8 @@ export async function POST(request, {params}){
     const data = await setHotDeal(vid, hotDealed);
     let ip =
       request.headers.get('x-real-ip') ||
-      request.headers.get('x-forwarded-host') ||
+      request.headers.get('x-forwarded-For').split(",")[0] ||
       '';
-    console.log("ip", ip);
-    if (!ip) {
-        ip = 'localhost';
-    }
-
 
     const history = await addHistory(
     ip,

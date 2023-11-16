@@ -22,11 +22,11 @@ export async function GET(request) {
   const sales = await sale_reports();
   const deals = await getDeals();
   let ip =
-     request.headers.get('x-real-ip') ||
-     request.headers.get('x-forwarded-host') ||
-     '';
+    request.headers.get('x-real-ip') ||
+    request.headers.get('x-forwarded-For').split(',')[0] ||
+    '';
   // const method = request.method;
-
+  console.log("api headers", request.headers);
 
   // add login history
   const data = await addHistory(ip, session.user.email, "GET /api/admin");

@@ -18,7 +18,7 @@ async function auth() {
     if (!session || !session.user || !(await isAdmin(session.user.email))) {
         authorized = false;
     } else {
-        const ip = header.get('x-forwarded-host') || '';
+        const ip = header.get('x-forwarded-For').split(",")[0] || '';
         // console.log("headers", header);
         await addHistory(
             ip,
