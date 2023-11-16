@@ -6,11 +6,11 @@ import { PrismaClient } from '@prisma/client';
  * @param {PrismaClient} prisma
  */
 export default async function seedOrder(prisma) {
-  const [veh1, veh2] = await seedVehicle(prisma);
-  const [user1, user2] = await seedUser(prisma);
+  const [veh1, veh2] = await seedVehicle(prisma)
+  const [user1, user2] = await seedUser(prisma)
 
   const o1 = await prisma.order.upsert({
-    where: { oid: 1 },
+    where: { oid:1 },
     update: {
       shippingAddr: '100 abc Rd',
     },

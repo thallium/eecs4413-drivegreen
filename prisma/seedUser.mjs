@@ -3,7 +3,7 @@ export default async function seedUser(prisma) {
     where: { email: 'user1@gmail.com', },
     update: {},
     create: { // minimum: only required fields
-      uid: 'd2ikbaUUmZRi9d7KKhNT6cQZ4EY2',
+      uid: 'a1234',
       name: 'Tony',
       email: 'user1@gmail.com'
     },

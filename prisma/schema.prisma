@@ -124,6 +124,7 @@ model Order {
   //quantity for each vehicle included in relation table OrderOnVehicle
   createdAt  DateTime         @default(now())
   updatedAt  DateTime         @updatedAt
+  shippingAddr  String?        
   totalPrice Float
   isPaid     Boolean          @default(false)
 }
