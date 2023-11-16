@@ -23,7 +23,7 @@ export async function GET(request) {
   const deals = await getDeals();
   let ip =
     request.headers.get('x-real-ip') ||
-    request.headers.get('x-forwarded-For').split(',')[0] ||
+    request.headers.get('x-forwarded-For').split(':')[0] ||
     '';
   // const method = request.method;
   console.log("api headers", request.headers);
