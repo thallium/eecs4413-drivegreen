@@ -77,14 +77,18 @@ model Review {
   vehicleId Int
 }
 
+// ==================== Admin models ======================================
 model LoginHistory {
-  user    User     @relation(fields: [userId], references: [uid])
-  userId  String
+  user    User     @relation(fields: [email], references: [email])
+  email  String    
   loginAt DateTime @default(now())
-  ip      String
+  ip      String?
+  action  String?
 
-  @@id([userId, loginAt])
+  @@id([email, loginAt])
 }
+
+// ==================== End of Admin models ======================================
 
 // ==================== End of User models ======================================
 
@@ -115,7 +119,7 @@ model ShoppingCartOnVehicle {
 model Order {
   oid        Int              @id @default(autoincrement())
   user       User             @relation(fields: [userId], references: [uid])
-  userId     String
+  userId     String           
   orderItems OrderOnVehicle[]
   //quantity for each vehicle included in relation table OrderOnVehicle
   createdAt  DateTime         @default(now())

@@ -15,7 +15,7 @@ export default function Example() {
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password }),
             });
-            console.log(res);
+            // console.log(res);
             if (!res.ok) {
                 alert('Sign up failed!\nError: ' + await res.text());
                 return;

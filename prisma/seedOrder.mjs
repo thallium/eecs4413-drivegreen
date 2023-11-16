@@ -1,9 +1,9 @@
-import seedVehicle from './seedVehicle.mjs'
-import seedUser from './seedUser.mjs'
+import seedVehicle from './seedVehicle.mjs';
+import seedUser from './seedUser.mjs';
 import { PrismaClient } from '@prisma/client';
 
 /**
- * @param {PrismaClient} prisma 
+ * @param {PrismaClient} prisma
  */
 export default async function seedOrder(prisma) {
   const [veh1, veh2] = await seedVehicle(prisma)
@@ -17,7 +17,7 @@ export default async function seedOrder(prisma) {
     create: {
       user: {
         connect: {
-          uid: user1.uid
+          uid: user1.uid,
         },
       },
       orderItems: {
