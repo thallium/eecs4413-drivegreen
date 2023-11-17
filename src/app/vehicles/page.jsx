@@ -48,13 +48,13 @@ function Vehicles() {
               alt={vehicle.name}
               style={{ height: 180, width: 180 }}
             /> */}
-              <h3 style={{color: 'blue'}}>Vehicle</h3>
+              <h3 style={{color: 'blue'}}>Vehicle id: {vehicle.vid}</h3>
               <h3>Name: {vehicle.name}</h3>
               <h3>Brand: {vehicle.brand}</h3>
               <h3>Shape: {vehicle.shape}</h3>
               <h3>ModelYear: {vehicle.modelYear}</h3>
               <h3>Hot deal? {JSON.stringify(vehicle.hotDealed)}</h3>
-              <h3>Datetime: {JSON.stringify(vehicle.createdAt).split('.')[0]}</h3>
+              <h3>Stock datetime: {JSON.stringify(vehicle.createdAt).split(/[".]/)[1]}Z</h3>
             </div>
           ))}
       </div>
