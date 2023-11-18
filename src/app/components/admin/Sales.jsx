@@ -13,7 +13,7 @@ export default async function Sales() {
   return (
     <div className="overflow-x-auto max-h-56 border-solid border-2 rounded border-grey-400">
       <table className="table">
-        <caption>Sales (last week)</caption>
+        <caption>Sales (last 1 month)</caption>
         <thead>
           <tr>
             <th>Vehicle</th>

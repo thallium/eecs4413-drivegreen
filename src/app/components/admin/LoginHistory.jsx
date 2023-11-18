@@ -8,7 +8,7 @@ export default async function LoginHistory() {
   return (
     <div className="overflow-x-auto max-h-56 border-solid border-2 rounded border-grey-400">
       <table className="table">
-        <caption>Admin Access History</caption>
+        <caption>Admin Access History (last 1 week)</caption>
         <thead>
           <tr>
             <th>Time</th>
