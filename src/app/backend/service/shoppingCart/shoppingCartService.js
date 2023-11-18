@@ -37,7 +37,7 @@ export const creatEmptyShoppingCart = async (email) => {
           uid: user.uid,
         },
       },
-      totalPrice: 0, // Set the initial total price as needed
+      totalPrice: 0, // Set the initial total price
     },
   });
   console.log(`Shopping cart created for user with email: ${email}`);
@@ -45,7 +45,7 @@ export const creatEmptyShoppingCart = async (email) => {
 }
 
 export const addToShoppingCart = async (email, vehicleId) => {
-    // Find the shoppingCart based on the provided email
+    // Find the shoppingCart based on email
     let shoppingCart = await getShoppingCart(email);
 
     if (!shoppingCart) {

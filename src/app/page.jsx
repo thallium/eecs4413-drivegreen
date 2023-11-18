@@ -14,6 +14,12 @@ export default async function Home() {
         <Link href="/vehicles/" style={linkStyle}>
           1.Vehicles page
         </Link>
+        <Link href="/shoppingCart/" style={linkStyle}>
+          2.ShoppingCart page
+        </Link>
+        <Link href="/order/" style={linkStyle}>
+          3.Order page
+        </Link>
         <Link href="/admin/" className="text-cyan-500 underline">
           Admin page
         </Link>
