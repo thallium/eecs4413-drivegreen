@@ -25,10 +25,7 @@ export function DeleteButton({vid}) {
       
     
     return (
-      <button 
-      className="btn btn-square btn-outline"
-      onClick={del}
-      >
+      <button className="btn btn-sm btn-circle btn-outline btn-error" onClick={del}>
         <svg
           xmlns="http://www.w3.org/2000/svg"
           className="h-6 w-6"
@@ -73,7 +70,7 @@ export function AddDeal() {
 
     
     return (
-      <div className="grid grid-cols-2 gap-4">
+      <div className="grid grid-cols-2 gap-4 w-1/5">
         <input
           type="text"
           placeholder="Vehicle ID"
@@ -81,10 +78,8 @@ export function AddDeal() {
           value={vid}
           onChange={(e) => setVid(e.target.value)}
         />
-        <button 
-          className="btn btn-square btn-outline"
-          onClick={add}
-        >add
+        <button className="btn btn-outline btn-square btn-info" onClick={add}>
+          add
         </button>
       </div>
     );

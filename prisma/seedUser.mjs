@@ -17,7 +17,7 @@ export default async function seedUser(prisma) {
       uid: 'b1234',
       name: 'bbb',
       email: 'bbb@gmail.com',
-      isAdmin: true
+      isAdmin: false
     },
   })
 

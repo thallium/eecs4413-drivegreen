@@ -6,12 +6,14 @@ import HotDealManage from '@/app/components/admin/HotDeal';
 
 export default async function AdminLayout() {
 
-  return <div className='space-y-10 mt-5'>
+  return (
+    <div className="mt-5 space-y-6">
       <Sales />
 
       <LoginHistory />
 
       <HotDealManage />
-  </div>
+    </div>
+  );
 }
 

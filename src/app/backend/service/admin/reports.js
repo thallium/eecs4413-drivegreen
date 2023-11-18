@@ -27,16 +27,17 @@ export async function sale_reports() {
     // console.log(orders);
     for(let o of orders) {
         const items = o.orderItems;
-        // console.log(typeof items);
+        // console.log(items);
         for(let i of items) {
+            const quantity = i.quantity;
             const vid = i.vehicleId;
             const vehicle = await getVehicleByID(vid);
             // console.log(vehicle);
             let cnt = sale.get(vehicle.name)
             if (cnt) {
-              sale.set(vehicle.name, cnt + 1);
+              sale.set(vehicle.name, cnt + quantity);
             } else {
-              sale.set(vehicle.name, 1);
+              sale.set(vehicle.name, quantity);
             }
         };
     };

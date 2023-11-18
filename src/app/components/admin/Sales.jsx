@@ -2,13 +2,8 @@
 import {sale_reports } from '@/app/backend/service/admin/reports';
 
 
-const getSales = async () => {
-  const sales = await sale_reports();
-  return sales;
-};
-
 export default async function Sales() {
-  const sales = await getSales();
+  const sales = await sale_reports();;
   // console.log("sales", sales.entries());
   return (
     <div className="overflow-x-auto max-h-56 border-solid border-2 rounded border-grey-400">

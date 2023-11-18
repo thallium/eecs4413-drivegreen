@@ -1,18 +1,20 @@
-import seedVehicle from './seedVehicle.mjs';
-import seedUser from './seedUser.mjs';
+// import seedVehicle from './seedVehicle.mjs';
+// import seedUser from './seedUser.mjs';
 import { PrismaClient } from '@prisma/client';
 
 /**
  * @param {PrismaClient} prisma
  */
-export default async function seedOrder(prisma) {
-  const [veh1, veh2] = await seedVehicle(prisma)
-  const [user1, user2] = await seedUser(prisma)
+export default async function seedOrder(prisma, vehicles, users) {
+  const [veh1, veh2] = vehicles
+  const [user1, user2, user3] = users
 
   const o1 = await prisma.order.upsert({
-    where: { oid:1 },
+    where: { oid: 1 },
     update: {
       shippingAddr: '100 abc Rd',
+      isPaid: true,
+      createdAt: new Date('2023-11-16'),
     },
     create: {
       user: {
@@ -39,6 +41,45 @@ export default async function seedOrder(prisma) {
         ],
       },
       totalPrice: 1 * veh1.price + 2 * veh2.price,
+      isPaid: true,
+      createdAt: new Date('2023-11-16'),
+    },
+  });
+
+
+  const o2 = await prisma.order.upsert({
+    where: { oid: 2 },
+    update: {
+      shippingAddr: '100 abc Rd',
+      updatedAt: new Date('2023-12-01'),
+    },
+    create: {
+      user: {
+        connect: {
+          uid: user1.uid,
+        },
+      },
+      orderItems: {
+        create: [
+          {
+            vehicle: {
+              connect: { vid: veh1.vid },
+            },
+            quantity: 1,
+            subTotal: 1 * veh1.price,
+          },
+          {
+            vehicle: {
+              connect: { vid: veh2.vid },
+            },
+            quantity: 2,
+            subTotal: 2 * veh2.price,
+          },
+        ],
+      },
+      totalPrice: 1 * veh1.price + 2 * veh2.price,
+      createdAt: new Date('2023-12-01'),
+      isPaid: true,
     },
   });
 }
