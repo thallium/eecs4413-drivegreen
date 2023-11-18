@@ -9,8 +9,8 @@ const linkStyle = {
 
 export default async function Home() {
   return (
-    <main className="min-h-screen flex-col items-center justify-between p-24">
-      <div className="z-10 max-w-5xl w-full items-center justify-between font-mono text-sm lg:flex">
+    <main className="min-h-screen flex-col items-center justify-between p-24 space-y-6">
+      <div className="z-10 w-full items-center justify-between font-mono text-sm lg:flex">
         <Link href="/vehicles/" style={linkStyle}>
           1.Vehicles page
         </Link>
@@ -20,10 +20,11 @@ export default async function Home() {
         <Link href="/order/" style={linkStyle}>
           3.Order page
         </Link>
-        <Link href="/admin/" className="text-cyan-500 underline">
-          Admin page
+      </div>
+      <div className="z-10 w-full items-center justify-between font-mono text-sm lg:flex">
+        <Link href="/admin/" className="text-cyan-500 underline text-xl">
+          Admin dashboard
         </Link>
-        <br></br>
       </div>
     </main>
   );
