@@ -1,6 +1,9 @@
 import { Brand, Shape } from '@prisma/client'
+import seedUser from './seedUser.mjs'
 
 export default async function seedVehicle(prisma) {
+  const [user1, user2] = await seedUser(prisma)
+
   const veh1 = await prisma.vehicle.upsert({
     where: { name: 'XLT', },
     update: {},
@@ -19,7 +22,13 @@ export default async function seedVehicle(prisma) {
       brand: Brand.Ford,
       price: 35000.00,
       shape: Shape.L,
-      description: 'this is a special version'
+      description: 'this is a special version',
+      reviews: {
+        create: [
+          { authorId: user1.uid, rating: 5, title: 'good car for 35k'},
+          { authorId: user2.uid, rating: 4, title: 'it\'s too large'},
+        ],
+      }
     },
   })
 

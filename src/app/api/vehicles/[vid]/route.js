@@ -39,7 +39,7 @@ export async function DELETE(request, { params }) {
       where: { vid },
     });
 
-    return new NextResponse(deleted_vehicle, { status: 204 });
+    return NextResponse.json(deleted_vehicle, { status: 200 });
   } catch (error) {
     if (error.code === "P2025") {
       return new NextResponse("No vehicle with ID found", { status: 404 });
