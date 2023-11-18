@@ -38,7 +38,6 @@ export default async function seedVehicle(prisma, users) {
   const veh3 = await prisma.vehicle.upsert({
     where: { name: 'Model S' },
     update: {
-      hotDealed: true,
     },
     create: {
       name: 'Model S',
@@ -47,6 +46,15 @@ export default async function seedVehicle(prisma, users) {
       shape: Shape.L,
       description: 'one of the most popular electric cars',
       hotDealed: true,
+      subscriptions: {
+        create: {
+          user: {
+            connect: {
+              uid: user1.uid,
+            },
+          },
+        },
+      },
     },
   });
 

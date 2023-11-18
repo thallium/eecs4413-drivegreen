@@ -47,6 +47,7 @@ model Vehicle {
   shoppingCarts ShoppingCartOnVehicle[]
   orders        OrderOnVehicle[]
   reviews       Review[]
+  subscriptions  WatchListItem[]
 }
 
 // ==================== END of Vehicle models ================================
@@ -63,6 +64,16 @@ model User {
   shoppingCart   ShoppingCart?
   orders         Order[]
   loginHistories LoginHistory[]
+  watchList      WatchListItem[]
+}
+
+
+model WatchListItem {
+  user     User     @relation(fields: [userId], references: [uid])
+  userId   String
+  vehicle  Vehicle  @relation(fields: [vehicleId], references: [vid])
+  vehicleId Int
+  @@id([userId, vehicleId])
 }
 
 model Review {
