@@ -1,7 +1,8 @@
 import seedUser from './seedUser.mjs';
 
-export default async function seedLoginHistory(prisma) {
-  const [user1, user2, user3] = await seedUser(prisma);
+
+export default async function seedLoginHistory(prisma, users) {
+  const [user1, user2, user3] = users;
   const h1 = await prisma.loginHistory.upsert({
     where: {
       email_loginAt: {

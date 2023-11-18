@@ -18,15 +18,23 @@ export default function ListVehicles() {
 }
 
 function Vehicles() {
-  const { isPending, error, data: vehicles } = useQuery({
+  const { isPending: pendingVehicles, error: errorVehicle, data: vehicles } = useQuery({
     queryKey: ['/api/vehicles'],
     queryFn: () =>
       axios.get(baseURL() + '/api/vehicles').then(res => res.data)
   })
 
-  if (isPending) return 'Loading...';
+  const { isPending: pendingReviews, error: errorReviews, data: reviews } = useQuery({
+    queryKey: ['/api/review'],
+    queryFn: () =>
+      axios.get(baseURL() + '/api/review').then(res => res.data)
+  })
 
-  if (error) return 'An error has occurred: ' + error.message;
+
+  if (pendingVehicles || pendingReviews) return 'Loading...';
+
+  if (errorVehicle || errorReviews) return 'An error has occurred: ' 
+                                                + errorVehicle.message + errorReviews.message;
 
   return (
     <>
@@ -53,8 +61,23 @@ function Vehicles() {
               <h3>Brand: {vehicle.brand}</h3>
               <h3>Shape: {vehicle.shape}</h3>
               <h3>ModelYear: {vehicle.modelYear}</h3>
+              <h3>Damaged? {JSON.stringify(vehicle.damaged)}</h3>
+              <h3>Mileage: {vehicle.Mileage}</h3>
+              <h3>Quantities in-stock: {vehicle.quantity}</h3>
+              <h3>Price: ${vehicle.price}</h3>
               <h3>Hot deal? {JSON.stringify(vehicle.hotDealed)}</h3>
-              <h3>Stock datetime: {JSON.stringify(vehicle.createdAt).split(/[".]/)[1]}Z</h3>
+              <h3>Latest in-stock: {JSON.stringify(vehicle.updatedAt).split(/[".]/)[1]}Z</h3>
+
+              <h3>{reviews && reviews.filter(review => review.vehicleId === vehicle.vid).map(
+                (review) => (
+                  <div
+                    key={review.id}
+                    style={{ border: "1px solid #ccc", textAlign: "center" }}
+                  >
+                    <p>Review {review.id}: {review.title}</p>   
+                  </div>
+                ))}
+              </h3>
             </div>
           ))}
       </div>

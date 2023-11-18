@@ -11,7 +11,7 @@ datasource db {
   shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
 }
 
-// ==================== Ray models ================================
+// ==================== Vehicle model ================================
 enum Brand {
   Audi
   BMW
@@ -49,7 +49,7 @@ model Vehicle {
   reviews       Review[]
 }
 
-// ==================== END of Ray models ================================
+// ==================== END of Vehicle models ================================
 
 // ==================== User models ======================================
 
