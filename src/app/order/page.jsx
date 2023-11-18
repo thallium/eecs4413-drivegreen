@@ -5,10 +5,18 @@ import { baseURL } from '@/util';
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import axios from 'axios';
+import { useSession } from 'next-auth/react';
+import { redirect } from "next/navigation"
 
 const queryClient = new QueryClient();
 
-export default function ListVehicles() {
+export default function ListOrders() {
+  const session = useSession({
+    required: true,
+    onUnauthorized: () => {
+        redirect('/signin')
+    }
+  })  
   return (
     <QueryClientProvider client={queryClient}>
       <Orders/>
