@@ -17,7 +17,7 @@ export async function POST(request, {params}){
     }
     
     const req = await request.json();
-    console.log(req);
+    // console.log(req);
     const hotDealed = req["hotDealed"];
     const vid = parseInt(params.vid);
     const data = await setHotDeal(vid, hotDealed);
