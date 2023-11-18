@@ -84,6 +84,9 @@ export const createOrderFromShoppingCart = async (shoppingCart, shippingAddr, pa
                         },
                     },
                 },
+                orderBy:{
+                  updatedAt: 'desc',
+                }
             },
         },
     });
