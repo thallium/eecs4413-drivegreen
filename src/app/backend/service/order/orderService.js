@@ -87,7 +87,11 @@ export const createOrderFromShoppingCart = async (shoppingCart, shippingAddr, pa
             },
         },
     });
-    return user.orders;
+    console.log("user for orders: " + JSON.stringify(user));
+    if(user){
+      return user.orders;
+    }
+    return [];
   }
 
   export const getOrderById = async (orderId) => {
