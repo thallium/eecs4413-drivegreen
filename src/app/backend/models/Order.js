@@ -14,6 +14,7 @@ export const getOrdersByDate = async (start, end) => {
         orderItems: {
           select: {
             vehicleId: true,
+            quantity: true,
           },
         },
       },

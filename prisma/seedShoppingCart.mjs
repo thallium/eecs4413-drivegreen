@@ -1,9 +1,9 @@
-import seedVehicle from './seedVehicle.mjs'
-import seedUser from './seedUser.mjs'
+// import seedVehicle from './seedVehicle.mjs'
+// import seedUser from './seedUser.mjs'
 
-export default async function seedShoppingCart(prisma) {
-  const [veh1, veh2] = await seedVehicle(prisma)
-  const [user1, user2] = await seedUser(prisma)
+export default async function seedShoppingCart(prisma, vehicles, users) {
+  const [veh1, veh2, veh3] = vehicles
+  const [user1, user2, user3] = users
 
   const sc1 = await prisma.shoppingCart.upsert({
     where: { userId: user1.uid, },

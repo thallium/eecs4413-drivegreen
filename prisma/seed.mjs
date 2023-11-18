@@ -34,9 +34,9 @@ async function main() {
       break
     case 'production':
       const users = await seedUser(prisma)
-      const vehicles = await seedVehicle(prisma)
-      seedShoppingCart(prisma)
-      seedOrder(prisma)
+      const vehicles = await seedVehicle(prisma, users)
+      seedShoppingCart(prisma, vehicles, users);
+      seedOrder(prisma, vehicles, users)
       seedLoginHistory(prisma, users);
       break
     default:

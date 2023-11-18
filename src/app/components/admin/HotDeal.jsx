@@ -27,7 +27,9 @@ export default async function HotDealManage() {
                   <td>{d.modelYear}</td>
                   <td>{d.shape}</td>
                   <td>{d.price}</td>
-                  <DeleteButton vid={d.vid} />
+                  <div>
+                    <DeleteButton vid={d.vid} />
+                  </div>
                 </tr>
               ))}
           </tbody>
