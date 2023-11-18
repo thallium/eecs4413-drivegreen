@@ -1,4 +1,5 @@
 import { prisma } from "@/app/backend/db/dbClient";
+import { getServerSession } from "next-auth";
 /**
  * @param {Request} request
  */
@@ -7,7 +8,7 @@ export async function POST(request) {
     if (session) {
         try {
             const req = await request.json();
-            const email = req.email;
+            const email = session.user.email;
             const res = await prisma.user.update({
                 where: {
                     email: email
