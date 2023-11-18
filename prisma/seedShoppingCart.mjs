@@ -2,7 +2,7 @@
 // import seedUser from './seedUser.mjs'
 
 export default async function seedShoppingCart(prisma, vehicles, users) {
-  const [veh1, veh2] = vehicles
+  const [veh1, veh2, veh3] = vehicles
   const [user1, user2, user3] = users
 
   const sc1 = await prisma.shoppingCart.upsert({
