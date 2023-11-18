@@ -19,9 +19,9 @@ export async function GET(request) {
   }
   // get sales, hotdeal, login history
   const login = await app_reports();
-  const sales = Array.from(await sale_reports(), ([name, value]) => ({
+  const sales = Array.from(await sale_reports(), ([name, sales]) => ({
     name,
-    value,
+    sales,
   })); // parse Map to Array
   // console.log(sales);
   const deals = await getDeals();
