@@ -1,0 +1,152 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider          = "postgresql"
+  url               = env("DATABASE_URL")
+  directUrl         = env("DIRECT_URL")
+  shadowDatabaseUrl = env("SHADOW_DATABASE_URL")
+}
+
+// ==================== Vehicle model ================================
+enum Brand {
+  Audi
+  BMW
+  Benz
+  Ford
+  GeneralMotors
+  Honda
+  Jeep
+  Toyota
+  Tesla
+}
+
+enum Shape {
+  S
+  M
+  L
+}
+
+model Vehicle {
+  vid           Int                     @id @default(autoincrement())
+  createdAt     DateTime                @default(now())
+  updatedAt     DateTime                @updatedAt
+  name          String                  @unique
+  description   String?
+  brand         Brand
+  shape         Shape                   @default(S)
+  modelYear     Int                     @default(2000)
+  damaged       Boolean                 @default(false)
+  Mileage       Float                   @default(0)
+  quantity      Int                     @default(1)
+  price         Float
+  hotDealed     Boolean                 @default(false)
+  shoppingCarts ShoppingCartOnVehicle[]
+  orders        OrderOnVehicle[]
+  reviews       Review[]
+  subscriptions  WatchListItem[]
+}
+
+// ==================== END of Vehicle models ================================
+
+// ==================== User models ======================================
+
+model User {
+  uid            String         @id
+  name           String?
+  address        String?
+  email          String         @unique
+  isAdmin        Boolean        @default(false)
+  reviews        Review[]
+  shoppingCart   ShoppingCart?
+  orders         Order[]
+  loginHistories LoginHistory[]
+  watchList      WatchListItem[]
+}
+
+
+model WatchListItem {
+  user     User     @relation(fields: [userId], references: [uid])
+  userId   String
+  vehicle  Vehicle  @relation(fields: [vehicleId], references: [vid])
+  vehicleId Int
+  @@id([userId, vehicleId])
+}
+
+model Review {
+  id        Int      @id @default(autoincrement())
+  createdAt DateTime @default(now())
+  title     String
+  rating    Int
+  body      String?
+  author    User     @relation(fields: [authorId], references: [uid])
+  authorId  String
+  vehicle   Vehicle  @relation(fields: [vehicleId], references: [vid])
+  vehicleId Int
+}
+
+// ==================== Admin models ======================================
+model LoginHistory {
+  user    User     @relation(fields: [email], references: [email])
+  email  String    
+  loginAt DateTime @default(now())
+  ip      String?
+  action  String?
+
+  @@id([email, loginAt])
+}
+
+// ==================== End of Admin models ======================================
+
+// ==================== End of User models ======================================
+
+// ==================== ShoppingCart models ===============================
+model ShoppingCart {
+  scid         Int                     @id @default(autoincrement())
+  user         User                    @relation(fields: [userId], references: [uid])
+  userId       String                  @unique
+  vehicleItems ShoppingCartOnVehicle[]
+  //quantity for each vehicle included in relation table ShoppingCartOnVehicle
+  createdAt    DateTime                @default(now())
+  updatedAt    DateTime                @updatedAt
+  totalPrice   Float
+}
+
+//relation table
+model ShoppingCartOnVehicle {
+  shoppingCart   ShoppingCart @relation(fields: [shoppingCartId], references: [scid])
+  shoppingCartId Int
+  vehicle        Vehicle      @relation(fields: [vehicleId], references: [vid])
+  vehicleId      Int
+  quantity       Int          @default(1)
+  subTotal       Float
+
+  @@id([shoppingCartId, vehicleId])
+}
+
+model Order {
+  oid        Int              @id @default(autoincrement())
+  user       User             @relation(fields: [userId], references: [uid])
+  userId     String           
+  orderItems OrderOnVehicle[]
+  //quantity for each vehicle included in relation table OrderOnVehicle
+  createdAt  DateTime         @default(now())
+  updatedAt  DateTime         @updatedAt
+  shippingAddr  String?        
+  totalPrice Float
+  isPaid     Boolean          @default(false)
+}
+
+model OrderOnVehicle {
+  order     Order   @relation(fields: [orderId], references: [oid])
+  orderId   Int
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [vid])
+  vehicleId Int
+  quantity  Int     @default(1)
+  subTotal  Float
+
+  @@id([orderId, vehicleId])
+}
