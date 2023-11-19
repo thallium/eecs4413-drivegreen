@@ -10,12 +10,13 @@ export async function POST(request) {
     if (session) {
         try {
             const req = await request.json();
-            const authorId = req.authorId;
+            const email = session.user.email;
             const res = await prisma.user.findUnique({
                 where: {
-                    uid: authorId
+                    email: email
                 },
                 select: {
+                    uid: true,
                     orders: {
                         select: {
                             orderItems: true
@@ -23,6 +24,7 @@ export async function POST(request) {
                     }
                 },
             });
+            const uid = res.uid;
             let found = false;
             if (res && res.orders) {
                 outer: for (let o of res.orders) {
@@ -38,7 +40,10 @@ export async function POST(request) {
                 return new NextResponse("User doesn't have an order associated with this vehicle", { status: 403 });
             }
             const review = await prisma.review.create({
-                data: req,
+                data: {
+                    authorId: uid,
+                    ...req
+                }
             })
             return NextResponse.json(review, { status: 201 });
         } catch (error) {

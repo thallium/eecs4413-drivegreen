@@ -1,10 +1,14 @@
 import { NextResponse } from "next/server";
 import { prisma } from "@/app/backend/db/dbClient.js";
 
+export async function getAllVehicles() {
+  return await prisma.vehicle.findMany();
+}
+
 // To handle a GET request to /api
-export async function GET(request, {params}) {
+export async function GET(request, { params }) {
   // const slug = params.slug
-  const vehicles = await prisma.vehicle.findMany();
+  const vehicles = await getAllVehicles();
   return NextResponse.json(vehicles, { status: 200 });
   // redirect('https://nextjs.org/')
 }
@@ -16,8 +20,8 @@ export async function POST(request) {
     const vehicle = await prisma.vehicle.createMany({
       data: Array.from(json),
     })
-    return new NextResponse(JSON.stringify(vehicle), { 
-      status: 201, 
+    return new NextResponse(JSON.stringify(vehicle), {
+      status: 201,
       headers: { "Content-Type": "application/json" },
     });
   } catch (error) {
