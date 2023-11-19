@@ -1,5 +1,6 @@
 import { prisma } from "@/app/backend/db/dbClient";
 import { getServerSession } from "next-auth";
+import { NextResponse } from "next/server";
 /**
  * @param {Request} request
  */
