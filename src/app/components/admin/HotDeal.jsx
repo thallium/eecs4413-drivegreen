@@ -2,6 +2,8 @@
 import { getDeals} from "@/app/backend/models/Vehicle";
 import {DeleteButton, AddDeal} from "./DealButtons";
 
+// export const dynamic = 'force-dynamic';// force dynamic
+
 export default async function HotDealManage() {
     const deals = await getDeals();
     // console.log(deals);

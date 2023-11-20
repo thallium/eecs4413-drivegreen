@@ -9,13 +9,17 @@ export function DeleteButton({vid}) {
     const del = async() => {
       try {
         alert('Are you sure you want to delete this vehicle from hot deals?');
-        fetch(baseURL() + '/api/admin/deal/' + vid, {
+        const res = await fetch(baseURL() + '/api/admin/deal/' + vid, {
           method: 'POST',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ "hotDealed": false }),
         });
+        if(!res.ok) {
+          alert('Delete failed!\nError: ' + await res.text());
+          return;
+        }
         router.refresh();
       } catch (err) {
         alert(err.message);
@@ -53,13 +57,17 @@ export function AddDeal() {
         return alert('Please enter a vehicle ID');
 
       try {
-        fetch(baseURL() + '/api/admin/deal/' + vid, {
+        const res = await fetch(baseURL() + '/api/admin/deal/' + vid, {
           method: 'POST', 
           headers: {
               'Content-Type': 'application/json',
           },
           body: JSON.stringify({"hotDealed": true}),
         });
+        if (!res.ok) {
+          alert('Add failed!\nError: ' + (await res.text()));
+          return;
+        }
         setVid('');
         router.refresh();
       }
