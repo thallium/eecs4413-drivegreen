@@ -23,7 +23,7 @@ export default async function VehicleDetails({ params }) {
 
   return (
     <>
-      <h1>First Route</h1>
+      <h1>URL: {getAPI}</h1>
       <div
         style={{
           display: "grid",
