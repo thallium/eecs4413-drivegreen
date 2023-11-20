@@ -10,7 +10,7 @@ async function doSignIn(email, password) {
     if (res.ok) {
         const res = await fetch(baseURL() + '/api/watchlist/check')
         const hotdeal = await res.json()
-        if (hotdeal.length >= 0) {
+        if (hotdeal.length > 0) {
             const cars = hotdeal.join(', ')
             alert(`The ${cars} you're watching is in a hot deal! Check it out!`)
         }
