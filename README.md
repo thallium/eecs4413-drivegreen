@@ -3,7 +3,7 @@ This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next
 
 ## Getting Started
 
-### Clone 'deliverable2' branch's code in to your local machine, and open with an IDE.
+### For deliverable 2, please checkout `main` branch.
 
 ### Set Up Environment
 
