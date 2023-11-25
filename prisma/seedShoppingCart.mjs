@@ -74,32 +74,32 @@ export default async function seedShoppingCart(prisma, vehicles, users) {
   })
 
   const sc3 = await prisma.shoppingCart.upsert({
-    where: { userId: 'fl0UguRw5YhLuR8JGX8j1QWor072', },
+    where: { userId: user1.uid, },
     update: {
-      vehicleItems: {
-        create: [
-          {
-            vehicle: {
-              connect: { vid: veh2.vid }, 
-            },
-            quantity: 1, 
-            subTotal: 1 * veh2.price,
-          },
-          {
-            vehicle: {
-              connect: { vid: veh1.vid }, 
-            },
-            quantity: 2, 
-            subTotal: 2 * veh1.price,
-          }
-        ],
-      },
+      // vehicleItems: {
+      //   create: [
+      //     {
+      //       vehicle: {
+      //         connect: { vid: veh2.vid }, 
+      //       },
+      //       quantity: 1, 
+      //       subTotal: 1 * veh2.price,
+      //     },
+      //     {
+      //       vehicle: {
+      //         connect: { vid: veh1.vid }, 
+      //       },
+      //       quantity: 2, 
+      //       subTotal: 2 * veh1.price,
+      //     }
+      //   ],
+      // },
       totalPrice: 1 * veh2.price + 2 * veh1.price,
     },
     create: {
       user: {
         connect:{
-          uid: 'fl0UguRw5YhLuR8JGX8j1QWor072'
+          uid: user1.uid
         }, 
       },
       vehicleItems: {
