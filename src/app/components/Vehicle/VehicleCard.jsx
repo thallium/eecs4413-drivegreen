@@ -28,7 +28,7 @@ function VehicleCard(props) {
               vehicle.hotDealed ? "visible" : "invisible"
             }`}
           >
-            Hot Deal!
+            Hot Deal
           </div>
         </h2>
         <p>{vehicle.description || "Vehicle worth purchasing :)"} </p>
