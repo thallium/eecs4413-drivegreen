@@ -12,7 +12,7 @@ import axios from "axios";
 import FiltVehicles from "../components/Vehicle/FiltVehicles";
 import SortVehicles from "../components/Vehicle/SortVehicles";
 import VehicleList from "../components/Vehicle/VehicleList";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 
 const queryClient = new QueryClient();
 
@@ -20,13 +20,18 @@ export default function ListVehicles() {
   return (
     <QueryClientProvider client={queryClient}>
       <Vehicles />
-      <ReactQueryDevtools />
     </QueryClientProvider>
   );
 }
 
 function Vehicles() {
   const [vehicles, setVehicles] = useState([]);
+  const [priceSorter, setPriceSorter] = useState("Normal"); // 'Normal', 'Low to High', 'High to Low'
+  const [mileageSorter, setMileageSorter] = useState("Normal"); // 'Normal', 'Short to Long', 'Long to Short'
+  const [brandFilter, setBrandFilter] = useState("All");
+  const [shapeFilter, setShapeFilter] = useState("All");
+  const [modelFilter, setModelFilter] = useState("All");
+  const [historyFilter, setHistoryFilter] = useState("All");
 
   const {
     isPending: pendingVehicles,
@@ -41,52 +46,95 @@ function Vehicles() {
   const {
     isPending: pendingReviews,
     error: errorReviews,
-    data: reviews,
+    data: reviewsData,
   } = useQuery({
     queryKey: ["/api/review"],
     queryFn: () => axios.get(baseURL() + "/api/review").then((res) => res.data),
   });
 
+  const sortPrice = useCallback((data, priceSorter) => {
+    return [...data].sort((a, b) => {
+      // sort copied data
+      if (priceSorter.toLowerCase().includes("low to high"))
+        return a.price - b.price;
+      else if (priceSorter.toLowerCase().includes("high to low"))
+        return b.price - a.price;
+      else return 0;
+    });
+  }, []);
+
+  const sortMileage = useCallback((data, mileageSorter) => {
+    return [...data].sort((a, b) => {
+      // sort copied data
+      if (mileageSorter.toLowerCase().includes("short to long"))
+        return a.Mileage - b.Mileage;
+      else if (mileageSorter.toLowerCase().includes("long to short"))
+        return b.Mileage - a.Mileage;
+      else return 0;
+    });
+  }, []);
+
+  const filtBrand = useCallback((data, brandFilter) => {
+    return data.filter((vehicle) => {
+      if (!brandFilter.toLowerCase().includes("all"))
+        return vehicle.brand === brandFilter;
+      else return true;
+    });
+  }, []);
+
+  const filtShape = useCallback((data, shapeFilter) => {
+    return data.filter((vehicle) => {
+      if (!shapeFilter.toLowerCase().includes("all"))
+        return vehicle.shape === shapeFilter;
+      else return true;
+    });
+  }, []);
+
+  const filtModelyear = useCallback((data, modelyearFilter) => {
+    return data.filter((vehicle) => {
+      if (!modelyearFilter.toLowerCase().includes("all"))
+        return vehicle.modelYear.toString() === modelyearFilter;
+      else return true;
+    });
+  }, []);
+
+  const filtHistory = useCallback((data, historyFilter) => {
+    return data.filter((vehicle) => {
+      if (historyFilter.toLowerCase().includes("without"))
+        return !vehicle.damaged;
+      else if (historyFilter.toLowerCase().includes("with"))
+        return vehicle.damaged;
+      else return true;
+    });
+  }, []);
+
   useEffect(() => {
-    setVehicles(vehiclesData);
-  }, [vehiclesData]);
-
-  const filtBrand = (brand) => {
-    setVehicles(
-      vehiclesData.filter((vehicle) => {  // must use the raw data to filter
-        if (!brand.includes("All")) return vehicle.brand === brand;
-        else return true;
-      })
-    );
-  };
-
-  const filtShape = (shape) => {
-    setVehicles(
-      vehiclesData.filter((vehicle) => {  // must use the raw data to filter
-        if (!shape.includes("All")) return vehicle.shape === shape;
-        else return true;
-      })
-    );
-  };
-  
-  const filtModelyear = (modelyear) => {
-    setVehicles(
-      vehiclesData.filter((vehicle) => {  // must use the raw data to filter
-        if (!modelyear.includes("All")) return vehicle.modelYear.toString() === modelyear;
-        else return true;
-      })
-    );
-  };
-  
-  const filtHistory = (history) => {
-    setVehicles(
-      vehiclesData.filter((vehicle) => {  // must use the raw data to filter
-        if (history.includes("Without")) return !vehicle.damaged;
-        else if (history.includes("With")) return vehicle.damaged;
-        else return true;
-      })
-    );
-  };
+    if (vehiclesData) {
+      let result = vehiclesData;
+      result = sortPrice(result, priceSorter);
+      result = sortMileage(result, mileageSorter);
+      result = filtBrand(result, brandFilter);
+      result = filtShape(result, shapeFilter);
+      result = filtModelyear(result, modelFilter);
+      result = filtHistory(result, historyFilter);
+      setVehicles(result);
+      console.log("==setVehicles====");
+    }
+  }, [
+    brandFilter,
+    filtBrand,
+    filtHistory,
+    filtModelyear,
+    filtShape,
+    historyFilter,
+    mileageSorter,
+    modelFilter,
+    priceSorter,
+    shapeFilter,
+    sortMileage,
+    sortPrice,
+    vehiclesData,
+  ]);
 
   if (pendingVehicles || pendingReviews)
     return (
@@ -106,13 +154,16 @@ function Vehicles() {
   return (
     <>
       <div className="flex m-2 justify-between">
-        <SortVehicles />
+        <SortVehicles
+          setPrice={(value) => setPriceSorter(value)}
+          setMileage={(value) => setMileageSorter(value)}
+        />
         <FiltVehicles
           vehicles={vehiclesData}
-          setBrand={(value) => filtBrand(value)}
-          setShape={(value) => filtShape(value)}
-          setModelyear={(value) => filtModelyear(value)}
-          setHistory={(value) => filtHistory(value)}
+          setBrand={(value) => setBrandFilter(value)}
+          setShape={(value) => setShapeFilter(value)}
+          setModelyear={(value) => setModelFilter(value)}
+          setHistory={(value) => setHistoryFilter(value)}
         />
       </div>
       <div className="m-2">

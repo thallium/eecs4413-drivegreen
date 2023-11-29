@@ -1,63 +1,61 @@
-function SortVehicles() {
+function SortVehicles({ setPrice, setMileage }) {
   return (
     <div className="flex items-center gap-4">
-      <button className="flex bg-gray-200 pl-2 rounded-full" onClick={() => {}}>
-        <div className="flex items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
+      <details className="dropdown">
+        <summary className="m-1 btn bg-gray-300">Price</summary>
+        <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
+          <li
+            onClick={(e) => {
+              setPrice(e.target.innerText);
+            }}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25"
-            />
-          </svg>
-        </div>
-        <div>
-          <span
-            placeholder="Name"
-            className="p-2 outline-none bg-transparent text-[0.8rem] text-gray"
+            <a>Normal</a>
+          </li>
+          <li
+            onClick={(e) => {
+              setPrice(e.target.innerText);
+            }}
           >
-            Price  
-          </span>
-        </div>
-      </button>
-      
-      
+            <a>Low to High</a>
+          </li>
+          <li
+            onClick={(e) => {
+              setPrice(e.target.innerText);
+            }}
+          >
+            <a>High to Low</a>
+          </li>
+        </ul>
+      </details>
+
       {/*  */}
 
-
-      <button className="flex bg-gray-200 pl-2 rounded-full" onClick={() => {}}>
-        <div className="flex items-center">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            fill="none"
-            viewBox="0 0 24 24"
-            strokeWidth={1.5}
-            stroke="currentColor"
-            className="w-6 h-6"
+      <details className="dropdown">
+        <summary className="m-1 btn bg-gray-300">Mileage</summary>
+        <ul className="p-2 shadow menu dropdown-content z-[1] bg-base-100 rounded-box w-52">
+          <li
+            onClick={(e) => {
+              setMileage(e.target.innerText);
+            }}
           >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M3.75 6.75h16.5M3.75 12h16.5M12 17.25h8.25"
-            />
-          </svg>
-        </div>
-        <div>
-          <span
-            placeholder="Name"
-            className="p-2 outline-none bg-transparent text-[0.8rem] text-gray"
+            <a>Normal</a>
+          </li>
+          <li
+            onClick={(e) => {
+              setMileage(e.target.innerText);
+            }}
           >
-            Milage  
-          </span>
-        </div>
-      </button>
+            <a>Short to Long</a>
+          </li>
+          <li
+            onClick={(e) => {
+              setMileage(e.target.innerText);
+            }}
+          >
+            <a>Long to Short</a>
+          </li>
+        </ul>
+      </details>
     </div>
   );
 }
