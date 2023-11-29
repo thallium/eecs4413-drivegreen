@@ -49,7 +49,7 @@ export default function Example() {
                                     autoComplete="email"
                                     onChange={(e) => setEmail(e.target.value)}
                                     required
-                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    className="input input-bordered w-full"
                                 />
                             </div>
                         </div>
@@ -68,7 +68,7 @@ export default function Example() {
                                     autoComplete="current-password"
                                     onChange={(e) => setPassword(e.target.value)}
                                     required
-                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    className="input input-bordered w-full"
                                     placeholder='Password'
                                 />
                             </div>
@@ -80,7 +80,7 @@ export default function Example() {
                                     autoComplete="current-password"
                                     onChange={(e) => setPasswordAgain(e.target.value)}
                                     required
-                                    className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-indigo-600 sm:text-sm sm:leading-6"
+                                    className="input input-bordered w-full"
                                     placeholder='Confirm Password'
                                 />
                             </div>
@@ -91,7 +91,7 @@ export default function Example() {
                                 type='button'
                                 disabled={(!email || !password || !passwordAgain) || (password !== passwordAgain)}
                                 onClick={signup}
-                                className="flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-sm font-semibold leading-6 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+                                className="btn btn-primary btn-block"
                             >
                                 Sign up
                             </button>
