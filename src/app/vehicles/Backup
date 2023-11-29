@@ -1,0 +1,38 @@
+    <div class="grid grid-flow-col gap-3">
+      
+      {/* drawer from daisyUI */}
+      <div className="drawer lg:drawer-open col-span-1">
+        <input id="my-drawer-2" type="checkbox" className="drawer-toggle" />
+        <div className="drawer-content flex flex-col items-center justify-center">
+          {/* Page content here */}
+          <label htmlFor="my-drawer-2" className="btn btn-primary drawer-button lg:hidden">Open drawer</label>
+        
+        </div> 
+        <div className="drawer-side">
+          <label htmlFor="my-drawer-2" aria-label="close sidebar" className="drawer-overlay"></label> 
+          <ul className="menu p-4 w-80 min-h-full bg-base-200 text-base-content">
+            {/* Sidebar content here */}
+            <li><a>Sidebar Item 1</a></li>
+            <li><a>Sidebar Item 2</a></li>
+          </ul>
+        
+        </div>
+      </div>
+      
+      {/* card from daisyUI */}
+      <div className="card w-96 bg-base-100 shadow-xl">
+        <figure><img src="https://daisyui.com/images/stock/photo-1606107557195-0e29a4b5b4aa.jpg" alt="Shoes" /></figure>
+        <div className="card-body">
+          <h2 className="card-title">
+            Shoes!
+            <div className="badge badge-secondary">NEW</div>
+          </h2>
+          <p>If a dog chews shoes whose shoes does he choose?</p>
+          <div className="card-actions justify-end">
+            <div className="badge badge-outline">Fashion</div> 
+            <div className="badge badge-outline">Products</div>
+          </div>
+        </div>
+      </div>
+
+    </div>
