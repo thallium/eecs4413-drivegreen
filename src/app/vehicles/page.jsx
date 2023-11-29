@@ -5,6 +5,8 @@ import { baseURL } from '@/util';
 import { QueryClient, QueryClientProvider, useQuery } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import axios from 'axios';
+import FiltVehicles from '../components/Vehicle/FiltVehicles';
+import SortVehicles from '../components/Vehicle/SortVehicles';
 
 const queryClient = new QueryClient();
 
@@ -31,14 +33,22 @@ function Vehicles() {
   })
 
 
-  if (pendingVehicles || pendingReviews) return 'Loading...';
+  if (pendingVehicles || pendingReviews) 
+    return <div className="h-screen flex items-center justify-center"><span className="loading loading-spinner loading-lg"></span></div>;
 
   if (errorVehicle || errorReviews) return 'An error has occurred: ' 
                                                 + errorVehicle.message + errorReviews.message;
-
+{/* <div class="grid grid-flow-col gap-3">
+  <div class="bg-blue-100 col-span-1">1st col</div>
+  <div class="bg-red-100 col-span-4">2nd col</div>
+</div> */}
   return (
     <>
-      <h1>{process.env.VERCEL_URL}</h1>
+      <div className='flex m-2 justify-between'>
+        <SortVehicles/>
+        <FiltVehicles/>
+      </div>
+      <div></div>
       <div
         style={{
           display: 'grid',
