@@ -31,14 +31,14 @@ function VehicleCard(props) {
             Hot Deal
           </div>
         </h2>
+        <h2 className="card-title">
+          {`Today's Price: $${vehicle.price / 1000}k`}
+        </h2>
         <p>{vehicle.description || "Vehicle worth purchasing :)"} </p>
-        <div className="card-actions justify-end">
+        <div className="card-actions justify-end p-2">
           <div className="badge badge-outline">Brand: {vehicle.brand}</div>
           <div className="badge badge-outline">Shape: {vehicle.shape}</div>
           <div className="badge badge-outline">Model: {vehicle.modelYear}</div>
-          <div className="badge badge-outline">
-            Price: ${vehicle.price / 1000}k
-          </div>
           <div className="badge badge-outline">
             {vehicle.quantity > 0 ? "In-stock" : "Out-of-stock"}
           </div>
