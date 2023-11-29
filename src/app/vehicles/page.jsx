@@ -53,7 +53,7 @@ function Vehicles() {
 
   if (errorVehicle || errorReviews)
     return (
-      "An error has occurred: " + errorVehicle.message + errorReviews.message
+      "An error has occurred: " + errorVehicle.message + ";" + errorReviews.message
     );
 
   return (

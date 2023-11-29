@@ -11,7 +11,7 @@ function Hero() {
         <div>
           <h1 className="text-5xl font-bold">Welcome to DriveGreen!</h1>
           <p className="py-6">
-            View hot deals below, or browse the whole catalogue by clicking below button.
+            View hot deals below, or browse the whole catalogue by clicking the button.
           </p>
           <Link href="/vehicles/" className="btn btn-primary">All Vehicles</Link>
         </div>

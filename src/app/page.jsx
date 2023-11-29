@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import Hero from './components/Home/Hero';
+import ListHotdeal from './components/Home/HotDeal';
 
 const linkStyle = {
   fontSize: '2rem',
@@ -12,10 +13,8 @@ export default async function Home() {
   return (
     <main className="min-h-screen flex-col items-center justify-between p-4 space-y-6">
       <Hero/>
+      <ListHotdeal/>
       <div className="z-10 w-full items-center justify-between font-mono text-sm lg:flex">
-        <Link href="/vehicles/" style={linkStyle}>
-          1.Vehicles page
-        </Link>
         <Link href="/shoppingCart/" style={linkStyle}>
           2.ShoppingCart page
         </Link>
