@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Hero from './components/Home/Hero';
 
 const linkStyle = {
   fontSize: '2rem',
@@ -9,7 +10,8 @@ const linkStyle = {
 
 export default async function Home() {
   return (
-    <main className="min-h-screen flex-col items-center justify-between p-24 space-y-6">
+    <main className="min-h-screen flex-col items-center justify-between p-4 space-y-6">
+      <Hero/>
       <div className="z-10 w-full items-center justify-between font-mono text-sm lg:flex">
         <Link href="/vehicles/" style={linkStyle}>
           1.Vehicles page
