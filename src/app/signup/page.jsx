@@ -2,12 +2,15 @@
 import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { baseURL } from '@/util';
+import { useNotification } from '@/app/components/NotificationProvider';
 
 export default function Example() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
     const [passwordAgain, setPasswordAgain] = useState('');
     const router = useRouter();
+    const dispatch = useNotification();
+
     const signup = async () => {
         try {
             const res = await fetch(baseURL() + '/api/signup', {
@@ -17,13 +20,22 @@ export default function Example() {
             });
             // console.log(res);
             if (!res.ok) {
-                alert('Sign up failed!\nError: ' + await res.text());
+                dispatch({
+                    type: "ERROR",
+                    message: 'Sign up failed!\nError: ' + await res.text()
+                })
                 return;
             }
-            alert('Sign up successful');
+            dispatch({
+                type: "INFO",
+                message: "Sign up successful",
+            })
             router.push('/signin');
         } catch (error) {
-            alert(error.message);
+            dispatch({
+                type: "ERROR",
+                message: error.message
+            })
         }
     };
     return (
