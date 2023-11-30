@@ -4,7 +4,7 @@ import { getResponse } from '@/app/backend/service/chatbot/chatbot';
 
 export async function POST(request) {
     const req = await request.json();
-    const { threadId, userInput, userName } = req;
+    const { threadId, userInput, userEmail } = req;
 
     if (!userInput) {
         return NextResponse.json(
@@ -13,14 +13,14 @@ export async function POST(request) {
         );
     }
     
-    const response = await getResponse(threadId, userInput, userName);
+    const response = await getResponse(threadId, userInput, userEmail);
 
     if(!response){
         return NextResponse.json(
-            { message: 'Something went wrong.' },
+            { message: 'Failed to get response.' },
             { status: 500 }
         );
     }
 
-    return NextResponse.json({ answer: response }, { status: 200 });
+    return NextResponse.json(response, { status: 200 });
 }

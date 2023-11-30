@@ -33,7 +33,7 @@ export const setHotDeal = async (id, hotDealed) => {
 }
 
 
-export const getVehicle = async () => {
+export const getVehicles = async () => {
     return await prisma.vehicle.findMany();
 }
 

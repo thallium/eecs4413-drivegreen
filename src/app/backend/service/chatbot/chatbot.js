@@ -1,5 +1,9 @@
 import OpenAI from 'openai';
-import { getInstruction} from './prompts';
+import { getInstruction, runInstruction} from './prompts';
+import { getVehiclesFunc, getOrdersByEmail, getHotdeals, getOptionsFunc, addToShoppingCartFunc } from './funtionDescriptions';
+import { getOrders } from '@/app/backend/service/order/orderService.js';
+import { addToShoppingCart } from '@/app/backend/service/shoppingCart/shoppingCartService.js';
+import { getVehicles, getDeals } from '@/app/backend/models/Vehicle.js';
 
 
 
@@ -15,14 +19,21 @@ const getAssistant = async () => {
     if(!assistantId) {
       // Upload a file to use as the examples for the assistant.
       const file = await openai.files.create({
-        file: fs.createReadStream('Q&A.docx'),
+        file: fs.createReadStream('public/customer_support/Q&A.docx'),
         purpose: 'assistants',
       });
 
       assistant = await openai.beta.assistants.create({
         name: 'Electric Vehicle Store Assistant',
         instructions: getInstruction(),
-        tools: [{ type: 'retrieval' }],
+        tools: [
+            {"type": 'retrieval' },
+            {"type": "function","function": getVehiclesFunc},
+            {"type": "function","function": getOrdersByEmail},
+            {"type": "function","function": getHotdeals},
+            {"type": "function","function": getOptionsFunc},
+            {"type": "function","function": addToShoppingCartFunc},
+        ],
         model: process.env.BOT_MODEL,
         file_ids: [file.id],
       });
@@ -50,14 +61,18 @@ const getThread = async (threadId) => {
 }
 
 
-const getRun = async (threadId, assistantId, userName) => {
-    let name = userName || 'Dear Customer';
+const getRun = async (threadId, assistantId, userEmail) => {
+    const vehicles = await getVehicles();
+    const hotdeals = await getDeals();
+    let orders;
+    if (userEmail) {
+        orders = await getOrders(userEmail);
+    }
     const run = await openai.beta.threads.runs.create(threadId, {
       assistant_id: assistantId,
-    //   instructions:
-    //     'Please address the user as' + name,
+      instructions: getInstruction(vehicles, hotdeals) + " " + runInstruction(userEmail, orders),
     });
-
+    console.log(run);
    return run;
 }
 
@@ -70,13 +85,13 @@ const wait = (ms) => {
 const runCheck = async (runId, threadId) => {
     let check;
     do {
-        await wait(500);
-        check = await openai.beta.threads.runs.retrieve(threadId, runId);
-    } while (check.status != 'completed');
+      await wait(500);
+      check = await openai.beta.threads.runs.retrieve(threadId, runId);
+    } while (check.status === 'queued' || check.status === 'in_progress');
 };
 
 
-export const getResponse = async (threadId, userInput, userName) => {
+export const getResponse = async (threadId, userInput, userEmail) => {
     const thread = await getThread(threadId);
     const assistant = await getAssistant();
 
@@ -85,15 +100,93 @@ export const getResponse = async (threadId, userInput, userName) => {
         content: userInput,
     });
 
-    let run = await getRun(thread.id, assistant.id, userName);
+    let run = await getRun(thread.id, assistant.id, userEmail);
 
-    if (run.status != 'completed') {
+    if (run.status === 'queued' || run.status === 'in_progress') {
         await runCheck(run.id, thread.id);
     }
 
-    const messages = await openai.beta.threads.messages.list(thread.id);
-    
-    const new_message = messages.data[0].content[0].text.value;
+    let options;
+    while (run.status === 'requires_action' && run.required_action) {
+        const functionCall =
+          run.required_action.submit_tool_outputs.tool_calls[0].function.name;
 
-    return new_message;
+        const arugments = JSON.parse(
+          run.required_action.submit_tool_outputs.tool_calls[0].function
+            .arguments
+        );
+
+        let result;
+        if (functionCall === 'getVehicles') {
+            result = await getVehicles();
+        } else if (functionCall === 'getOrdersByEmail') {
+            result = await getOrders(arugments.email);
+        } else if (functionCall === 'getHotdeals') {
+            result = await getDeals();
+        } else if (functionCall === 'getOptionsFunc') {
+            options = getOptions(arugments);
+            result = 'options generated';
+        } else if (functionCall === 'addToShoppingCartFunc') {
+            try {
+                await addToShoppingCart(arugments.vid, arugments.email);
+            }
+            catch(err) {
+                result = "Sorry, we can't add this vehicle to your shopping cart, please try again later";
+            }
+            result = "Vehicle has been added to your shopping cart, view your shopping cart to checkout";
+        }
+
+        if (result) {
+            await openai.beta.threads.runs.submitToolOutputs(thread.id, run.id, {
+                tool_outputs: [
+                {
+                    tool_call_id: run.required_action.submit_tool_outputs.tool_calls[0].id,
+                    output: result,
+                },
+                ],
+            });
+        }
+        await runCheck(run.id, thread.id); // complete or requires_action
+    }
+
+    // run is complete, get the latest message
+    const messages = await openai.beta.threads.messages.list(thread.id);
+    let new_message = messages.data[0].content[0].text.value;
+
+    if (new_message === userInput){
+        new_message = "Sorry, I don't understand your question, please rephrase it.";
+    }
+
+    return {answer:new_message, thread_id:thread.id, options:options};
 }
+
+
+
+// functions
+// provide options to user, view an order, view a vehicle, view hot deals, 
+// add a vehicle to shopping cart, checkout, payment etc.
+const getOptions = ({vid, oid, hotdeal, add_vid, login}) => {
+    let options = {};
+
+    if(vid) {
+        options['view_vehicle'] = vid;
+    }
+
+    if(oid) {
+        options['view_order'] = oid;
+    }
+
+    if(hotdeal) {
+        options['view_hotdeals'] = true;
+    }
+
+    if(add_vid) {
+        options['add_vehicle_to_shoppingCart'] = add_vid;
+    }
+
+    if(login) {
+        options['login'] = true;
+    }
+
+    return options;
+};

@@ -1,0 +1,24 @@
+{
+    "examples": [
+        {
+            "Q": "what are the most popular electric cars?",
+            "A": "Some of the most popular electric cars currently on the market include the Tesla Model S, Tesla Model 3, Nissan Leaf, Chevrolet Bolt EV, Audi e-tron, Jaguar I-Pace, and the Hyundai Kona Electric."
+        },
+        
+        {
+            "Q": "who are you?",
+            "A": "I am your virtual assistant at DriveGreen. How can I help you today?"
+        },
+
+        {
+            "Q": "what is DriveGreen?",
+            "A": "DriveGreen is a platform that helps you find the best electric car for you."
+        },
+
+        {
+            "Q": "when can I pick my car?",
+            "Order paid": "Your car will be ready for pickup in 2-3 weeks.",
+            "Order not paid": "Your order is not paid yet. Please pay for your order, so we can process it further."
+        }
+    ]
+}
