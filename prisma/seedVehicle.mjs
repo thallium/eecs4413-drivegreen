@@ -5,22 +5,22 @@ export default async function seedVehicle(prisma, users) {
   const [user1, user2, user3] = users
 
   const veh1 = await prisma.vehicle.upsert({
-    where: { name: 'XLT', },
+    where: { name: 'Ford XLT', },
     update: {},
     create: { // minimum: only required fields
-      name: 'XLT',
+      name: 'Ford XLT',
       brand: Brand.Ford,
       price: 40000.00
     },
   })
 
   const veh2 = await prisma.vehicle.upsert({
-    where: { name: 'Mach-E' },
+    where: { name: 'Ford Mach-E' },
     update: {
       hotDealed: true,
     },
     create: {
-      name: 'Mach-E',
+      name: 'Ford Mach-E',
       brand: Brand.Ford,
       price: 35000.0,
       shape: Shape.L,
@@ -36,11 +36,10 @@ export default async function seedVehicle(prisma, users) {
 
 
   const veh3 = await prisma.vehicle.upsert({
-    where: { name: 'Model S' },
-    update: {
-    },
+    where: { name: 'Tesla Model S' },
+    update: {},
     create: {
-      name: 'Model S',
+      name: 'Tesla Model S',
       brand: Brand.Tesla,
       price: 99990.0,
       shape: Shape.L,
@@ -58,6 +57,98 @@ export default async function seedVehicle(prisma, users) {
     },
   });
 
-  console.log({ veh1, veh2, veh3 })
-  return [veh1,veh2, veh3]
+
+  let res = [veh1, veh2, veh3];
+
+  const v_data = [
+    {
+      name: 'Tesla Model 3',
+      brand: Brand.Tesla,
+      price: 50000.0,
+      shape: Shape.M,
+      description: 'A mid-size all-electric four-door sedan',
+    },
+
+    {
+      name: 'Nissan Leaf',
+      brand: Brand.GeneralMotors,
+      price: 30000.0,
+      hotDealed: true,
+      shape: Shape.M,
+      description: 'An electric hatchback car',
+    },
+   
+    {
+      name: 'Audi e-tron',
+      brand: Brand.Audi,
+      price: 60000.0,
+      shape: Shape.L,
+      description: 'A premium electric SUV',
+    },
+
+    {
+      name: 'Jaguar I-Pace',
+      brand: Brand.Jeep,
+      price: 70000.0,
+      hotDealed: true,
+      shape: Shape.L,
+      description: 'A luxury electric SUV',
+    },
+    
+    {
+      name: 'Hyundai Kona Electric',
+      brand: Brand.Hyundai,
+      price: 40000.0,
+      shape: Shape.M,
+      hotDealed: false,
+      description: 'An electric subcompact SUV',
+      modelYear: 2023,
+    },
+
+    {
+      name: 'Toyota Prius Prime',
+      brand: Brand.Toyota,
+      price: 35000.0,
+      shape: Shape.M,
+      hotDealed: true,
+      description: 'A plug-in hybrid hatchback',
+      modelYear: 2022,
+    },
+
+    {
+      name: 'BMW i3',
+      brand: Brand.BMW,
+      price: 45000.0,
+      shape: Shape.S,
+      hotDealed: false,
+      description: 'An all-electric compact car',
+      modelYear: 2023,
+    },
+    
+    {
+      name: 'Chevrolet Bolt EV',
+      brand: Brand.Chevrolet,
+      price: 38000.0,
+      shape: Shape.M,
+      hotDealed: false,
+      description: 'An affordable all-electric car',
+      modelYear: 2023,
+    },
+  ];
+
+  let cnt = 0;
+  for (const vehicleData of v_data) {
+    const v = await prisma.vehicle.upsert({
+      where: { name: vehicleData.name },
+      update: {},
+      create: vehicleData,
+    });
+
+    if(cnt < 3) {
+      res.push(v);
+      cnt++;
+    }
+  }
+  // console.log({ veh1, veh2, veh3 })
+  return res;
 }
