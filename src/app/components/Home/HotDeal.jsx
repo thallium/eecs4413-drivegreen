@@ -52,14 +52,14 @@ function Hotdeal() {
       "An error has occurred: " +
       errorVehicle.message +
       ";" +
-      errorReviews.message
+      errorReviews?.message
     );
 
-    return (
-      <>
-        <div className="m-2">
-          <VehicleList vehicles={vehicles.filter(vehicle => vehicle.hotDealed===true)} />
-        </div>
-      </>
-    );
+  return (
+    <>
+      <div className="m-2">
+        <VehicleList vehicles={vehicles.filter(vehicle => vehicle.hotDealed === true)} />
+      </div>
+    </>
+  );
 }
