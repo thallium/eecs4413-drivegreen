@@ -62,7 +62,7 @@ function VehicleCard(props) {
           <div className="badge badge-outline">
             {vehicle.quantity > 0 ? "In-stock" : "Out-of-stock"}
           </div>
-          <div className="badge badge-outline">Mileage: {vehicle.Mileage}</div>
+          <div className="badge badge-outline">Mileage: {vehicle.Mileage} km</div>
           <div className="badge badge-outline">
             {vehicle.damaged ? "Like new" : "New"}
           </div>
