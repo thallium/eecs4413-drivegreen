@@ -5,8 +5,8 @@ import Select from "react-select";
 
 import "./style.scss";
 
-import selectOptions from "../components/Calculator/selectOption.json";
-import controlList from "../components/Calculator/controls.json";
+import selectOptions from "./selectOption.json";
+import controlList from "./controls.json";
 
 export default class Calculator extends React.Component {
   constructor(props) {
@@ -274,7 +274,7 @@ export default class Calculator extends React.Component {
     return (
       <div className="wrapper">
         <div className="wrapperInner">
-          <h2 className="heading">Loan Calculator</h2>
+          <h2 className="heading font-bold">Loan Calculator</h2>
           <form onSubmit={(e) => this.onSubmitHandle(e)}>
             <div className="select-control">
               <label>Please Select Type</label>
