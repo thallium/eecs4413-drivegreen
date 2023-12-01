@@ -47,7 +47,6 @@ export const creatEmptyShoppingCart = async (email) => {
 export const addToShoppingCart = async (email, vehicleId) => {
     // Find the shoppingCart based on email
     let shoppingCart = await getShoppingCart(email);
-    console.log("Shopping Cart get Complete.")
 
     if (!shoppingCart) {
       // If the user doesn't have a shopping cart, create a new empty one
@@ -60,7 +59,7 @@ export const addToShoppingCart = async (email, vehicleId) => {
     if (shoppingCart.vehicleItems){
       existingItem = shoppingCart.vehicleItems.find(item => item.vehicleId === vehicleId);
     } 
-    console.log("Debug Existing Item:" + existingItem);
+
     let updatedItem;
     if (existingItem) {
       // If the vehicle is already in the cart, update quantity, subtotal, and total

@@ -6,11 +6,12 @@ import { getServerSession } from "next-auth";
 export async function PUT(request, { params }) {
     const vid = params.vid;
     const session = await getServerSession({ req: request });
-    console.log("session:"+session)
+    console.log("session:"+JSON.stringify(session));
+    
     let shoppingCart;
     if (session) {
         try {
-            const email = session.user.email;
+            const email = session.user.email; 
             const req = await request.json();
             const option = req.option;
             if(option === "add"){

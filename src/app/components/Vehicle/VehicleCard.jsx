@@ -9,7 +9,7 @@ function VehicleCard(props) {
   const addToShoppingCart = async (vid) => {
     try{
       setLoading(true);
-      const response = await axios.put(`/api/shoppingCart/${vid}`, "add");
+      const response = await axios.put(`/api/shoppingCart/${vid}`, {"option": "add"});
       console.log("Added to shopping cart:", response.data);
       // Show success alert
       alert("Added to shopping cart successfully!");
