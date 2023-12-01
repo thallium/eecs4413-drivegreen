@@ -22,6 +22,8 @@ enum Brand {
   Jeep
   Toyota
   Tesla
+  Hyundai
+  Chevrolet
 }
 
 enum Shape {
@@ -47,7 +49,7 @@ model Vehicle {
   shoppingCarts ShoppingCartOnVehicle[]
   orders        OrderOnVehicle[]
   reviews       Review[]
-  subscriptions  WatchListItem[]
+  subscriptions WatchListItem[]
 }
 
 // ==================== END of Vehicle models ================================
@@ -55,11 +57,11 @@ model Vehicle {
 // ==================== User models ======================================
 
 model User {
-  uid            String         @id
+  uid            String          @id
   name           String?
   address        String?
-  email          String         @unique
-  isAdmin        Boolean        @default(false)
+  email          String          @unique
+  isAdmin        Boolean         @default(false)
   reviews        Review[]
   shoppingCart   ShoppingCart?
   orders         Order[]
@@ -67,12 +69,12 @@ model User {
   watchList      WatchListItem[]
 }
 
-
 model WatchListItem {
-  user     User     @relation(fields: [userId], references: [uid])
-  userId   String
-  vehicle  Vehicle  @relation(fields: [vehicleId], references: [vid])
+  user      User    @relation(fields: [userId], references: [uid])
+  userId    String
+  vehicle   Vehicle @relation(fields: [vehicleId], references: [vid])
   vehicleId Int
+
   @@id([userId, vehicleId])
 }
 
@@ -91,7 +93,7 @@ model Review {
 // ==================== Admin models ======================================
 model LoginHistory {
   user    User     @relation(fields: [email], references: [email])
-  email  String    
+  email   String
   loginAt DateTime @default(now())
   ip      String?
   action  String?
@@ -128,16 +130,16 @@ model ShoppingCartOnVehicle {
 }
 
 model Order {
-  oid        Int              @id @default(autoincrement())
-  user       User             @relation(fields: [userId], references: [uid])
-  userId     String           
-  orderItems OrderOnVehicle[]
+  oid          Int              @id @default(autoincrement())
+  user         User             @relation(fields: [userId], references: [uid])
+  userId       String
+  orderItems   OrderOnVehicle[]
   //quantity for each vehicle included in relation table OrderOnVehicle
-  createdAt  DateTime         @default(now())
-  updatedAt  DateTime         @updatedAt
-  shippingAddr  String?        
-  totalPrice Float
-  isPaid     Boolean          @default(false)
+  createdAt    DateTime         @default(now())
+  updatedAt    DateTime         @updatedAt
+  shippingAddr String?
+  totalPrice   Float
+  isPaid       Boolean          @default(false)
 }
 
 model OrderOnVehicle {

@@ -52,7 +52,7 @@ function Hotdeal() {
       "An error has occurred: " +
       errorVehicle.message +
       ";" +
-      errorReviews.message
+      errorReviews?.message
     );
 
     return (

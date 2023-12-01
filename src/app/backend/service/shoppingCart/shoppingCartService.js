@@ -59,7 +59,7 @@ export const addToShoppingCart = async (email, vehicleId) => {
     if (shoppingCart.vehicleItems){
       existingItem = shoppingCart.vehicleItems.find(item => item.vehicleId === vehicleId);
     } 
-    
+
     let updatedItem;
     if (existingItem) {
       // If the vehicle is already in the cart, update quantity, subtotal, and total
