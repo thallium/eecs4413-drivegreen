@@ -1,9 +1,25 @@
-'use client';
+'use client'
 import Link from "next/link";
-import { useSession, signOut } from 'next-auth/react'
+import { useSession, getSession, signOut } from 'next-auth/react'
+import { baseURL } from "@/util";
+import { useEffect, useState } from "react";
 
 const Navbar = () => {
-    const { data: session } = useSession({})
+    const { data: session } = useSession({});
+    const [isAdmin, setIsAdmin] = useState(false);
+
+    useEffect(() => {
+        fetch(baseURL() + '/api/admin/access', {cache: "no-store"}).then((res) => {
+            if (!res.ok) {
+                // console.log('Not Admin!\n');
+                return;
+            }
+            setIsAdmin(true);
+            // console.log('Admin' + isAdmin);
+        });
+    }, [session]);
+
+
     return (
         <div className="navbar bg-primary text-primary-content">
             <div className="flex-1">
@@ -12,6 +28,7 @@ const Navbar = () => {
                 {!session && <Link className="p-2" href="/signin">Sign In</Link>}
                 {session && <Link className="p-2" href="/profile">Profile</Link>}
                 {session && <button className="p-2" onClick={() => signOut()}>Sign Out</button>}
+                {session && isAdmin && <Link className="p-2" href="/admin">Admin Dashboard</Link>}
             </div>
             <div className="flex-none">
                 <button className="pr-16" onClick={() => { }}>

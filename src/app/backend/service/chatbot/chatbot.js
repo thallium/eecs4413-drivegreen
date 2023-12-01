@@ -1,5 +1,5 @@
 import OpenAI from 'openai';
-import { getInstruction, runInstruction} from './prompts';
+import { getInstruction, runInstruction, initPrompt} from './prompts';
 import { getVehiclesFunc, getOrdersByEmail, getHotdeals, getOptionsFunc, addToShoppingCartFunc } from './funtionDescriptions';
 import { getOrders } from '@/app/backend/service/order/orderService.js';
 import { addToShoppingCart } from '@/app/backend/service/shoppingCart/shoppingCartService.js';
@@ -46,7 +46,7 @@ const getAssistant = async () => {
 }
 
 
-const getThread = async (threadId) => {
+const getThread = async (threadId, userEmail) => {
     let thread;
 
     if(threadId) {
@@ -54,25 +54,43 @@ const getThread = async (threadId) => {
     }
    
     if(!thread){
+
         thread = await openai.beta.threads.create();
+
+        const vehicles = await getVehicles();
+        const hotdeals = await getDeals();
+        let orders;
+        if (userEmail) {
+          orders = await getOrders(userEmail);
+        }
+
+        let sys1 = await openai.beta.threads.messages.create(thread.id, {
+            role: 'user',
+            content: initPrompt,
+        });
+
+        let sys2 = await openai.beta.threads.messages.create(thread.id, {
+            role: 'user',
+            content: getInstruction(vehicles, hotdeals),
+        });
+
+        let sys3 = await openai.beta.threads.messages.create(thread.id, {
+            role: 'user',
+            content:  runInstruction(userEmail, orders),
+        });
     }
+    
 
     return thread;
 }
 
 
-const getRun = async (threadId, assistantId, userEmail) => {
-    const vehicles = await getVehicles();
-    const hotdeals = await getDeals();
-    let orders;
-    if (userEmail) {
-        orders = await getOrders(userEmail);
-    }
+const getRun = async (threadId, assistantId) => {
+    
     const run = await openai.beta.threads.runs.create(threadId, {
-      assistant_id: assistantId,
-      instructions: getInstruction(vehicles, hotdeals) + " " + runInstruction(userEmail, orders),
+      assistant_id: assistantId
     });
-    console.log(run);
+    // console.log(run);
    return run;
 }
 
@@ -92,7 +110,7 @@ const runCheck = async (runId, threadId) => {
 
 
 export const getResponse = async (threadId, userInput, userEmail) => {
-    const thread = await getThread(threadId);
+    const thread = await getThread(threadId, userEmail);
     const assistant = await getAssistant();
 
     const user = await openai.beta.threads.messages.create(thread.id, {
@@ -100,7 +118,7 @@ export const getResponse = async (threadId, userInput, userEmail) => {
         content: userInput,
     });
 
-    let run = await getRun(thread.id, assistant.id, userEmail);
+    let run = await getRun(thread.id, assistant.id);
 
     if (run.status === 'queued' || run.status === 'in_progress') {
         await runCheck(run.id, thread.id);
@@ -151,10 +169,15 @@ export const getResponse = async (threadId, userInput, userEmail) => {
 
     // run is complete, get the latest message
     const messages = await openai.beta.threads.messages.list(thread.id);
-    let new_message = messages.data[0].content[0].text.value;
+    let new_message;
+    // console.log(JSON.stringify(messages));
+    // console.log(JSON.stringify(messages.data[0]));
+    if( messages.data[0].role === 'assistant') {
+        new_message = messages.data[0].content[0].text.value;
+    }
 
-    if (new_message === userInput){
-        new_message = "Sorry, I don't understand your question, please rephrase it.";
+    if (!new_message || new_message === userInput){
+        new_message = "Sorry, I don't understand your question.";
     }
 
     return {answer:new_message, thread_id:thread.id, options:options};

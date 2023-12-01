@@ -6,10 +6,12 @@ export default async function LoginHistory() {
   const admin_history = await app_reports();
   // console.log(admin_history);
   return (
-    <div className="overflow-x-auto max-h-56 border-solid border-2 rounded border-grey-400">
+    <div className="overflow-x-auto max-h-64 border-solid border-2 rounded border-grey-400 relative">
       <table className="table">
-        <caption>Admin Access History (last 1 week)</caption>
-        <thead>
+        <caption >
+          Admin Access History (last 1 week)
+        </caption>
+        <thead className="sticky top-0 bg-white z-10">
           <tr>
             <th>Time</th>
             <th>Email</th>
