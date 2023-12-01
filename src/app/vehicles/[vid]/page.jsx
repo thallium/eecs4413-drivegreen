@@ -1,58 +1,89 @@
-import { baseURL } from '@/util';
-import Link from 'next/link';
+"use client";
 
-// async function postVehicles({ params }) {
-//   const patchAPI = (process.env.NODE_ENV !== 'production'? process.env.LOCAL_URL : "https://" + process.env.VERCEL_URL) + `/api/vehicles/${params.vid}`;
+import VehicleDetail from "@/app/components/Vehicle/VehicleDetail";
+import { baseURL } from "@/util";
+import { QueryClient, QueryClientProvider, useQuery } from "@tanstack/react-query";
+import axios from "axios";
+import Link from "next/link";
+import { useEffect, useState } from "react";
 
-//   const res = await fetch('https://data.mongodb-api.com/...', {
-//     method: 'POST',
-//     headers: {
-//       'Content-Type': 'application/json',
-//       'API-Key': process.env.DATA_API_KEY,
-//     },
-//     body: JSON.stringify({ time: new Date().toISOString() }),
-//   })
-// }
+const queryClient = new QueryClient();
 
-export default async function VehicleDetails({ params }) {
-  const getAPI = baseURL() + `/api/vehicles/${params.vid}`;
+export default function ListVehiclesPage({params}) {
+  console.log(params);
+  return (
+    <QueryClientProvider client={queryClient}>
+      <VehicleSpecs vid={Number(params.vid)}/>
+    </QueryClientProvider>
+  );
+}
 
-  let vehicle = await fetch(getAPI, { cache: 'no-store' })
-    .then(res => { return res.json(); })
-    .catch(err => console.log(err));
+function VehicleSpecs({vid}) {
+  const [vehicle, setVehicle] = useState();
+  
+  const {
+    isLoading: pendingVehicle,
+    error: errorVehicle,
+    data: vehicleData,
+  } = useQuery({
+    queryKey: ["/api/vehicles", vid],
+    queryFn: () =>
+      axios.get(baseURL() + "/api/vehicles/" + vid).then((res) => res.data),
+    retryDelay: 1000,
+    enabled: !!vid,
+  });
+
+  const {
+    isLoading: pendingReviews,
+    error: errorReviews,
+    data: reviewsData,
+  } = useQuery({
+    queryKey: ["/api/review"],
+    queryFn: () => axios.get(baseURL() + "/api/review").then((res) => res.data),
+    retryDelay: 1000,
+    enabled: !!vid,
+  });
+
+  useEffect(() => {
+    setVehicle(vehicleData);
+  }, [vehicleData])
+  
+
+  if (pendingVehicle || pendingReviews)
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <span className="loading loading-spinner loading-lg"></span>
+      </div>
+    );
+
+  if (errorVehicle)
+    return (
+      "An error has occurred: " +
+      errorVehicle.message
+    );
+
+  if (errorReviews)
+    return (
+      "An error has occurred: " +
+      errorReviews.message
+    );
 
   return (
     <>
-      <h1>URL: {getAPI}</h1>
-      <div
-        style={{
-          display: "grid",
-          gridTemplateColumns: "1fr 1fr 1fr 1fr",
-          gap: 20,
-        }}
-      >
-        {vehicle &&
-          <div
-            key={vehicle.vid}
-            style={{ border: "1px solid #ccc", textAlign: "center" }}
-          >
-            {/* <Image
-              src={`https://robohash.org/${vehicle.vid}?set=set2&size=180x180`}
-              alt={vehicle.name}
-              style={{ height: 180, width: 180 }}
-            /> */}
-            <h3>{JSON.stringify(vehicle.createdAt)}</h3>
-            <h3>{vehicle.name}</h3>
-            <h3>{vehicle.brand}</h3>
-            <h3>{vehicle.shape}</h3>
-            <h3>{vehicle.modelYear}</h3>
-            <h3>{JSON.stringify(vehicle.hotDealed)}</h3>
-          </div>
-        }
-      </div>
+      {vehicle && <VehicleDetail vehicle={vehicle}/>}
 
       <h2>
-        <Link href="/vehicles">Back</Link>
+        <Link
+          href="/vehicles"
+          style={{
+            border: "1px solid #ccc",
+            textAlign: "center",
+            color: "red",
+            margin: "4px",
+          }}
+        >
+          Back
+        </Link>
       </h2>
     </>
   );

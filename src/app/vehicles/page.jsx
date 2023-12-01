@@ -16,7 +16,7 @@ import { useCallback, useEffect, useState } from "react";
 
 const queryClient = new QueryClient();
 
-export default function ListVehicles() {
+export default function ListVehiclesPage() {
   return (
     <QueryClientProvider client={queryClient}>
       <Vehicles />
