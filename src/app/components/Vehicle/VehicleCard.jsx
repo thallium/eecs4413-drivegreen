@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import axios from "axios";
 
@@ -24,7 +25,7 @@ function VehicleCard(props) {
   }
 
   return (
-    <div className="card w-96 bg-base-100 shadow-xl">
+    <div className="card w-96 h-[36rem] bg-base-100 shadow-xl">
       <figure>
         <Image
           src={`/vehicles/${vehicle.brand}.jpg`}
@@ -74,9 +75,9 @@ function VehicleCard(props) {
           >
             {loading? "Adding to Shopping Cart":"Add to Cart"}
           </button>
-          <button className="btn btn-primary" onClick={() => {}}>
-            Reviews
-          </button>
+          <Link href={`/vehicles/${vehicle.vid}`} className="btn btn-primary">
+            Details
+          </Link>
         </div>
       </div>
     </div>

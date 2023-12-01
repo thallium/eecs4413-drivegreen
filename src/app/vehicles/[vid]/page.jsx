@@ -52,7 +52,7 @@ export default async function VehicleDetails({ params }) {
       </div>
 
       <h2>
-        <Link href="/">Back to home</Link>
+        <Link href="/vehicles">Back</Link>
       </h2>
     </>
   );
