@@ -1,12 +1,21 @@
 import Image from "next/image";
 import { useState } from "react";
 import axios from "axios";
+import { getSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
 
 function VehicleCard(props) {
   const [vehicle, setVehicle] = useState(props.vehicle);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
 
   const addToShoppingCart = async (vid) => {
+    const session = await getSession();
+    if(!session){
+      router.push('/signin');
+      return;
+    }
     try{
       setLoading(true);
       const response = await axios.put(`/api/shoppingCart/${vid}`, {"option": "add"});
