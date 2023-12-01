@@ -24,7 +24,7 @@ function Hotdeal() {
   const {
     isPending: pendingVehicles,
     error: errorVehicle,
-    data: vehicles,
+    data: vehiclesData,
   } = useQuery({
     queryKey: ["/api/vehicles"],
     queryFn: () =>
@@ -58,7 +58,7 @@ function Hotdeal() {
     return (
       <>
         <div className="m-2">
-          <VehicleList vehicles={vehicles.filter(vehicle => vehicle.hotDealed===true)} />
+          <VehicleList vehicles={vehiclesData.filter(vehicle => vehicle.hotDealed===true)} />
         </div>
       </>
     );
