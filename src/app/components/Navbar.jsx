@@ -11,6 +11,7 @@ const Navbar = () => {
                 {!session && <Link className="p-2" href="/signup">Sign Up</Link>}
                 {!session && <Link className="p-2" href="/signin">Sign In</Link>}
                 {session && <Link className="p-2" href="/profile">Profile</Link>}
+                {session && <Link className="p-2" href="/shoppingCart">Shopping Cart</Link>}
                 {session && <button className="p-2" onClick={() => signOut()}>Sign Out</button>}
             </div>
             <div className="flex-none">
