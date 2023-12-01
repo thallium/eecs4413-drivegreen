@@ -7,6 +7,7 @@ const MessageParser = ({ children, actions }) => {
   const [userEmail, setUserEmail] = useState('');
   const [tId, setTId] = useState('');
   const { data: session } = useSession({});
+  const [vehicles, setVehicles] = useState(null);
 
   useEffect(() => {
     // Check if session and userEmail exist and update userEmail
@@ -15,6 +16,22 @@ const MessageParser = ({ children, actions }) => {
       setTId('');
     }
   }, [session]); 
+
+  const fetchVehicles = async () => {
+    const res = await fetch(baseURL() + '/api/vehicles');
+    if (!res.ok) {
+      console.log('Failed to get vehicles!\nError: ' + (await res.text()));
+      return;
+    }
+    const vehicles = await res.json();
+    console.log(JSON.stringify(res));
+    
+    setVehicles(vehicles);
+  }
+
+  useEffect(() => {
+    fetchVehicles();
+  }, []);
 
   const parse = async (message) => {
     // check vehicle names

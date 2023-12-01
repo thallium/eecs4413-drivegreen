@@ -1,65 +1,206 @@
-'use client';
-import { useState, useEffect } from "react";
-import { baseURL } from '@/util';
-import { useSession } from "next-auth/react"
+"use client"; // This is a client component
+
+import Link from "next/link";
+import { baseURL } from "@/util";
+import {
+  QueryClient,
+  QueryClientProvider,
+  useQuery,
+} from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
+import axios from "axios";
+import { useCallback, useEffect, useState } from "react";
+import ShoppingCartItemList from "../components/shoppingCart/ShoppingCartItemList"
+import { getServerSession } from "next-auth"
+import { useSession } from 'next-auth/react';
 import { redirect } from "next/navigation"
-import Link from 'next/link';
 
-export default function ShoppingCart() {
-    const session = useSession({
-        required: true,
-        onUnauthorized: () => {
-            redirect('/signin')
-        }
-    })
+const queryClient = new QueryClient();
+
+export default function ShoppingCartPage() {
+  const session = useSession({
+    required: true,
+    onUnauthorized: () => {
+        redirect('/signin')
+    }
+  })
+
+  return (
+    <QueryClientProvider client={queryClient}>
+      <ShoppingCart />
+    </QueryClientProvider>
+  );
+}
+
+function ShoppingCart() {
+  const fetchShoppingCart = async () => {
+    const response = await axios.get('/api/shoppingCart');
+    return response.data;
+  };
+  
+  const updateQuantity = async ({ vehicleId, option }) => {
+    const response = await axios.put(`/api/shoppingCart/${vehicleId}`, { option });
+    return response.data;
+  };
+  
+  
+  const {
+    isFetching,
+    isPending,
+    error,
+    data: shoppingCart,
+    refetch,
+  } = useQuery({
+    queryKey:['/api/shopping-cart'], 
+    queryFn: fetchShoppingCart
+  });
+
+  const [updating, setUpdating] = useState(false);
+
+  const updateCart = async (vehicleId, option) => {
+    try {
+      // Set updating to true during the update
+      setUpdating(true);
+      // Perform the update
+      await updateQuantity({ vehicleId, option });
+      // Refetch shopping cart data after updating quantity
+      refetch();
+    } catch (error) {
+      // Handle error if necessary
+      console.error('Error updating quantity:', error);
+    } finally {
+      // Set updating to false after the update
+      setUpdating(false);
+    }
+  };
+
+  const increaseQuantity = (vehicleId) => {
+    updateCart(vehicleId, 'add');
+  };
+
+  const decreaseQuantity = (vehicleId) => {
+    updateCart(vehicleId, 'removeOne');
+  };
+
+  const removeItem = (vehicleId) => {
+    updateCart(vehicleId, 'removeAll');
+  };
+
+  if (isFetching || isPending || updating) {
+    return (
+      <div className="h-screen flex items-center justify-center">
+        <span className="loading loading-spinner loading-lg"></span>
+      </div>
+    )
+          
+  }
+
+  if (error) {
+    return <p>Error: {error.message}</p>;
+  }
+
+  return (
+    <>
+      <div className="container mx-auto my-8">
+      <h2 className="text-2xl font-semibold mb-4">Shopping Cart</h2>
+      <ShoppingCartItemList
+        items={shoppingCart.vehicleItems}
+        onIncrease={increaseQuantity}
+        onDecrease={decreaseQuantity}
+        onRemove={removeItem} 
+      />
+      <div className="mt-4 flex justify-between">
+        <p className="text-lg font-semibold">Total Price: ${shoppingCart.totalPrice.toFixed(2)}</p>
+        <button className="btn w-64 rounded-full">
+          Checkout
+        </button>
+      </div>
+    </div>
+    <h2>
+        <Link
+          href="/"
+          style={{
+            border: "1px solid #ccc",
+            textAlign: "center",
+            color: "red",
+            margin: "4px",
+          }}
+        >
+          Back to home
+        </Link>
+    </h2>
+    </>
     
-    const [shoppingCart, setShoppingCart] = useState(null);
+  );
+}
+//   const [shoppingCart, setShoppingCart] = useState(null);
 
-    const fetchData = async () => {
-        try {
-            const response = await fetch(baseURL() + "/api/shoppingCart", { cache: 'no-store' });
-            if (!response.ok) {
-              throw new Error(`Error: ${response.status} - ${response.statusText}`);
-            }
-            const shoppingCartData = await response.json();
-            console.log(shoppingCartData);
-            setShoppingCart(shoppingCartData);
-          } catch (error) {
-            console.error('Error fetching shopping cart data:', error.message);
-          }
-    }
+//   const {
+//     isPending: pendingShoppingCart,
+//     error: errorShoppingCart,
+//     data: shoppingCartData,
+//   } = useQuery({
+//     queryKey: ["/api/shoppingCart"],
+//     queryFn: () =>
+//       axios.get(baseURL() + "/api/shoppingCart").then((res) => res.data),
+//   });
 
-    useEffect(() => {
-      fetchData();
-    },[]);
+//   useEffect(() => {
+//     if (shoppingCartData) {
+//       setShoppingCart(shoppingCartData);
+//       console.log("==setShoppingCart====");
+//     }
+//   }, [
+//     shoppingCartData,
+//   ]);
 
-      return (
-        <>
-          <h1>{process.env.VERCEL_URL}</h1>
-          <div>
-            <h1>Shopping Cart</h1>
-            {shoppingCart && (
-                <div> 
-                <ol>
-                    {shoppingCart.vehicleItems.map((item) => (
-                    <li key={item.vehicleId}>
-                        {item.vehicle.name}: (Quantity: {item.quantity} , Subtotal: {item.subTotal})
-                    </li>
-                    ))}
-                </ol>
-                <p>Total Price: {shoppingCart.totalPrice}</p>
-                </div>
-            )}
-            </div>
-                        
-          <br></br> 
-          <h2>
-            Checkout
-          </h2>
-          <br></br>             
-          <h2>
-            <Link href="/">Back to home</Link>
-          </h2>
-        </>
-      );
-    }
+//   if (pendingVehicles || pendingReviews)
+//     return (
+//       <div className="h-screen flex items-center justify-center">
+//         <span className="loading loading-spinner loading-lg"></span>
+//       </div>
+//     );
+
+//   if (errorVehicle || errorReviews)
+//     return (
+//       "An error has occurred: " +
+//       errorVehicle.message +
+//       ";" +
+//       errorReviews.message
+//     );
+
+//   return (
+//     <>
+//       <div className="flex m-2 justify-between">
+//         <SortVehicles
+//           setPrice={(value) => setPriceSorter(value)}
+//           setMileage={(value) => setMileageSorter(value)}
+//         />
+//         <FiltVehicles
+//           vehicles={vehiclesData}
+//           setBrand={(value) => setBrandFilter(value)}
+//           setShape={(value) => setShapeFilter(value)}
+//           setModelyear={(value) => setModelFilter(value)}
+//           setHistory={(value) => setHistoryFilter(value)}
+//         />
+//       </div>
+//       <div className="m-2">
+//         <VehicleList vehicles={vehicles} />
+//       </div>
+
+//       <h2>
+//         <Link
+//           href="/"
+//           style={{
+//             border: "1px solid #ccc",
+//             textAlign: "center",
+//             color: "red",
+//             margin: "4px",
+//           }}
+//         >
+//           Back to home
+//         </Link>
+//       </h2>
+//     </>
+//   );
+

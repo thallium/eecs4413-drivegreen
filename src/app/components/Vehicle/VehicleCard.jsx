@@ -1,11 +1,31 @@
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
+import axios from "axios";
 
 function VehicleCard(props) {
   const [vehicle, setVehicle] = useState(props.vehicle);
+  const [loading, setLoading] = useState(false);
+
+  const addToShoppingCart = async (vid) => {
+    try{
+      setLoading(true);
+      const response = await axios.put(`/api/shoppingCart/${vid}`, {"option": "add"});
+      console.log("Added to shopping cart:", response.data);
+      // Show success alert
+      alert("Added to shopping cart successfully!");
+      // You might want to update the UI or take additional actions here
+    } catch (error) {
+      console.error("Error adding to shopping cart:", error);
+      // Show error alert
+      alert(`Error: ${error}.`);
+    } finally{
+      setLoading(false);
+    }
+  }
 
   return (
-    <div className="card w-96 bg-base-100 shadow-xl">
+    <div className="card w-96 h-[36rem] bg-base-100 shadow-xl">
       <figure>
         <Image
           src={`/vehicles/${vehicle.brand}.jpg`}
@@ -42,18 +62,22 @@ function VehicleCard(props) {
           <div className="badge badge-outline">
             {vehicle.quantity > 0 ? "In-stock" : "Out-of-stock"}
           </div>
-          <div className="badge badge-outline">Mileage: {vehicle.Mileage}</div>
+          <div className="badge badge-outline">Mileage: {vehicle.Mileage} km</div>
           <div className="badge badge-outline">
             {vehicle.damaged ? "Like new" : "New"}
           </div>
         </div>
         <div className="card-actions justify-end">
-          <button className="btn btn-primary" onClick={() => {}}>
-            Add to cart
+          <button 
+            className={`btn btn-primary ${loading? 'cursor-wait' : ''}`} 
+            onClick={() => addToShoppingCart(vehicle.vid)} 
+            disabled={loading}
+          >
+            {loading? "Adding to Shopping Cart":"Add to Cart"}
           </button>
-          <button className="btn btn-primary" onClick={() => {}}>
-            Reviews
-          </button>
+          <Link href={`/vehicles/${vehicle.vid}`} className="btn btn-primary">
+            Details
+          </Link>
         </div>
       </div>
     </div>

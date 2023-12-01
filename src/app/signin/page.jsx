@@ -3,32 +3,43 @@ import { signIn } from 'next-auth/react';
 import { useState } from 'react';
 import { baseURL } from '@/util';
 import { useRouter } from 'next/navigation';
+import { useNotification } from '@/app/components/NotificationProvider';
 
-async function doSignIn(email, password) {
-    const res = await signIn('credentials', { email, password, redirect: false })
-    if (res.ok) {
-        const res = await fetch(baseURL() + '/api/watchlist/check')
-        const hotdeal = await res.json()
-        if (hotdeal.length > 0) {
-            const cars = hotdeal.join(', ')
-            alert(`The ${cars} you're watching is in a hot deal! Check it out!`)
-        }
-        return true;
-    } else {
-        alert('Wrong email or password');
-        return false;
-    }
-}
 
 export default function Example() {
     const [email, setEmail] = useState('');
     const [password, setPassword] = useState('');
+    const [errorMsg, setErrorMsg] = useState('');
     const router = useRouter()
+
+    const dispatch = useNotification();
+    async function doSignIn(email, password) {
+        const res = await signIn('credentials', { email, password, redirect: false })
+        if (res.ok) {
+            fetch(baseURL() + '/api/watchlist/check')
+                .then(res => res.json())
+                .then(hotdeal => {
+                    if (hotdeal.length > 0) {
+                        const cars = hotdeal.join(', ')
+                        // alert(`The ${cars} you're watching is in a hot deal! Check it out!`)
+                        dispatch({
+                            type: "INFO",
+                            message: `The ${cars} you're watching is in a hot deal! Check it out!`,
+                        })
+                    }
+                })
+            setErrorMsg('');
+            return true;
+        } else {
+            setErrorMsg('Wrong email or password');
+            return false;
+        }
+    }
     return (
         <>
             <div className="flex min-h-full flex-1 flex-col justify-center px-6 py-12 lg:px-8">
                 <div className="sm:mx-auto sm:w-full sm:max-w-sm">
-                    <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight text-gray-900">
+                    <h2 className="mt-10 text-center text-2xl font-bold leading-9 tracking-tight">
                         Sign in to your account
                     </h2>
                 </div>
@@ -36,7 +47,7 @@ export default function Example() {
                 <div className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm">
                     <form className="space-y-6">
                         <div>
-                            <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
+                            <label htmlFor="email" className="block font-medium leading-6">
                                 Email address
                             </label>
                             <div className="mt-2">
@@ -54,13 +65,11 @@ export default function Example() {
 
                         <div>
                             <div className="flex items-center justify-between">
-                                <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
+                                <label htmlFor="password" className="block font-medium leading-6">
                                     Password
                                 </label>
-                                <div className="text-sm">
-                                    <a href="#" className="font-semibold text-indigo-600 hover:text-indigo-500">
-                                        Forgot password?
-                                    </a>
+                                <div className='text-error'>
+                                    {errorMsg}
                                 </div>
                             </div>
                             <div className="mt-2">
