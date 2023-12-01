@@ -16,9 +16,6 @@ export default async function Home() {
       <Hero />
       <ListHotdeal />
       <div className="z-10 w-full items-center justify-between font-mono text-sm lg:flex">
-        <Link href="/shoppingCart/" style={linkStyle}>
-          2.ShoppingCart page
-        </Link>
         <Link href="/order/" style={linkStyle}>
           3.Order page
         </Link>

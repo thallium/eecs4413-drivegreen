@@ -1,8 +1,27 @@
 import Image from "next/image";
 import { useState } from "react";
+import axios from "axios";
 
 function VehicleCard(props) {
   const [vehicle, setVehicle] = useState(props.vehicle);
+  const [loading, setLoading] = useState(false);
+
+  const addToShoppingCart = async (vid) => {
+    try{
+      setLoading(true);
+      const response = await axios.put(`/api/shoppingCart/${vid}`, {"option": "add"});
+      console.log("Added to shopping cart:", response.data);
+      // Show success alert
+      alert("Added to shopping cart successfully!");
+      // You might want to update the UI or take additional actions here
+    } catch (error) {
+      console.error("Error adding to shopping cart:", error);
+      // Show error alert
+      alert(`Error: ${error}.`);
+    } finally{
+      setLoading(false);
+    }
+  }
 
   return (
     <div className="card w-96 bg-base-100 shadow-xl">
@@ -48,8 +67,12 @@ function VehicleCard(props) {
           </div>
         </div>
         <div className="card-actions justify-end">
-          <button className="btn btn-primary" onClick={() => {}}>
-            Add to cart
+          <button 
+            className={`btn btn-primary ${loading? 'cursor-wait' : ''}`} 
+            onClick={() => addToShoppingCart(vehicle.vid)} 
+            disabled={loading}
+          >
+            {loading? "Adding to Shopping Cart":"Add to Cart"}
           </button>
           <button className="btn btn-primary" onClick={() => {}}>
             Reviews
