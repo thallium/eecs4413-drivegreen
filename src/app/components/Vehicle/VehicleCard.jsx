@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 import axios from "axios";
 import { getSession } from "next-auth/react";
@@ -33,7 +34,7 @@ function VehicleCard(props) {
   }
 
   return (
-    <div className="card w-96 bg-base-100 shadow-xl">
+    <div className="card w-96 h-[36rem] bg-base-100 shadow-xl">
       <figure>
         <Image
           src={`/vehicles/${vehicle.brand}.jpg`}
@@ -70,7 +71,7 @@ function VehicleCard(props) {
           <div className="badge badge-outline">
             {vehicle.quantity > 0 ? "In-stock" : "Out-of-stock"}
           </div>
-          <div className="badge badge-outline">Mileage: {vehicle.Mileage}</div>
+          <div className="badge badge-outline">Mileage: {vehicle.Mileage} km</div>
           <div className="badge badge-outline">
             {vehicle.damaged ? "Like new" : "New"}
           </div>
@@ -83,9 +84,9 @@ function VehicleCard(props) {
           >
             {loading? "Adding to Shopping Cart":"Add to Cart"}
           </button>
-          <button className="btn btn-primary" onClick={() => {}}>
-            Reviews
-          </button>
+          <Link href={`/vehicles/${vehicle.vid}`} className="btn btn-primary">
+            Details
+          </Link>
         </div>
       </div>
     </div>
