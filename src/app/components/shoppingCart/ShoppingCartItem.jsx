@@ -2,7 +2,7 @@ import React from 'react';
 
 const ShoppingCartItem = ({ item, onIncrease, onDecrease, onRemove }) => {
   const { vehicle, quantity, subTotal } = item;
-  
+
   return (
     <div className="flex items-center justify-between border-b py-4">
       <div className="flex items-center space-x-4">
@@ -15,16 +15,16 @@ const ShoppingCartItem = ({ item, onIncrease, onDecrease, onRemove }) => {
         </div>
       </div>
       <div className="flex items-center space-x-4">
-        <button onClick={() => onDecrease(vehicle.id)} className="btn btn-secondary">
+        <button onClick={() => onDecrease()} className="btn btn-secondary">
           -
         </button>
         <span className="text-lg">{quantity}</span>
-        <button onClick={() => onIncrease(vehicle.id)} className="btn btn-secondary">
+        <button onClick={() => onIncrease()} className="btn btn-secondary">
           +
         </button>
         <button
           className="btn btn-danger"
-          onClick={() => onRemove(vehicle.vid)}
+          onClick={() => onRemove()}
         >
           Remove
         </button>

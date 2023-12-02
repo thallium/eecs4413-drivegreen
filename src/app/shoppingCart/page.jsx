@@ -14,6 +14,7 @@ import ShoppingCartItemList from "../components/shoppingCart/ShoppingCartItemLis
 import { getServerSession } from "next-auth"
 import { useSession } from 'next-auth/react';
 import { redirect } from "next/navigation"
+import { useRouter } from "next/navigation";
 
 const queryClient = new QueryClient();
 
@@ -25,14 +26,20 @@ export default function ShoppingCartPage() {
     }
   })
 
+  const router = useRouter();
+
+  const navigateToCheckOutDetail = () => {
+    router.push('/checkout')
+  }
+
   return (
     <QueryClientProvider client={queryClient}>
-      <ShoppingCart />
+      <ShoppingCart checkout={navigateToCheckOutDetail}/>
     </QueryClientProvider>
   );
 }
 
-function ShoppingCart() {
+function ShoppingCart(props) {
   const fetchShoppingCart = async () => {
     const response = await axios.get('/api/shoppingCart');
     return response.data;
@@ -86,6 +93,8 @@ function ShoppingCart() {
     updateCart(vehicleId, 'removeAll');
   };
 
+  
+
   if (isFetching || isPending || updating) {
     return (
       <div className="h-screen flex items-center justify-center">
@@ -111,7 +120,8 @@ function ShoppingCart() {
       />
       <div className="mt-4 flex justify-between">
         <p className="text-lg font-semibold">Total Price: ${shoppingCart.totalPrice.toFixed(2)}</p>
-        <button className="btn w-64 rounded-full">
+        <button className="btn w-64 rounded-full"
+        onClick={props.checkout}>
           Checkout
         </button>
       </div>
@@ -133,74 +143,4 @@ function ShoppingCart() {
     
   );
 }
-//   const [shoppingCart, setShoppingCart] = useState(null);
-
-//   const {
-//     isPending: pendingShoppingCart,
-//     error: errorShoppingCart,
-//     data: shoppingCartData,
-//   } = useQuery({
-//     queryKey: ["/api/shoppingCart"],
-//     queryFn: () =>
-//       axios.get(baseURL() + "/api/shoppingCart").then((res) => res.data),
-//   });
-
-//   useEffect(() => {
-//     if (shoppingCartData) {
-//       setShoppingCart(shoppingCartData);
-//       console.log("==setShoppingCart====");
-//     }
-//   }, [
-//     shoppingCartData,
-//   ]);
-
-//   if (pendingVehicles || pendingReviews)
-//     return (
-//       <div className="h-screen flex items-center justify-center">
-//         <span className="loading loading-spinner loading-lg"></span>
-//       </div>
-//     );
-
-//   if (errorVehicle || errorReviews)
-//     return (
-//       "An error has occurred: " +
-//       errorVehicle.message +
-//       ";" +
-//       errorReviews.message
-//     );
-
-//   return (
-//     <>
-//       <div className="flex m-2 justify-between">
-//         <SortVehicles
-//           setPrice={(value) => setPriceSorter(value)}
-//           setMileage={(value) => setMileageSorter(value)}
-//         />
-//         <FiltVehicles
-//           vehicles={vehiclesData}
-//           setBrand={(value) => setBrandFilter(value)}
-//           setShape={(value) => setShapeFilter(value)}
-//           setModelyear={(value) => setModelFilter(value)}
-//           setHistory={(value) => setHistoryFilter(value)}
-//         />
-//       </div>
-//       <div className="m-2">
-//         <VehicleList vehicles={vehicles} />
-//       </div>
-
-//       <h2>
-//         <Link
-//           href="/"
-//           style={{
-//             border: "1px solid #ccc",
-//             textAlign: "center",
-//             color: "red",
-//             margin: "4px",
-//           }}
-//         >
-//           Back to home
-//         </Link>
-//       </h2>
-//     </>
-//   );
 
