@@ -1,9 +1,9 @@
 import React from 'react';
 import { createChatBotMessage, createClientMessage } from 'react-chatbot-kit';
 // import {baseURL} from "@/util.js"
-import Options from './widgets/Options';
-import ApiCalls from './widgets/ApiCall';
-import Redirects from './widgets/Redirect';
+import Options from '@/app/components/chatbot/widgets/Options';
+import ApiCalls from '@/app/components/chatbot/widgets/ApiCall';
+import Redirects from '@/app/components/chatbot/widgets/Redirect';
 
 export const config = {
   initialMessages: [createChatBotMessage(`Hi, I am Elon! How can I help you?`)],

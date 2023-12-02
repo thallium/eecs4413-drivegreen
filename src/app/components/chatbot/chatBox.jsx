@@ -1,11 +1,11 @@
 'use client'
 import Chatbot from 'react-chatbot-kit';
-import './styles.css'
-import { config, validateInput } from './config';
+import '@/app/components/chatbot/styles.css';
+import { config, validateInput } from '@/app/components/chatbot/config';
 import MessageParser from '@/app/components/chatbot/MessageParser';
 import ActionProvider from '@/app/components/chatbot/ActionProvider';
 import {useState} from 'react';
-import Icon from './icon'
+import Icon from '@/app/components/chatbot/icon';
 
 
 export const ChatBox = () => {

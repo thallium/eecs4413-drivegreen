@@ -2,7 +2,7 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/app/components/Navbar'
 import SessionProvider from '@/app/context/SessionProvider'
-import { ChatBox } from './components/chatbot/ChatBox'
+import { ChatBox } from '@/app/components/chatbot/ChatBox';
 
 
 
