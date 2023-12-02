@@ -39,6 +39,9 @@ export async function POST(request) {
             if (!found) {
                 return new NextResponse("User doesn't have an order associated with this vehicle", { status: 403 });
             }
+            if (!req.title || !req.rating) {
+                return new NextResponse("Review title and rating must be provided.", { status: 400 });
+            }
             const review = await prisma.review.create({
                 data: {
                     authorId: uid,

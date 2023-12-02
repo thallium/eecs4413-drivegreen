@@ -19,7 +19,7 @@ const NotificationProvider = (props) => {
 
     return (
         <NotificationContext.Provider value={dispatch}>
-            <div className="absolute bottom-0 z-50">
+            <div className="fixed bottom-0 left-2 z-50">
                 {state.map((note) => {
                     return <Notification dispatch={dispatch} key={note.id} {...note} />
                 })}
