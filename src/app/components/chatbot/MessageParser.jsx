@@ -7,7 +7,7 @@ const MessageParser = ({ children, actions }) => {
   const [userEmail, setUserEmail] = useState('');
   const [tId, setTId] = useState('');
   const { data: session } = useSession({});
-  const [vehicles, setVehicles] = useState(null);
+  const [vehicles, setVehicles] = useState([]);
 
   useEffect(() => {
     // Check if session and userEmail exist and update userEmail
@@ -23,19 +23,24 @@ const MessageParser = ({ children, actions }) => {
       console.log('Failed to get vehicles!\nError: ' + (await res.text()));
       return;
     }
-    const vehicles = await res.json();
-    console.log(JSON.stringify(res));
-    
-    setVehicles(vehicles);
-  }
+    const data = await res.json();
+    // console.log('res', res);
+    // console.log('vehicles', data);
+    let vehs = {};
+    data.forEach((vehicle) => {
+      vehs[vehicle.name] = vehicle.vid;
+    });
+    // console.log('vehs', vehs);
+    setVehicles(vehs);
+  };
 
   useEffect(() => {
     fetchVehicles();
   }, []);
 
   const parse = async (message) => {
-    // check vehicle names
     // console.log("baseURL: " + baseURL);
+    let options = [];
     console.log("userEmail: " + userEmail + " tId: " + tId);
     const res = await fetch(baseURL() + '/api/chatbot', {
       method: 'POST',
@@ -48,6 +53,7 @@ const MessageParser = ({ children, actions }) => {
 
     if (!res.ok) {
       console.log('Failed to get response!\nError: ' + (await res.text()));
+      actions.handleResponse('Something went wrong.');
       return;
     }
 
@@ -55,7 +61,43 @@ const MessageParser = ({ children, actions }) => {
     // console.log(await res.json());
     setTId(thread_id);
     let s = answer.replace(/\【[^]*source\】/g, '');
-    actions.handleResponse(s);
+    
+    if (session && message.includes('order')) {
+      let op = {
+        name: 'view orders',
+        handler: actions.handleViewOrders
+      }
+
+      options.push(op);
+    }
+
+    let match = false;
+    let matches = {}
+    Object.keys(vehicles).forEach((key) => {
+      if(s.includes(key)) {
+        //todo: add widgets with vid
+        match = true;
+        matches[key] = vehicles[key];
+      }
+    });
+
+    if(match) {
+      let op1 = {
+        name: 'view details',
+        handler: () => actions.handleViewVehicles(matches)
+      }
+      options.push(op1);
+
+      if (session) {
+        let op2 = {
+          name: 'add to cart',
+          handler: () => actions.handleAddToCart(matches),
+        };
+        options.push(op2);
+      }
+    }
+
+    actions.handleResponse(s, options);
   };
 
   return (

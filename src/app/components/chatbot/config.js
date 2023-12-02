@@ -1,10 +1,9 @@
 import React from 'react';
 import { createChatBotMessage, createClientMessage } from 'react-chatbot-kit';
-import {baseURL} from "@/util.js"
-
-
-
-
+// import {baseURL} from "@/util.js"
+import Options from './widgets/Options';
+import ApiCalls from './widgets/ApiCall';
+import Redirects from './widgets/Redirect';
 
 export const config = {
   initialMessages: [createChatBotMessage(`Hi, I am Elon! How can I help you?`)],
@@ -20,13 +19,28 @@ export const config = {
   },
 
   state: {
-    threadId:"",
   },
+
+  widgets: [
+    {
+      widgetName: "options",
+      widgetFunc: (props) => <Options {...props} />,
+      // mapStateToProps: ["user_email"],
+    },
+    {
+      widgetName: "api_calls",
+      widgetFunc: (props) => <ApiCalls {...props} />,
+    },
+    {
+      widgetName: "redirects",
+      widgetFunc: (props) => <Redirects {...props} />,
+    }
+  ]
 };
 
 
 export const validateInput = (input) => {
-  if (input.length < 1) 
+  if (input.trim().length < 1) 
     return false;
 
   return true;
