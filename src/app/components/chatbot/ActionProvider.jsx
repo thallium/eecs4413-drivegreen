@@ -3,7 +3,7 @@ import React from 'react';
 import { redirect } from 'next/navigation';
 import { baseURL } from '@/util';
 
-const ActionProvider = ({createChatBotMessage, createClientMessage, setState, children }) => {
+export const ActionProvider = ({createChatBotMessage, createClientMessage, setState, children }) => {
   const addMessageToBotState = (messages, newState) => {
     setState((state) => ({
       ...state,
@@ -78,4 +78,3 @@ const ActionProvider = ({createChatBotMessage, createClientMessage, setState, ch
   );
 };
 
-export default ActionProvider;

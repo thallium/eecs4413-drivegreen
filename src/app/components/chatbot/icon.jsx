@@ -1,4 +1,4 @@
-export default function Icon(props) {
+export function Icon(props) {
   return (
     <svg
       data-name="Layer 1"
