@@ -19,13 +19,13 @@ export const config = {
   },
 
   state: {
+
   },
 
   widgets: [
     {
       widgetName: "options",
       widgetFunc: (props) => <Options {...props} />,
-      // mapStateToProps: ["user_email"],
     },
     {
       widgetName: "api_calls",

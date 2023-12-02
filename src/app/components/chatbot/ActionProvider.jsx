@@ -1,69 +1,64 @@
 'use client'
 import React from 'react';
 import { redirect } from 'next/navigation';
-
+import { baseURL } from '@/util';
 
 const ActionProvider = ({createChatBotMessage, createClientMessage, setState, children }) => {
-  const addMessageToBotState = (messages) => {
+  const addMessageToBotState = (messages, newState) => {
     setState((state) => ({
       ...state,
+      newState,
       messages: [...state.messages, messages],
     }));
   };
 
   const handleResponse = (message, options) => {
+    console.log('handleResponse', options);
     const messages = createChatBotMessage(message, {
       widget: 'options',
-      ...options,
+      payload: {options},
     });
     addMessageToBotState(messages);
   };
-
-  const handleUserChoice = (message) => {
-    const messages = createClientMessage(message);
-    addMessageToBotState(messages);
-  }
 
   const handleViewOrders = () => {
     redirect('/orders');
   };
 
   const handleViewVehicles = (matches) => {
-    if(Object.keys(matches).length == 1) {
-      redirect(`/vehicles/${Object.values(matches)[0]}`);
-    }
-    else {
-      const links = Object.keys(matches).map((key) => {
-        return {
-          title: key,
-          url: `/vehicles/${matches[key]}`,
-        }
-      })
 
-      const messages = createClientMessage("Which vehicle you want to view?", {
-        widget: 'redirects',
-        ...links,
-      });
+    const links = Object.keys(matches).map((key) => {
+      return {
+        title: key,
+        url: `/vehicles/${matches[key]}`,
+      }
+    })
 
-      addMessageToBotState(messages);
-    }
+    const messages = createChatBotMessage("Please confirm the vehicle you want to view", {
+      widget: 'redirects',
+      payload: {links}
+    });
+
+    addMessageToBotState(messages, links);
   }
+  
 
   const handleAddToCart = (matches) => {
+      const base = baseURL();
       const calls = Object.keys(matches).map((key) => {
         return {
           title: key,
-          url: `/api/shoppingCart/${matches[key]}`,
+          url: `${base}/api/shoppingCart/${matches[key]}`,
           body: {option: 'add'}
         };
       });
 
-      const messages = createClientMessage('Please confirm the vehicle you want to add.', {
+      const messages = createChatBotMessage('Please confirm the vehicle you want to add.', {
         widget: 'api_calls',
-        ...calls,
+        payload: {calls}
       });
 
-      addMessageToBotState(messages);
+      addMessageToBotState(messages, calls);
   };
 
   return (

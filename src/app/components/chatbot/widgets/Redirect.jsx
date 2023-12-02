@@ -1,14 +1,15 @@
 import Link from 'next/link';
 
-const Redirects = ({links}) => {
+const Redirects = (props) => {
+  console.log('links', props.payload.links);
   return (
     <>
-      {links.map((link) => (
+      {props.payload.links.map((link) => (
         <Link key={link.title} href={link.url}>
           {link.title}
         </Link>
       ))}
-      ;
+      
     </>
   );
 };

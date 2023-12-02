@@ -1,14 +1,25 @@
 import React from 'react';
-import styles from './Options.css';
+// import './Options.css';
 
-const Options = ({ options }) => {
-  const markup = options.map((option) => (
-     <button key={option.name} className={styles.option} onClick={option.handler}>
-      {option.name}
-    </button>
-  ));
+const Options = (props) => {
+  console.log('props', props);
 
-  return <div className={styles.options}>{markup}</div>;
+  return (
+    <div className="">
+      <div className="flex flex-wrap">
+        {props.payload.options &&
+          props.payload.options.map((option) => (
+            <button
+              key={option.name}
+              className="border-solid border-gray-200 rounded-2xl border-2 px-2"
+              onClick={option.handler}
+            >
+              {option.name}
+            </button>
+          ))}
+      </div>
+    </div>
+  );
 };
 
 export default Options;
