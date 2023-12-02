@@ -2,23 +2,39 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import axios from "axios";
+import { getSession } from "next-auth/react";
+import { redirect } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { useNotification } from "../NotificationProvider";
 
 function VehicleCard(props) {
   const [vehicle, setVehicle] = useState(props.vehicle);
   const [loading, setLoading] = useState(false);
+  const router = useRouter();
+  const dispatch = useNotification();
 
   const addToShoppingCart = async (vid) => {
+    const session = await getSession();
+    if(!session){
+      router.push('/signin');
+      return;
+    }
     try{
       setLoading(true);
       const response = await axios.put(`/api/shoppingCart/${vid}`, {"option": "add"});
       console.log("Added to shopping cart:", response.data);
       // Show success alert
-      alert("Added to shopping cart successfully!");
-      // You might want to update the UI or take additional actions here
+      dispatch({
+        type: "INFO",
+        message: "Added to shopping cart successfully!"
+      })
     } catch (error) {
       console.error("Error adding to shopping cart:", error);
       // Show error alert
-      alert(`Error: ${error}.`);
+      dispatch({
+        type: "ERROR",
+        message: `Error: ${error}.`
+      })
     } finally{
       setLoading(false);
     }
