@@ -3,7 +3,7 @@ import { baseURL } from '@/util.js';
 import React, {useState, useEffect} from 'react';
 import { useSession } from 'next-auth/react';
 
-const MessageParser = ({ children, actions }) => {
+export const MessageParser = ({ children, actions }) => {
   const [userEmail, setUserEmail] = useState('');
   const [tId, setTId] = useState('');
   const { data: session } = useSession({});
@@ -111,5 +111,3 @@ const MessageParser = ({ children, actions }) => {
     </div>
   );
 };
-
-export default MessageParser;
