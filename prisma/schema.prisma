@@ -22,8 +22,8 @@ enum Brand {
   Jeep
   Toyota
   Tesla
-  Hyundai
   Chevrolet
+  Hyundai
 }
 
 enum Shape {

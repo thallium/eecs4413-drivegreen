@@ -8,10 +8,10 @@ export default async function HotDealManage() {
     const deals = await getDeals();
     // console.log(deals);
     return (
-      <div className="overflow-x-auto max-h-56 border-solid border-2 rounded border-grey-400">
+      <div className="overflow-x-auto max-h-96 border-solid border-2 rounded border-grey-400 relative">
         <table className="table">
-          <caption>Hot Deals</caption>
-          <thead>
+          <caption className="">Hot Deals</caption>
+          <thead className="sticky top-0 bg-white z-10">
             <tr>
               <th>Brand</th>
               <th>Name</th>
@@ -29,7 +29,7 @@ export default async function HotDealManage() {
                   <td>{d.modelYear}</td>
                   <td>{d.shape}</td>
                   <td>{d.price}</td>
-                  <div>
+                  <div className="m-2">
                     <DeleteButton vid={d.vid} />
                   </div>
                 </tr>

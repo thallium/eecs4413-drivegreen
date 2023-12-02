@@ -6,7 +6,7 @@ export async function GET(request, { params }) {
   const vehicle = await prisma.vehicle.findUnique({
     where: {
       vid,
-    },
+    }
   });
 
   if (!vehicle) {

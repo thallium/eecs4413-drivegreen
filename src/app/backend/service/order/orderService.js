@@ -90,7 +90,7 @@ export const createOrderFromShoppingCart = async (shoppingCart, shippingAddr, pa
             },
         },
     });
-    console.log("user for orders: " + JSON.stringify(user));
+    // console.log("user for orders: " + JSON.stringify(user));
     if(user){
       return user.orders;
     }

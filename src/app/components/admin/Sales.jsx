@@ -6,10 +6,10 @@ export default async function Sales() {
   const sales = await sale_reports();;
   // console.log("sales", sales.entries());
   return (
-    <div className="overflow-x-auto max-h-56 border-solid border-2 rounded border-grey-400">
+    <div className="overflow-x-auto max-h-64 border-solid border-2 rounded border-grey-400 relative">
       <table className="table">
         <caption>Sales (last 1 month)</caption>
-        <thead>
+        <thead className="sticky top-0 bg-white z-10">
           <tr>
             <th>Vehicle</th>
             <th>Sold</th>

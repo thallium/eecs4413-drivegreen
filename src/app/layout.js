@@ -2,7 +2,9 @@ import { Inter } from 'next/font/google'
 import './globals.css'
 import Navbar from '@/app/components/Navbar'
 import SessionProvider from '@/app/context/SessionProvider'
-import NotificationProvider from '@/app/components/NotificationProvider'
+import { ChatBox } from './components/chatbot/ChatBox'
+
+
 
 const inter = Inter({ subsets: ['latin'] })
 
@@ -14,14 +16,13 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} relative h-full`}>
         <SessionProvider>
-          <NotificationProvider>
-            <Navbar />
-            {children}
-          </NotificationProvider>
+          <Navbar />
+          <ChatBox />
+          {children}
         </SessionProvider>
       </body>
     </html>
-  )
+  );
 }

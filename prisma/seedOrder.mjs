@@ -6,7 +6,7 @@ import { PrismaClient } from '@prisma/client';
  * @param {PrismaClient} prisma
  */
 export default async function seedOrder(prisma, vehicles, users) {
-  const [veh1, veh2, veh3] = vehicles
+  const [veh1, veh2, veh3, veh4, veh5, veh6] = vehicles
   const [user1, user2, user3,user4] = users
 
   const o1 = await prisma.order.upsert({
@@ -118,4 +118,48 @@ export default async function seedOrder(prisma, vehicles, users) {
       isPaid: true,
     },
   });
+
+
+  const calculateTotal = (items) => {
+    return items.reduce((total, item) => total + item.quantity * item.vehicle.price, 0);
+  };
+
+  const createOrder = async (userData, vehicleData, orderId, shippingAddr, isPaid) => {
+    const orderItems = vehicleData.map((vehicle) => ({
+      vehicle: {
+        connect: { vid: vehicle.vid },
+      },
+      quantity: Math.floor(Math.random() * 3) + 1, // Random quantity between 1 and 3
+      subTotal: 0, // Will be calculated later
+    }));
+
+    orderItems.forEach((item) => {
+      item.subTotal = item.quantity * item.vehicle.price;
+    });
+
+    const total = calculateTotal(orderItems);
+
+    const order = await prisma.order.upsert({
+      where: { oid: orderId },
+      update: {
+      },
+      create: {
+        user: {
+          connect: {
+            uid: userData.uid,
+          },
+        },
+        orderItems: {
+          create: orderItems,
+        },
+        totalPrice: total,
+        isPaid,
+      },
+    });
+
+
+    await createOrder(user1, [veh4, veh5], 1, '100 abc Rd', true);
+    await createOrder(user1, [veh1, veh2], 2, '100 abc Rd', false);
+    await createOrder(user4, [veh1, veh2], 3, '200 abc Rd', true);
+  };
 }

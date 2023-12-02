@@ -78,7 +78,7 @@ export function AddDeal() {
 
     
     return (
-      <div className="grid grid-cols-2 gap-4 w-1/5">
+      <div className="grid grid-cols-2 gap-4 w-1/5 m-2">
         <input
           type="text"
           placeholder="Vehicle ID"
