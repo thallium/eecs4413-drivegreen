@@ -8,7 +8,7 @@ export default async function seedUser(prisma) {
       // minimum: only required fields
       name: 'Tesla Model Y',
       brand: Brand.Tesla,
-      price: 25000.0,
+      price: 57000.0,
     },
   });
 
