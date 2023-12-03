@@ -3,6 +3,7 @@ import './globals.css'
 import Navbar from '@/app/components/Navbar'
 import SessionProvider from '@/app/context/SessionProvider'
 import { ChatBox } from '@/app/components/chatbot/chatBox'
+import NotificationProvider from '@/app/components/NotificationProvider'
 
 
 const inter = Inter({ subsets: ['latin'] })
@@ -17,9 +18,11 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${inter.className} relative h-full`}>
         <SessionProvider>
-          <Navbar />
-          <ChatBox />
-          {children}
+          <NotificationProvider>
+            <Navbar />
+            <ChatBox />
+            {children}
+          </NotificationProvider>
         </SessionProvider>
       </body>
     </html>

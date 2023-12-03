@@ -41,7 +41,7 @@ function VehicleCard(props) {
   }
 
   return (
-    <div className="card w-96 h-[36rem] bg-base-100 shadow-xl">
+    <div className="card xl:w-96 lg:w-64 h-[36rem] bg-base-100 shadow-xl">
       <figure>
         <Image
           src={`/vehicles/${vehicle.brand}.jpg`}
@@ -64,7 +64,7 @@ function VehicleCard(props) {
               vehicle.hotDealed ? "visible" : "invisible"
             }`}
           >
-            Hot Deal
+            Hot
           </div>
         </h2>
         <h2 className="card-title">
