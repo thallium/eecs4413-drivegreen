@@ -96,7 +96,7 @@ const CheckOutDetails = () => {
   }
 
   return (
-    <div className="container mx-auto my-8">
+    <div className="container mx-8 my-8">
       <h2 className="text-3xl font-semibold mb-4">Check Out</h2>
       {/* Division line */}
       <hr className="my-6 border-t border-gray-300 mb-2" />
