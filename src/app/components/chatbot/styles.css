@@ -136,13 +136,13 @@
 .react-chatbot-kit-chat-container {
   position: relative;
   width: 40vw;
+  border: #f4f4f4 solid 3px ;
+  border-radius: 5px;
 }
 
 .react-chatbot-kit-chat-inner-container {
   height: 500px;
   background-color: #fff;
-  border-radius: 3px;
-  border-radius: 5px;
 }
 
 .react-chatbot-kit-chat-header {

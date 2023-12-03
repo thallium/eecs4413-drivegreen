@@ -7,14 +7,14 @@ import { PrismaClient } from '@prisma/client';
  */
 export default async function seedOrder(prisma, vehicles, users) {
   const [veh1, veh2, veh3, veh4, veh5, veh6] = vehicles
-  const [user1, user2, user3,user4] = users
+  const [user1, user2, user3, user4] = users
 
   const o1 = await prisma.order.upsert({
     where: { oid: 1 },
     update: {
       shippingAddr: '100 abc Rd',
       isPaid: true,
-      createdAt: new Date('2023-11-16'),
+      createdAt: new Date('2023-12-01'),
     },
     create: {
       user: {
@@ -42,7 +42,7 @@ export default async function seedOrder(prisma, vehicles, users) {
       },
       totalPrice: 1 * veh1.price + 2 * veh2.price,
       isPaid: true,
-      createdAt: new Date('2023-11-16'),
+      createdAt: new Date('2023-12-01'),
     },
   });
 
@@ -56,7 +56,7 @@ export default async function seedOrder(prisma, vehicles, users) {
     create: {
       user: {
         connect: {
-          uid: user1.uid,
+          uid: user2.uid,
         },
       },
       orderItems: {
@@ -86,7 +86,7 @@ export default async function seedOrder(prisma, vehicles, users) {
     where: { oid: 3 },
     update: {
       shippingAddr: '200 abc Rd',
-      updatedAt: new Date('2023-11-17'),
+      updatedAt: new Date('2023-12-02'),
     },
     create: {
       user: {
@@ -113,7 +113,7 @@ export default async function seedOrder(prisma, vehicles, users) {
         ],
       },
       totalPrice: 1 * veh1.price + 2 * veh2.price,
-      createdAt: new Date('2023-12-17'),
+      createdAt: new Date('2023-12-02'),
       shippingAddr: '200 abc Rd',
       isPaid: true,
     },
@@ -158,8 +158,8 @@ export default async function seedOrder(prisma, vehicles, users) {
     });
 
 
-    await createOrder(user1, [veh4, veh5], 1, '100 abc Rd', true);
-    await createOrder(user1, [veh1, veh2], 2, '100 abc Rd', false);
-    await createOrder(user4, [veh1, veh2], 3, '200 abc Rd', true);
+    // await createOrder(user1, [veh4, veh5], 1, '100 abc Rd', true);
+    // await createOrder(user1, [veh1, veh2], 2, '100 abc Rd', false);
+    // await createOrder(user4, [veh1, veh2], 3, '200 abc Rd', true);
   };
 }

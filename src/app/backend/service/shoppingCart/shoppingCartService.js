@@ -19,7 +19,7 @@ export const getShoppingCart = async (email) => {
     },
     
   });
-  console.log("shoppingCart:" + JSON.stringify(shoppingCart));
+  // console.log("shoppingCart:" + JSON.stringify(shoppingCart));
   return shoppingCart;
   
 }
@@ -40,7 +40,7 @@ export const creatEmptyShoppingCart = async (email) => {
       totalPrice: 0, // Set the initial total price
     },
   });
-  console.log(`Shopping cart created for user with email: ${email}`);
+  // console.log(`Shopping cart created for user with email: ${email}`);
   return shoppingCart;
 }
 
@@ -104,7 +104,7 @@ const insertNewItemToCart = async (scId, vehicleId, subTotal, total) => {
 
   const updatedShoppingCart = await updateCartTotal(scId, total);
 
-  console.log(`Vehicle with ID ${vehicleId} added to the shopping cart. Quantity 1`);
+  // console.log(`Vehicle with ID ${vehicleId} added to the shopping cart. Quantity 1`);
   return [newItem, updatedShoppingCart];
 }
 
@@ -142,7 +142,7 @@ const updateCartTotal = async (scId, total) => {
         }
       })
 
-    console.log("updated shopping cart:"+ JSON.stringify(updatedShoppingCart));
+    // console.log("updated shopping cart:"+ JSON.stringify(updatedShoppingCart));
     return updatedShoppingCart;
     
 }

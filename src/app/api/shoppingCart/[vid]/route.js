@@ -6,7 +6,7 @@ import { getServerSession } from "next-auth";
 export async function PUT(request, { params }) {
     const vid = params.vid;
     const session = await getServerSession({ req: request });
-    console.log("session:"+JSON.stringify(session));
+    // console.log("session:"+JSON.stringify(session));
     
     let shoppingCart;
     if (session) {

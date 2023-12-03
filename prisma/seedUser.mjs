@@ -2,14 +2,15 @@ import { Brand, Shape } from '@prisma/client'
 
 export default async function seedUser(prisma) {
   const watchedVeh = await prisma.vehicle.upsert({
-    where: { name: 'Audi Model S', },
+    where: { name: 'Tesla Model Y' },
     update: {},
-    create: { // minimum: only required fields
-      name: 'Model S',
-      brand: Brand.Audi,
-      price: 25000.00
+    create: {
+      // minimum: only required fields
+      name: 'Tesla Model Y',
+      brand: Brand.Tesla,
+      price: 57000.0,
     },
-  })
+  });
 
   const user1 = await prisma.user.upsert({
     where: { email: 'user1@gmail.com' },

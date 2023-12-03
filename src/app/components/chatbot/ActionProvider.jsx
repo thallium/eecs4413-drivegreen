@@ -2,8 +2,11 @@
 import React from 'react';
 import { redirect } from 'next/navigation';
 import { baseURL } from '@/util';
+import { useRouter } from 'next/navigation'; 
 
 export const ActionProvider = ({createChatBotMessage, createClientMessage, setState, children }) => {
+  const router = useRouter();
+
   const addMessageToBotState = (messages, newState) => {
     setState((state) => ({
       ...state,
@@ -22,7 +25,7 @@ export const ActionProvider = ({createChatBotMessage, createClientMessage, setSt
   };
 
   const handleViewOrders = () => {
-    redirect('/orders');
+    router.push('/order');
   };
 
   const handleViewVehicles = (matches) => {
@@ -61,6 +64,11 @@ export const ActionProvider = ({createChatBotMessage, createClientMessage, setSt
       addMessageToBotState(messages, calls);
   };
 
+
+  const handleCheckout = () => {
+    router.push('/shoppingCart');
+  };
+
   return (
     <div>
       {React.Children.map(children, (child) => {
@@ -70,7 +78,8 @@ export const ActionProvider = ({createChatBotMessage, createClientMessage, setSt
             // handleUserChoice,
             handleViewOrders,
             handleViewVehicles,
-            handleAddToCart
+            handleAddToCart,
+            handleCheckout,
           },
         });
       })}

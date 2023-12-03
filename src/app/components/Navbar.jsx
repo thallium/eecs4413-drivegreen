@@ -11,6 +11,7 @@ const Navbar = () => {
     useEffect(() => {
         fetch(baseURL() + '/api/admin/access', {cache: "no-store"}).then((res) => {
             if (!res.ok) {
+                setIsAdmin(false);
                 // console.log('Not Admin!\n');
                 return;
             }
@@ -19,6 +20,7 @@ const Navbar = () => {
         });
     }, [session]);
 
+    
     const openCalculator = () => {
       const newWindow = window.open(
         "/calculator",
