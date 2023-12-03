@@ -65,7 +65,7 @@ export const ActionProvider = ({createChatBotMessage, createClientMessage, setSt
 
 
   const handleCheckout = () => {
-    router.push('/shoppingCart');
+    router.push('/checkout');
   };
 
   return (
