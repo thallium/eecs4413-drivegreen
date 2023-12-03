@@ -8,6 +8,7 @@ import {
   } from "@tanstack/react-query";
 import axios from 'axios';
 import { useRouter } from 'next/navigation';
+import { useNotification } from '@/app/components/NotificationProvider';
 
 const queryClient = new QueryClient();
 
@@ -33,6 +34,17 @@ const createOrder = async (data) => {
   }
 };
 
+// Function to retrieve the click count from local storage
+const getPayCount = () => {
+  const storedCount = localStorage.getItem('payCount');
+  return storedCount ? parseInt(storedCount, 10) : 0;
+};
+
+// Function to update and store the click count in local storage
+const updatePayCount = (count) => {
+  localStorage.setItem('payCount', count.toString());
+};
+
 const CheckOutDetails = () => {
   const { data: shoppingCart, isLoading, isError } = useQuery({
     queryKey: '/api/shoppingCart', 
@@ -44,6 +56,7 @@ const CheckOutDetails = () => {
     cvv: '',
   });
   const [isPlacingOrder, setIsPlacingOrder] = useState(false);
+  const [payCount, setPayCount] = useState(getPayCount());
   const router = useRouter();
 
   const handleShippingAddressChange = (e) => {
@@ -58,23 +71,52 @@ const CheckOutDetails = () => {
     }));
   };
 
+  const dispatch = useNotification();
+
+  const areAllFieldsFilled = () => {
+    return shippingAddr.trim() !== '' &&
+      creditCardInfo.cardNumber.trim() !== '' &&
+      creditCardInfo.expirationDate.trim() !== '' &&
+      creditCardInfo.cvv.trim() !== '';
+  };
+
   const handlePlaceOrder = async () => {
+    if(!areAllFieldsFilled()){
+      dispatch({
+        type: "ERROR",
+        message: `All fields must be filled!`,
+      })
+    }
+    
     setIsPlacingOrder(true);
 
-    let paymentSuccess = true;
+    const newPayCount = payCount + 1;
+    setPayCount(newPayCount);
+    updatePayCount(newPayCount);
+
+    let paymentSuccess = newClickCount % 3 !== 0;
 
     try {
-      // Create an order
-      const orderData = {
-        shoppingCart,
-        shippingAddr,
-        paymentSuccess,
-      };
+      if(paymentSuccess){
+        // Create an order
+        const orderData = {
+          shoppingCart,
+          shippingAddr,
+          paymentSuccess,
+        };
 
-      const createdOrder = await createOrder(orderData);
+        const createdOrder = await createOrder(orderData);
 
-      // Redirect to order success page
-      router.push(`/order/paymentSuccess/${createdOrder.oid}`);
+        // Redirect to order success page
+        router.push(`/order/paymentSuccess/${createdOrder.oid}`);
+      }
+      else{
+        dispatch({
+          type: "ERROR",
+          message: `Credit Card Authorization Failed!`,
+        })
+      }
+      
     } catch (error) {
       console.error('Error placing order:', error);
       
@@ -96,7 +138,7 @@ const CheckOutDetails = () => {
   }
 
   return (
-    <div className="container mx-8 my-8">
+    <div className="container mx-auto px-20 my-8">
       <h2 className="text-3xl font-semibold mb-4">Check Out</h2>
       {/* Division line */}
       <hr className="my-6 border-t border-gray-300 mb-2" />

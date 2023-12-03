@@ -110,7 +110,7 @@ function ShoppingCart(props) {
 
   return (
     <>
-      <div className="container mx-auto my-8">
+      <div className="container px-20 mx-auto my-8">
       <h2 className="text-2xl font-semibold mb-4">Shopping Cart</h2>
       <ShoppingCartItemList
         items={shoppingCart.vehicleItems}
