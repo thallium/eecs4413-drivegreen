@@ -22,13 +22,17 @@ const ApiCalls = (props) => {
   };
 
   return (
-    <>
+    <div className="flex flex-wrap space-x-1">
       {props.payload.calls.map((c) => (
-        <button key={c.title} onClick={() => call(c.url, c.body)}>
+        <button
+          key={c.title}
+          onClick={() => call(c.url, c.body)}
+          className="border-solid border-gray-200 rounded-xl border-2 px-2 mb-1"
+        >
           {c.title}
         </button>
       ))}
-    </>
+    </div>
   );
 };
 
