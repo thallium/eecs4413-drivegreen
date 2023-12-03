@@ -13,8 +13,9 @@ export const getInstruction = (vehicles, hotdeals) => {
 
 export const runInstruction = (userEmail, orders) => {
     let res =
-      "the customer's email is" + userEmail +
-      ". if the email is not given,the customer is not logged in, we can't get their order information. But you can still answer with the vehicles and hotdeals information. If they want to check order states, suggest them to login but do not say you need their email.";
+      "the customer's email is" +
+      userEmail +
+      '. if the email is not given,the customer is not logged in. If they want to check order states or add vehicles to cart, suggest them to login but do not say you need their email. If user is not logged in, you can still answer with the vehicles and hotdeals information.';
 
     if (orders) {
       res += ". here are the orders under the user email: " + userEmail+ "\n orders: " + JSON.stringify(orders);
