@@ -22,14 +22,14 @@ function VehicleCard(props) {
     try{
       setLoading(true);
       const response = await axios.put(`/api/shoppingCart/${vid}`, {"option": "add"});
-      console.log("Added to shopping cart:", response.data);
+      // console.log("Added to shopping cart:", response.data);
       // Show success alert
       dispatch({
         type: "INFO",
         message: "Added to shopping cart successfully!"
       })
     } catch (error) {
-      console.error("Error adding to shopping cart:", error);
+      // console.error("Error adding to shopping cart:", error);
       // Show error alert
       dispatch({
         type: "ERROR",
