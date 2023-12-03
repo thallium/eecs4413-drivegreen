@@ -50,7 +50,7 @@ const PaymentSuccess = ({orderId}) => {
       </div>
 
       {/* Order Details */}
-      <div className="container mx-auto my-8">
+      <div className="container mx-auto px-20 my-8">
         {orderDetails && (
           <div>
             <h3 className="text-xl font-semibold mb-2">Order Details</h3>
