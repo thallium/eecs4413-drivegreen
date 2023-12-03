@@ -36,13 +36,25 @@ const createOrder = async (data) => {
 
 // Function to retrieve the click count from local storage
 const getPayCount = () => {
-  const storedCount = localStorage.getItem('payCount');
-  return storedCount ? parseInt(storedCount, 10) : 0;
+  try{
+    const storedCount = localStorage.getItem('payCount');
+    return storedCount ? parseInt(storedCount, 10) : 0;
+  }
+  catch (error){
+    console.log("error accessing local storage: "+error);
+    return 0;
+  }
+  
 };
 
 // Function to update and store the click count in local storage
 const updatePayCount = (count) => {
-  localStorage.setItem('payCount', count.toString());
+  try{
+    localStorage.setItem('payCount', count.toString());
+  } 
+  catch (error){
+    console.log("error accessing local storage: "+error);
+  }
 };
 
 const CheckOutDetails = () => {
