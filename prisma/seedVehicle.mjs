@@ -2,7 +2,7 @@ import { Brand, Shape } from '@prisma/client'
 // import seedUser from './seedUser.mjs'
 
 export default async function seedVehicle(prisma, users) {
-  const [user1, user2, user3] = users
+  const [user1, user2, user3, user4] = users
 
   const veh1 = await prisma.vehicle.upsert({
     where: { name: 'Ford XLT', },

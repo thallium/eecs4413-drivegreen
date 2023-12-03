@@ -76,5 +76,5 @@ export default async function seedLoginHistory(prisma, users) {
     },
   });
   
-  console.log('login history seed:', h1, h2, h3, h4, h5);
+  // console.log('login history seed:', h1, h2, h3, h4, h5);
 }
