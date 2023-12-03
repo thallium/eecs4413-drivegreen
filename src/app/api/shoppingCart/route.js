@@ -8,9 +8,9 @@ export async function GET(request) {
     if (session) {
         try {
             const email = session.user.email;
-            console.log("email:"+email);
+            // console.log("email:"+email);
             const shoppingCart = await getShoppingCart(email);
-            console.log("shopping Cart:" + JSON.stringify(shoppingCart));
+            // console.log("shopping Cart:" + JSON.stringify(shoppingCart));
             return NextResponse.json(shoppingCart, { status: 200 });
         } catch (error) {
             return new NextResponse(error.message, { status: 500 });

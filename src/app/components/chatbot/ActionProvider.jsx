@@ -1,6 +1,5 @@
 'use client'
 import React from 'react';
-import { redirect } from 'next/navigation';
 import { baseURL } from '@/util';
 import { useRouter } from 'next/navigation'; 
 
@@ -66,7 +65,7 @@ export const ActionProvider = ({createChatBotMessage, createClientMessage, setSt
 
 
   const handleCheckout = () => {
-    router.push('/shoppingCart');
+    router.push('/checkout');
   };
 
   return (
