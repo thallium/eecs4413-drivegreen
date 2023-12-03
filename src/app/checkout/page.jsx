@@ -86,6 +86,7 @@ const CheckOutDetails = () => {
         type: "ERROR",
         message: `All fields must be filled!`,
       })
+      return;
     }
     
     setIsPlacingOrder(true);
@@ -94,7 +95,7 @@ const CheckOutDetails = () => {
     setPayCount(newPayCount);
     updatePayCount(newPayCount);
 
-    let paymentSuccess = newClickCount % 3 !== 0;
+    let paymentSuccess = newPayCount % 3 !== 0;
 
     try {
       if(paymentSuccess){
