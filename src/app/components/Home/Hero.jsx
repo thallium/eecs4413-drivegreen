@@ -10,6 +10,7 @@ function Hero() {
           src={homeCar}
           alt="HomeCar"
           className="max-w-sm rounded-lg shadow-2xl"
+          priority
         />
         {/* <img
           src="/HomeCar.jpg"
