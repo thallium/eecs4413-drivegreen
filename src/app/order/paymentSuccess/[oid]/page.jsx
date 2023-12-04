@@ -8,14 +8,14 @@ import Link from "next/link";
 
 const queryClient = new QueryClient();
 
-export default function PaymentSuccessPage({params}) {
-    console.log(params);
-    return (
-      <QueryClientProvider client={queryClient}>
-        <PaymentSuccess orderId={Number(params.oid)}/>
-      </QueryClientProvider>
-    );
-  }
+export default function PaymentSuccessPage({ params }) {
+  console.log(params);
+  return (
+    <QueryClientProvider client={queryClient}>
+      <PaymentSuccess orderId={Number(params.oid)} />
+    </QueryClientProvider>
+  );
+}
 
 const fetchOrderDetails = async (oid) => {
   // Replace with your actual API call to fetch order details
@@ -23,19 +23,20 @@ const fetchOrderDetails = async (oid) => {
   return response.data;
 };
 
-const PaymentSuccess = ({orderId}) => {
+const PaymentSuccess = ({ orderId }) => {
   const router = useRouter();
 
-  const { data:orderDetails, isLoading, isError } = useQuery({
-    queryKey: ['/api/order', orderId], 
-    queryFn: () => fetchOrderDetails(orderId)});
+  const { data: orderDetails, isLoading, isError } = useQuery({
+    queryKey: ['/api/order', orderId],
+    queryFn: () => fetchOrderDetails(orderId)
+  });
 
   if (isLoading) {
     return (
       <div className="h-screen flex items-center justify-center">
         <span className="loading loading-spinner loading-lg"></span>
       </div>
-      );
+    );
   }
 
   if (isError) {
@@ -60,7 +61,7 @@ const PaymentSuccess = ({orderId}) => {
                 <dt className="text-sm font-medium text-gray-500">Order ID</dt>
                 <dd className="mt-1 text-sm text-gray-900">{orderDetails.oid}</dd>
               </div>
-              
+
               {/* Total Amount */}
               <div className="bg-white border border-gray-200 rounded-md p-4">
                 <dt className="text-sm font-medium text-gray-500">Total Amount</dt>
@@ -98,14 +99,8 @@ const PaymentSuccess = ({orderId}) => {
         )}
       </div>
 
-      {/* Back to Home Link */}
-      <h2 className="text-center my-8">
-        <Link href="/" className="btn btn-primary">
-          Back to home
-        </Link>
-      </h2>
     </>
 
-    
+
   );
 };

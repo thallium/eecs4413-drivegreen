@@ -22,7 +22,7 @@ export default function ShoppingCartPage() {
   const session = useSession({
     required: true,
     onUnauthorized: () => {
-        redirect('/signin')
+      redirect('/signin')
     }
   })
 
@@ -34,7 +34,7 @@ export default function ShoppingCartPage() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <ShoppingCart checkout={navigateToCheckOutDetail}/>
+      <ShoppingCart checkout={navigateToCheckOutDetail} />
     </QueryClientProvider>
   );
 }
@@ -44,13 +44,13 @@ function ShoppingCart(props) {
     const response = await axios.get('/api/shoppingCart');
     return response.data;
   };
-  
+
   const updateQuantity = async ({ vehicleId, option }) => {
     const response = await axios.put(`/api/shoppingCart/${vehicleId}`, { option });
     return response.data;
   };
-  
-  
+
+
   const {
     isFetching,
     isPending,
@@ -58,7 +58,7 @@ function ShoppingCart(props) {
     data: shoppingCart,
     refetch,
   } = useQuery({
-    queryKey:['/api/shopping-cart'], 
+    queryKey: ['/api/shopping-cart'],
     queryFn: fetchShoppingCart
   });
 
@@ -93,7 +93,7 @@ function ShoppingCart(props) {
     updateCart(vehicleId, 'removeAll');
   };
 
-  
+
 
   if (isFetching || isPending || updating) {
     return (
@@ -101,7 +101,7 @@ function ShoppingCart(props) {
         <span className="loading loading-spinner loading-lg"></span>
       </div>
     )
-          
+
   }
 
   if (error) {
@@ -111,36 +111,22 @@ function ShoppingCart(props) {
   return (
     <>
       <div className="container px-20 mx-auto my-8">
-      <h2 className="text-2xl font-semibold mb-4">Shopping Cart</h2>
-      <ShoppingCartItemList
-        items={shoppingCart.vehicleItems}
-        onIncrease={increaseQuantity}
-        onDecrease={decreaseQuantity}
-        onRemove={removeItem} 
-      />
-      <div className="mt-4 flex justify-between">
-        <p className="text-lg font-semibold">Total Price: ${shoppingCart.totalPrice.toFixed(2)}</p>
-        <button className="btn w-64 rounded-full"
-        onClick={props.checkout}>
-          Checkout
-        </button>
+        <h2 className="text-2xl font-semibold mb-4">Shopping Cart</h2>
+        <ShoppingCartItemList
+          items={shoppingCart.vehicleItems}
+          onIncrease={increaseQuantity}
+          onDecrease={decreaseQuantity}
+          onRemove={removeItem}
+        />
+        <div className="mt-4 flex justify-between">
+          <p className="text-lg font-semibold">Total Price: ${shoppingCart.totalPrice.toFixed(2)}</p>
+          <button className="btn w-64 rounded-full"
+            onClick={props.checkout}>
+            Checkout
+          </button>
+        </div>
       </div>
-    </div>
-    <h2>
-        <Link
-          href="/"
-          style={{
-            border: "1px solid #ccc",
-            textAlign: "center",
-            color: "red",
-            margin: "4px",
-          }}
-        >
-          Back to home
-        </Link>
-    </h2>
     </>
-    
+
   );
 }
-

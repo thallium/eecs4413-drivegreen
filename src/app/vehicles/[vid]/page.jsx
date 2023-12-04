@@ -74,7 +74,7 @@ function VehicleSpecs({ vid }) {
 
 
   return (
-    <>
+    <div className=" container mx-auto">
       {vehicle && <VehicleDetail vehicle={{
         ...vehicle,
         averageRating: reviewsData.reduce((acc, cur) => acc + cur.rating, 0) / reviewsData.length
@@ -118,7 +118,7 @@ function VehicleSpecs({ vid }) {
           Back
         </Link>
       </h2>
-    </>
+    </div>
   );
 }
 
