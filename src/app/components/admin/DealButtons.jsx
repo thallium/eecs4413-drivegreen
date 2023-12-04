@@ -53,8 +53,11 @@ export function AddDeal() {
     const router = useRouter();
     const [vid, setVid] = useState('');
     const add = async() => {
-      if (vid.trim() == '' || isNaN(Number(str)))
-        return alert('Please enter a vehicle ID');
+      if (vid.trim() == '' || (/[^\d]+/.test(vid))){
+        alert('Please enter a vehicle ID (no whitespace)');
+        return;
+      }
+        
 
       try {
         const res = await fetch(baseURL() + '/api/admin/deal/' + vid, {
@@ -65,15 +68,16 @@ export function AddDeal() {
           body: JSON.stringify({"hotDealed": true}),
         });
         if (!res.ok) {
-          alert('Add failed!\nError: ' + (await res.text()));
+          alert('Add failed!\n');
           return;
         }
         setVid('');
         router.refresh();
       }
       catch(err) {
-        alert(err.message);
+        alert('Something went wrong!\n');
       };
+
     };
 
     
@@ -83,6 +87,7 @@ export function AddDeal() {
           type="text"
           placeholder="Vehicle ID"
           className="input input-bordered"
+          value={vid}
           onChange={(e) => setVid(e.target.value)}
         />
         <button className="btn btn-outline btn-square btn-info" onClick={add}>
