@@ -152,8 +152,8 @@ function Vehicles() {
     );
 
   return (
-    <>
-      <div className="flex m-2 justify-between">
+    <div className=" container mx-auto ">
+      <div className="flex m-2 mx-8 justify-between">
         <SortVehicles
           setPrice={(value) => setPriceSorter(value)}
           setMileage={(value) => setMileageSorter(value)}
@@ -166,23 +166,9 @@ function Vehicles() {
           setHistory={(value) => setHistoryFilter(value)}
         />
       </div>
-      <div className="m-2">
+      <div className="">
         <VehicleList vehicles={vehicles} />
       </div>
-
-      <h2>
-        <Link
-          href="/"
-          style={{
-            border: "1px solid #ccc",
-            textAlign: "center",
-            color: "red",
-            margin: "4px",
-          }}
-        >
-          Back to home
-        </Link>
-      </h2>
-    </>
+    </div>
   );
 }

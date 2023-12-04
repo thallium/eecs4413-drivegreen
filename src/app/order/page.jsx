@@ -14,13 +14,12 @@ export default function ListOrders() {
   const session = useSession({
     required: true,
     onUnauthorized: () => {
-        redirect('/signin')
+      redirect('/signin')
     }
-  })  
+  })
   return (
     <QueryClientProvider client={queryClient}>
-      <Orders/>
-      <ReactQueryDevtools />
+      <Orders />
     </QueryClientProvider>
   )
 }
@@ -32,17 +31,21 @@ function Orders() {
       axios.get(baseURL() + '/api/order').then(res => res.data)
   })
 
-  if (pendingOrders) return 'Loading...';
+  if (pendingOrders) return (
+    <div className="h-screen flex items-center justify-center">
+      <span className="loading loading-spinner loading-lg"></span>
+    </div>
+  )
 
-  if (errorOrder) return 'An error has occurred: ' 
-                                                + errorOrder.message;
+  if (errorOrder) return 'An error has occurred: '
+    + errorOrder.message;
 
   return (
-    <>
+    <div className=' container mx-auto'>
       <h1>{process.env.VERCEL_URL}</h1>
-      <div className="overflow-x-auto max-h-56 border-solid border-2 rounded border-grey-400">
-          <table className="table">
-          <caption> Order History </caption>
+      <div className="overflow-x-auto">
+        <table className="table">
+          <caption className='text-4xl font-bold my-4'> Order History </caption>
           <thead>
             <tr>
               <th>Time Created</th>
@@ -52,21 +55,21 @@ function Orders() {
               <th>isPaid</th>
             </tr>
           </thead>
-          <tbody className="overflow-y-scroll">
+          <tbody className="overflow-y-scroll text-base">
             {orders &&
               orders.map((order) => (
                 //console.log(JSON.stringify(order))
                 <tr key={order.oid}>
-                  <td>{order.createdAt.toString()}</td>
+                  <td>{new Date(order.createdAt).toLocaleString()}</td>
                   <td>{
                     <ol>
-                    {order.orderItems.map((item) => (
-                    <li key={item.vehicleId}>
-                        {item.vehicle.name}: (Quantity: {item.quantity} , Subtotal: {item.subTotal})
-                    </li>
-                    ))}
+                      {order.orderItems.map((item) => (
+                        <li key={item.vehicleId}>
+                          {item.vehicle.name}: (Quantity: {item.quantity} , Subtotal: {item.subTotal})
+                        </li>
+                      ))}
                     </ol>
-                    }</td>
+                  }</td>
                   <td>{order.shippingAddr}</td>
                   <td>{order.totalPrice}</td>
                   <td>{order.isPaid.toString()}</td>
@@ -75,10 +78,6 @@ function Orders() {
           </tbody>
         </table>
       </div>
-
-      <h2>
-        <Link href="/" style={{ border: "1px solid #ccc", textAlign: "center", color: "red"}}>Back to home</Link>
-      </h2>
-    </>
+    </div>
   );
 }

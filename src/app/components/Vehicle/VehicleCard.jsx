@@ -13,15 +13,17 @@ function VehicleCard(props) {
   const router = useRouter();
   const dispatch = useNotification();
 
+  const [addingToWatchlist, setAddingToWatchlist] = useState(false);
+
   const addToShoppingCart = async (vid) => {
     const session = await getSession();
-    if(!session){
+    if (!session) {
       router.push('/signin');
       return;
     }
-    try{
+    try {
       setLoading(true);
-      const response = await axios.put(`/api/shoppingCart/${vid}`, {"option": "add"});
+      const response = await axios.put(`/api/shoppingCart/${vid}`, { "option": "add" });
       // console.log("Added to shopping cart:", response.data);
       // Show success alert
       dispatch({
@@ -35,8 +37,33 @@ function VehicleCard(props) {
         type: "ERROR",
         message: `Error: ${error}.`
       })
-    } finally{
+    } finally {
       setLoading(false);
+    }
+  }
+
+  const addToWatchlist = async (vid) => {
+    const session = await getSession();
+    if (!session) {
+      router.push('/signin');
+      return;
+    }
+    try {
+      setAddingToWatchlist(true);
+      const response = await axios.post(`/api/watchlist/`, { "vehicleId": vid });
+      dispatch({
+        type: "INFO",
+        message: "Added to watch list successfully!"
+      })
+    } catch (error) {
+      // console.error("Error adding to shopping cart:", error);
+      // Show error alert
+      dispatch({
+        type: "ERROR",
+        message: `Error: ${error}.`
+      })
+    } finally {
+      setAddingToWatchlist(false);
     }
   }
 
@@ -60,9 +87,8 @@ function VehicleCard(props) {
         <h2 className="card-title">
           {vehicle.name}
           <div
-            className={`badge badge-secondary ${
-              vehicle.hotDealed ? "visible" : "invisible"
-            }`}
+            className={`badge badge-secondary ${vehicle.hotDealed ? "visible" : "invisible"
+              }`}
           >
             Hot
           </div>
@@ -84,12 +110,19 @@ function VehicleCard(props) {
           </div>
         </div>
         <div className="card-actions justify-end">
-          <button 
-            className={`btn btn-primary ${loading? 'cursor-wait' : ''}`} 
-            onClick={() => addToShoppingCart(vehicle.vid)} 
+          <button
+            className={`btn btn-primary ${loading ? 'cursor-wait' : ''}`}
+            onClick={() => addToShoppingCart(vehicle.vid)}
             disabled={loading}
           >
-            {loading? "Adding to Shopping Cart":"Add to Cart"}
+            {loading ? "Adding to Shopping Cart" : "Add to Cart"}
+          </button>
+          <button
+            className={`btn btn-primary ${addingToWatchlist ? 'cursor-wait' : ''}`}
+            onClick={() => addToWatchlist(vehicle.vid)}
+            disabled={addingToWatchlist}
+          >
+            {loading ? "Adding to Watch List" : "Add to Watch List"}
           </button>
           <Link href={`/vehicles/${vehicle.vid}`} className="btn btn-primary">
             Details
