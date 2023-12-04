@@ -28,7 +28,7 @@ function Hotdeal() {
   } = useQuery({
     queryKey: ["/api/vehicles"],
     queryFn: () =>
-      axios.get(baseURL() + "/api/vehicles").then((res) => res.data),
+      fetch(baseURL() + "/api/vehicles").then((res) => res.json()),
   });
 
   const {
@@ -55,11 +55,11 @@ function Hotdeal() {
       errorReviews?.message
     );
 
-    return (
-      <>
-        <div className="m-2">
-          <VehicleList vehicles={vehiclesData.filter(vehicle => vehicle.hotDealed===true)} />
-        </div>
-      </>
-    );
+  return (
+    <>
+      <div className="m-2">
+        <VehicleList vehicles={vehiclesData.filter(vehicle => vehicle.hotDealed === true)} />
+      </div>
+    </>
+  );
 }
