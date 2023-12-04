@@ -68,6 +68,10 @@ export const ActionProvider = ({createChatBotMessage, createClientMessage, setSt
     router.push('/checkout');
   };
 
+  const handleLogIn = () => {
+    router.push('/signin');
+  }
+
   return (
     <div>
       {React.Children.map(children, (child) => {
@@ -79,6 +83,7 @@ export const ActionProvider = ({createChatBotMessage, createClientMessage, setSt
             handleViewVehicles,
             handleAddToCart,
             handleCheckout,
+            handleLogIn,
           },
         });
       })}

@@ -97,6 +97,14 @@ export const MessageParser = ({ children, actions }) => {
       }
     }
 
+    if (!session && (message.includes('order') || message.includes('cart') || s.includes('log in'))) {
+      let op = {
+        name: 'log in',
+        handler: actions.handleLogIn,
+      };
+      options.push(op);
+    }
+
     actions.handleResponse(s, options);
   };
 
