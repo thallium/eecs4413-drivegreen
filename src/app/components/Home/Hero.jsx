@@ -1,5 +1,5 @@
 import Link from "next/link";
-import homeCar from "../../../../public/HomeCar.jpg"
+import homeCar from "../../../../public/HomeCar.jpeg"
 import Image from "next/image";
 
 function Hero() {
@@ -12,10 +12,6 @@ function Hero() {
           className="max-w-sm rounded-lg shadow-2xl"
           priority
         />
-        {/* <img
-          src="/HomeCar.jpg"
-          className="max-w-sm rounded-lg shadow-2xl"
-        /> */}
         <div>
           <h1 className="text-5xl font-bold">Welcome to DriveGreen!</h1>
           <p className="py-6">
