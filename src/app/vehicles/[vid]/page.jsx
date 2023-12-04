@@ -148,7 +148,7 @@ function ReviewForm({ vid }) {
                   key={star}
                   type="radio"
                   name="rating-1"
-                  className="mask mask-star-2"
+                  className="mask mask-star-2 text-yellow-300"
                 />
               );
             })
