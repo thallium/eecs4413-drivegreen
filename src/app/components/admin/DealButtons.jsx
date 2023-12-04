@@ -53,7 +53,7 @@ export function AddDeal() {
     const router = useRouter();
     const [vid, setVid] = useState('');
     const add = async() => {
-      if(vid == '') 
+      if (vid.trim() == '' || isNaN(Number(str)))
         return alert('Please enter a vehicle ID');
 
       try {
