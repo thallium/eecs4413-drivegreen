@@ -27,7 +27,7 @@ const ApiCalls = (props) => {
 
   return (
     <div className="flex flex-wrap space-x-1">
-      {props.payload.calls.map((c) => (
+      {props.payload.calls && props.payload.calls.map((c) => (
         <button
           key={c.title}
           onClick={() => call(c.url, c.body)}

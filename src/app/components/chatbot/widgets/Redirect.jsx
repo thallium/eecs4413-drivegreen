@@ -4,7 +4,7 @@ const Redirects = (props) => {
   console.log('links', props.payload.links);
   return (
     <div className="flex flex-wrap space-x-1">
-      {props.payload.links.map((link) => (
+      {props.payload.links && props.payload.links.map((link) => (
         <Link
           key={link.title}
           href={link.url}

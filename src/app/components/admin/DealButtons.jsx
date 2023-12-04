@@ -53,7 +53,7 @@ export function AddDeal() {
     const router = useRouter();
     const [vid, setVid] = useState('');
     const add = async() => {
-      if (vid.trim() == '' || (/[^\d]+/.test(vid))){
+      if (/[^\d]+/.test(vid)){
         alert('Please enter a vehicle ID (no whitespace)');
         return;
       }
