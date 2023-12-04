@@ -6,7 +6,7 @@ export const getShoppingCart = async (email) => {
       email: email,
     },
   })
-  const shoppingCart = await prisma.shoppingCart.findUnique({
+  let shoppingCart = await prisma.shoppingCart.findUnique({
     where:{
       userId: user.uid,
     },
@@ -19,7 +19,10 @@ export const getShoppingCart = async (email) => {
     },
     
   });
-  // console.log("shoppingCart:" + JSON.stringify(shoppingCart));
+  if(!shoppingCart){
+    shoppingCart = creatEmptyShoppingCart(email);
+  }
+  console.log("shoppingCart:" + JSON.stringify(shoppingCart));
   return shoppingCart;
   
 }
@@ -38,6 +41,13 @@ export const creatEmptyShoppingCart = async (email) => {
         },
       },
       totalPrice: 0, // Set the initial total price
+    },
+    include: {
+      vehicleItems: {
+        include: {
+          vehicle: true,
+        },
+      },
     },
   });
   // console.log(`Shopping cart created for user with email: ${email}`);
