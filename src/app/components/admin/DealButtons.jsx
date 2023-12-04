@@ -83,7 +83,6 @@ export function AddDeal() {
           type="text"
           placeholder="Vehicle ID"
           className="input input-bordered"
-          value={vid}
           onChange={(e) => setVid(e.target.value)}
         />
         <button className="btn btn-outline btn-square btn-info" onClick={add}>
