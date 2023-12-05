@@ -1,6 +1,6 @@
 export const getInstruction = (vehicles, hotdeals) => {
     const res =
-      'Here are the vehicles we have in stock: ' +
+      'Here are the vehicles we have in stock. Those listed with mileage are used vehicles.' +
       JSON.stringify(vehicles) +
       '. Here are the hotdeals (cars on sale now) we provide: ' +
       JSON.stringify(hotdeals) +
