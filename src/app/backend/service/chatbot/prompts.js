@@ -1,6 +1,6 @@
 export const getInstruction = (vehicles, hotdeals) => {
     const res =
-      'Here are the vehicles we have in stock: ' +
+      'Here are the vehicles we have in stock. Those listed with mileage are used vehicles.' +
       JSON.stringify(vehicles) +
       '. Here are the hotdeals (cars on sale now) we provide: ' +
       JSON.stringify(hotdeals) +
@@ -15,7 +15,7 @@ export const runInstruction = (userEmail, orders) => {
     let res =
       "the customer's email is" +
       userEmail +
-      '. if the email is not given,the customer is not logged in. If they want to check order states or add vehicles to cart, suggest them to login but do not say you need their email. If user is not logged in, you can still answer with the vehicles and hotdeals information.';
+      '. if the email is empty,the customer is not logged in. If the email is given, the user is logged in, they can check order status or add vehicle to cart. If user is not logged in but want to check order status or add vehicles to cart, suggest them to login but do not say you need their email. You can still answer with the vehicles and hotdeals information, even the user is not logged in.';
 
     if (orders) {
       res += ". here are the orders under the user email: " + userEmail+ "\n orders: " + JSON.stringify(orders);
